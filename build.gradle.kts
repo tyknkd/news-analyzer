@@ -2,10 +2,11 @@ val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 
-val prometeus_version: String by project
+val prometheus_version: String by project
 val postgres_version: String by project
 val h2_version: String by project
 val exposed_version: String by project
+
 plugins {
     kotlin("jvm") version "1.9.22"
     id("io.ktor.plugin") version "2.3.8"
@@ -32,7 +33,7 @@ dependencies {
     implementation("io.ktor:ktor-server-host-common-jvm")
     implementation("io.ktor:ktor-server-status-pages-jvm")
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm")
-    implementation("io.micrometer:micrometer-registry-prometheus:$prometeus_version")
+    implementation("io.micrometer:micrometer-registry-prometheus:$prometheus_version")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-freemarker-jvm")
