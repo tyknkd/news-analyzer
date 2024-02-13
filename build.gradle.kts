@@ -16,6 +16,10 @@ plugins {
 group = "io.tyknkd"
 version = "0.0.1"
 
+kotlin {
+    jvmToolchain(17)
+}
+
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 
