@@ -1,0 +1,87 @@
+@import url(https://fonts.googleapis.com/css2?family=Raleway&display=swap);
+
+:root {
+    --bg-color: #111;
+    --text-color: #ccc;
+    --field-color: #aaa;
+    --field-text-color: #222;
+    --form-bg-color: #222;
+    --placeholder-color: #444;
+    --link-color: DarkSlateBlue;
+    --fonts: Raleway, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 25px;
+    font-family: var(--fonts);
+    font-size: 16px;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.4em;
+    min-width: 150px;
+}
+
+header, h1, h2, h3, hr, footer {
+    margin-top: 20px;
+    margin-bottom: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+a:hover {
+    color: var(--link-color);
+}
+
+form {
+    margin: 10px 0;
+    padding: 15px;
+    background-color: var(--form-bg-color);
+    display: inline-block;
+    width: 100%;
+    max-width: 340px;
+    min-width: 100px;
+    border-radius: 5px;
+}
+
+input {
+    display: block;
+    background-color: var(--field-color);
+    color: var(--field-text-color);
+    margin: 2px 0 10px 0;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid var(--text-color);
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+::placeholder {
+    font-family: var(--fonts);
+    font-size: 1rem;
+    color: var(--placeholder-color);
+}
+
+button, input[type='submit'] {
+    width: 100%;
+    padding: 5px;
+    font-family: var(--fonts);
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    border: 1px solid var(--text-color);
+    border-radius: 5px;
+}
+
+button:hover, input[type='submit']:hover {
+    background-color: var(--link-color);
+    cursor: pointer;
+}

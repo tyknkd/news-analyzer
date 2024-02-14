@@ -10,9 +10,9 @@ import kotlin.test.*
 class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
-        client.get("/").apply {
+        client.get("/api").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertEquals("Hello World!", bodyAsText())
+            assertEquals("News Analyzer API", bodyAsText())
         }
     }
 }
