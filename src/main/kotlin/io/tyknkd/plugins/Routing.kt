@@ -20,6 +20,6 @@ fun Application.configureRouting() {
             call.respondText("News Analyzer API")
         }
         staticResources("/static", "views")
-        staticResources("/public", "public")
+        staticResources("/styles", "styles")
     }
 }
