@@ -12,7 +12,7 @@
     <#nested>
     </body>
     <footer>
-        <p>&copy; <script>document.write(new Date().getFullYear())</script> <a target="_blank" rel="noopener" href="https://tyknkd.github.io">Tyler Kinkade</a> All Rights Reserved</p>
+        <p>&copy; ${.now?string('yyyy')} <a target="_blank" rel="noopener" href="https://tyknkd.github.io">Tyler Kinkade</a>, All Rights Reserved</p>
     </footer>
     </html>
 </#macro>
