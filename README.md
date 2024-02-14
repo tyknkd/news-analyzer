@@ -5,6 +5,11 @@
 
 _CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
 
+## Tech Stack
+- [Kotlin](https://kotlinlang.org/): Programming language
+- [Ktor](https://ktor.io/): Kotlin application framework
+- [Apache Freemarker](https://freemarker.apache.org/): Dynamic webpage templating
+
 ## Final Project Rubric
 - Web application basic form, reporting
 - Data collection
