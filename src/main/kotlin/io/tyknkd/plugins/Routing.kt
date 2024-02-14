@@ -1,12 +1,15 @@
 package io.tyknkd.plugins
 
+import io.tyknkd.models.*
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.freemarker.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 
 fun Application.configureRouting() {
     install(Resources)
@@ -16,10 +19,17 @@ fun Application.configureRouting() {
         }
     }
     routing {
+        get("/") {
+            call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to articles)))
+        }
+        get("/articles/{id}") {
+            val id = call.parameters.getOrFail<Int>("id").toInt()
+            call.respond(FreeMarkerContent("article.ftl", mapOf("article" to articles.find { it.id == id })))
+        }
         get("/api") {
             call.respondText("News Analyzer API")
         }
-        staticResources("/static", "views")
+        staticResources("/static", "static")
         staticResources("/styles", "styles")
     }
 }
