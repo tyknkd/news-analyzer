@@ -27,7 +27,10 @@ fun Application.configureRouting() {
             call.respond(FreeMarkerContent("article.ftl", mapOf("article" to articles.find { it.id == id })))
         }
         get("/api") {
-            call.respondText("News Analyzer API")
+            call.respondText(text = "News Analyzer API", status = HttpStatusCode.OK)
+        }
+        get("/health") {
+            call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
         staticResources("/static", "static")
         staticResources("/styles", "styles")
