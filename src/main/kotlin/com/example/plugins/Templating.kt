@@ -1,4 +1,4 @@
-package io.tyknkd.plugins
+package com.example.plugins
 
 import freemarker.cache.*
 import freemarker.core.*

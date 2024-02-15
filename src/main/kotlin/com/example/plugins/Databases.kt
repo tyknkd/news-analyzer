@@ -1,4 +1,4 @@
-package io.tyknkd.plugins
+package com.example.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*

@@ -1,4 +1,4 @@
-package io.tyknkd.plugins
+package com.example.plugins
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

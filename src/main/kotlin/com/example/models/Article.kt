@@ -1,4 +1,4 @@
-package io.tyknkd.models
+package com.example.models
 
 import java.util.concurrent.atomic.AtomicInteger
 

@@ -1,6 +1,6 @@
-package io.tyknkd.plugins
+package com.example.plugins
 
-import io.tyknkd.models.*
+import com.example.models.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
