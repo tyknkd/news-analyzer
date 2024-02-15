@@ -14,7 +14,7 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Junit](https://junit.org/junit5/) v.4.13.2: Testing
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
 - [Docker](https://www.docker.com/) v.4.26.1: Containerization
-- [Java](https://openjdk.org/) v.17.0.9: Compilation and libraries
+- [Java Virtual Machine](https://openjdk.org/) v.17.0.9: Compilation and libraries
 - [Gradle](https://gradle.org/) v.8.5: Build tool
 - [Ubuntu](https://ubuntu.com/) v.22.0.4: Operating system
 
