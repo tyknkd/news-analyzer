@@ -12,6 +12,7 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Apache Freemarker](https://freemarker.apache.org/) v.2.3.32: Dynamic webpage templating
 - [PostgreSQL](https://www.postgresql.org/) v.42.5.1: Relational database
 - [Junit](https://junit.org/junit5/) v.4.13.2: Testing
+- [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
 - [Docker](https://www.docker.com/) v.4.26.1: Containerization
 - [Java Virtual Machine](https://openjdk.org/) v.17.0.9: Compilation and libraries
@@ -41,3 +42,8 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 ## API
 
 ## Local Development Setup
+
+To check test code coverage:
+```shell
+./gradlew koverHtmlReport
+```
