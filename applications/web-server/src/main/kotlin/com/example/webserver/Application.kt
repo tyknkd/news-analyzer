@@ -1,8 +1,7 @@
-package com.example
+package com.example.webserver
 
-import com.example.plugins.*
+import com.example.webserver.plugins.*
 import io.ktor.server.application.*
-import com.example.plugins.*
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)

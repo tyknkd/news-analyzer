@@ -1,4 +1,4 @@
-package com.example.models
+package com.example.webserver.models
 
 import java.util.concurrent.atomic.AtomicInteger
 

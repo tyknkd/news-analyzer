@@ -1,6 +1,6 @@
-package com.example.plugins
+package com.example.webserver.plugins
 
-import com.example.models.*
+import com.example.webserver.models.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*

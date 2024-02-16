@@ -1,4 +1,4 @@
-package com.example.plugins
+package com.example.webserver.plugins
 
 import freemarker.cache.*
 import freemarker.core.*
