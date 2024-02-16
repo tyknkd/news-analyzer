@@ -1,7 +1,3 @@
-val kotlin_version = "1.9.22"
-val ktor_version = "2.3.8"
-val kover_version = "0.7.5"
-
 plugins {
     `kotlin-dsl`
 }
@@ -9,6 +5,10 @@ plugins {
 repositories {
     gradlePluginPortal()
 }
+
+val kotlin_version: String by project
+val ktor_version: String by project
+val kover_version: String by project
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
