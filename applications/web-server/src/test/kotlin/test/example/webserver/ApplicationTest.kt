@@ -1,4 +1,4 @@
-package com.example
+package test.example.webserver
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
