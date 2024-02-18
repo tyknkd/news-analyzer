@@ -1,5 +1,6 @@
 package com.example.datacollector
 
+import com.example.models.Results
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.java.*
@@ -8,26 +9,9 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 import java.io.File
-
-@Serializable
-data class Source(val id: String = "", val name: String = "")
-@Serializable
-data class Article(val source: Source,
-                   val author: String = "",
-                   val title: String = "",
-                   val description: String = "",
-                   val url: String = "",
-                   val urlToImage: String = "",
-                   val publishedAt: String = "",
-                   val content: String = "")
-@Serializable
-data class Articles(val status: String = "",
-                    val totalResults: Int,
-                    val articles: List<Article>)
 
 suspend fun main() {
     val newsApiKey = System.getenv("NEWS_API_KEY")
@@ -64,8 +48,8 @@ suspend fun main() {
         }
     }
     client.close()
-    val articles: Articles = response.body()
-    println("Total results: ${articles.totalResults}")
+    val results: Results = response.body()
+    println("Total results: ${results.totalResults}")
     File("example.json").writeText(response.bodyAsText())
 }
 
