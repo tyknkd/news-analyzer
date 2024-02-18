@@ -21,29 +21,44 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 
 
 ## Final Project Rubric
-- Web application basic form, reporting
-- Data collection
-- Data analyzer
-- Unit tests
-- Data persistence in any data store
-- REST collaboration internal or API endpoint
-- Product environment
-- Integration tests
-- Using mock objects or any test doubles
-- Continuous integration
-- Production monitoring instrumenting
-    - `/health` endpoint
-    - `/metrics` endpoint
-- Event collaboration messaging
-- Continuous delivery
+(Click links to see relevant code)
+- C-level
+  - Web application basic form, reporting
+  - Data collection
+  - Data analyzer
+  - Unit tests
+  - Data persistence in any data store
+  - REST collaboration internal or API endpoint
+  - Production environment
+- B-level
+  - Integration tests
+  - Using mock objects or any test doubles
+  - Continuous integration
+  - Production monitoring instrumenting
+      - `/health` endpoint
+      - `/metrics` endpoint
+- A-level
+  - Event collaboration messaging
+  - Continuous delivery
 
 ## Production Deployment
 
 ## API
 
 ## Local Development Setup
-
-To check test code coverage:
+1. Install Java 17.
+2. Obtain an API key from [https://newsapi.org](https://newsapi.org) and assign it to `NEWS_API_KEY` in  `environment.env` file.
+3. Assign the environment variables in the same Linux/Unix shell from which you will later build and run the application.
+```shell
+source environment.env
+```
+4. Build the program
+```shell
+./gradlew build
+```
+5. To check test code coverage:
 ```shell
 ./gradlew koverHtmlReport
 ```
+
+_&copy;2024 Tyler Kinkade, All Rights Reserved_

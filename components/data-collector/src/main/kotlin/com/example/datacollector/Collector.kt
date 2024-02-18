@@ -1,12 +1,33 @@
 package com.example.datacollector
 
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.java.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-
 import io.ktor.http.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+
 import java.io.File
+
+@Serializable
+data class Source(val id: String = "", val name: String = "")
+@Serializable
+data class Article(val source: Source,
+                   val author: String = "",
+                   val title: String = "",
+                   val description: String = "",
+                   val url: String = "",
+                   val urlToImage: String = "",
+                   val publishedAt: String = "",
+                   val content: String = "")
+@Serializable
+data class Articles(val status: String = "",
+                    val totalResults: Int,
+                    val articles: List<Article>)
 
 suspend fun main() {
     val newsApiKey = System.getenv("NEWS_API_KEY")
@@ -22,7 +43,15 @@ suspend fun main() {
         "techcrunch","techradar","the-next-web","the-verge","the-wall-street-journal","the-washington-post","wired")
     val sources = sourceList.joinToString(",")
     val sortBy = "publishedAt"
-    val client = HttpClient(Java)
+    val client = HttpClient(Java) {
+        install(ContentNegotiation) {
+            json(Json {
+                isLenient = true
+                coerceInputValues = true
+                ignoreUnknownKeys = true
+            })
+        }
+    }
     val response: HttpResponse = client.get {
         url {
             protocol = URLProtocol.HTTPS
@@ -34,7 +63,9 @@ suspend fun main() {
             parameters.append("apiKey", newsApiKey)
         }
     }
-    File("techIndustrySelectSources.json").writeText(response.bodyAsText())
     client.close()
+    val articles: Articles = response.body()
+    println("Total results: ${articles.totalResults}")
+    File("example.json").writeText(response.bodyAsText())
 }
 
