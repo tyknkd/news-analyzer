@@ -52,4 +52,3 @@ suspend fun main() {
     println("Total results: ${results.totalResults}")
     File("example.json").writeText(response.bodyAsText())
 }
-
