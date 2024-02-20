@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover")
 }
 
-group = "com.example"
+group = "io.newsanalyzer"
 version = "0.0.1"
 
 kotlin {

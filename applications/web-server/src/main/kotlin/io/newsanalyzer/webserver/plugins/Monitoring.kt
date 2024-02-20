@@ -1,4 +1,4 @@
-package com.example.webserver.plugins
+package io.newsanalyzer.webserver.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.metrics.micrometer.*

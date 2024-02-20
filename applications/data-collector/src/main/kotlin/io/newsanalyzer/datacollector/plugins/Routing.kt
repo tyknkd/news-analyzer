@@ -1,4 +1,4 @@
-package com.example.datacollector.plugins
+package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*

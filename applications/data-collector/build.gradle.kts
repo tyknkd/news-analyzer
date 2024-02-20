@@ -4,7 +4,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.example.datacollector.ApplicationKt")
+    mainClass.set("io.newsanalyzer.datacollector.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")

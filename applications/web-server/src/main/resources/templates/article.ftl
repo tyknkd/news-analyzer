@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="article" type="com.example.webserver.models.Article" -->
+<#-- @ftlvariable name="article" type="io.newsanalyzer.webserver.models.Article" -->
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <h3>

@@ -1,9 +1,11 @@
-package com.example.datacollector
+package io.newsanalyzer.datacollector
 
-import com.example.datacollector.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.newsanalyzer.datacollector.plugins.configureDatabases
+import io.newsanalyzer.datacollector.plugins.configureRouting
+import io.newsanalyzer.datacollector.plugins.configureSerialization
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

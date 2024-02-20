@@ -1,6 +1,5 @@
-package com.example.webserver.plugins
+package io.newsanalyzer.webserver.plugins
 
-import com.example.webserver.models.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -10,6 +9,7 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import io.newsanalyzer.webserver.models.articles
 
 fun Application.configureRouting() {
     install(Resources)

@@ -1,4 +1,4 @@
-package test.example.webserver
+package test.newsanalyzer.webserver
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

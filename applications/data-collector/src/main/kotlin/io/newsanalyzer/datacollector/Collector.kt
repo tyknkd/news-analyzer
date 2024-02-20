@@ -1,6 +1,6 @@
-package com.example.datacollector
+package io.newsanalyzer.datacollector
 
-import com.example.datacollector.models.Results
+import io.newsanalyzer.datacollector.models.Results
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.java.*

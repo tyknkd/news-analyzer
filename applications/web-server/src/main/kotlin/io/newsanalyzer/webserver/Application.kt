@@ -1,7 +1,7 @@
-package com.example.webserver
+package io.newsanalyzer.webserver
 
-import com.example.webserver.plugins.*
 import io.ktor.server.application.*
+import io.newsanalyzer.webserver.plugins.*
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
