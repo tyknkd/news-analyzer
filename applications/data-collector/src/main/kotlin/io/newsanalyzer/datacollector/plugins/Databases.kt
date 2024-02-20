@@ -11,6 +11,9 @@ fun Application.configureDatabases() {
         driver = "org.h2.Driver",
         password = ""
     )
+
+    val dataGateway = DataGateway(database)
+
     routing {
     }
 }
