@@ -5,6 +5,8 @@ plugins {
 val prometheus_version: String by project
 
 dependencies {
+    implementation("io.ktor:ktor-server-core-jvm")
+    implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-resources")
     implementation("io.ktor:ktor-server-host-common-jvm")
     implementation("io.ktor:ktor-server-status-pages-jvm")
@@ -13,4 +15,5 @@ dependencies {
     implementation("io.ktor:ktor-server-freemarker-jvm")
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm")
     implementation("io.micrometer:micrometer-registry-prometheus:$prometheus_version")
+    testImplementation("io.ktor:ktor-server-tests-jvm")
 }

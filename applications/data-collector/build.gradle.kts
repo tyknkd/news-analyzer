@@ -1,14 +1,11 @@
 plugins {
     id("news-analyzer.kotlin-application-conventions")
-}
-
-val ktor_version: String by project
-
-dependencies {
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-java:$ktor_version")
+    id("news-analyzer.kotlin-client-conventions")
 }
 
 application {
     mainClass.set("com.example.datacollector.ApplicationKt")
+
+    val isDevelopment: Boolean = project.ext.has("development")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
