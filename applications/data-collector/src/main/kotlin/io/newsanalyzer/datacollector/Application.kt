@@ -3,9 +3,7 @@ package io.newsanalyzer.datacollector
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.newsanalyzer.datacollector.plugins.configureDatabases
-import io.newsanalyzer.datacollector.plugins.configureRouting
-import io.newsanalyzer.datacollector.plugins.configureSerialization
+import io.newsanalyzer.datacollector.plugins.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
