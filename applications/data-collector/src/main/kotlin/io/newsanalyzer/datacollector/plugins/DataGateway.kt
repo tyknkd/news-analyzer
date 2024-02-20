@@ -2,6 +2,7 @@ package io.newsanalyzer.datacollector.plugins
 
 import io.newsanalyzer.datacollector.models.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -25,7 +26,7 @@ class DataGateway(private val database: Database) {
                 it[description] = article.description
                 it[url] = article.url
                 it[urlToImage] = article.urlToImage
-                it[publishedAt] = article.publishedAt.toLocalDateTime()
+                it[publishedAt] = article.publishedAt.toInstant()
                 it[content] = article.content
             }[Articles.id]
         }

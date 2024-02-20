@@ -11,7 +11,7 @@ object Articles : Table() {
     val description = varchar("description", 512)
     val url = varchar("url", 256)
     val urlToImage = varchar("urlToImage", 512)
-    val publishedAt = datetime("publishedAt")
+    val publishedAt = timestamp("publishedAt")
     val content = varchar("content", 512)
     override val primaryKey = PrimaryKey(id)
 }
