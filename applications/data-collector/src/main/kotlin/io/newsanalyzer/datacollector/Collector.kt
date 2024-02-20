@@ -1,6 +1,6 @@
 package io.newsanalyzer.datacollector
 
-import io.newsanalyzer.datacollector.models.Results
+import io.newsanalyzer.datacollector.models.RemoteData
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.java.*
@@ -68,8 +68,8 @@ class Collector {
             }
         }
         client.close()
-        val results: Results = response.body()
-        println("Total results: ${results.totalResults}")
+        val remoteData: RemoteData = response.body()
+        println("Total results: ${remoteData.totalResults}")
         File("example.json").writeText(response.bodyAsText())
     }
 }

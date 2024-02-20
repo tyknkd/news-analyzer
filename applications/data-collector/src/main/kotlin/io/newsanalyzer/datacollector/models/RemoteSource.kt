@@ -3,4 +3,4 @@ package io.newsanalyzer.datacollector.models
 import kotlinx.serialization.*
 
 @Serializable
-data class Source(val id: String?, val name: String?)
+data class RemoteSource(val id: String?, val name: String = "")
