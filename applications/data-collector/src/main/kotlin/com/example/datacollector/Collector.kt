@@ -47,7 +47,7 @@ class Collector {
         )
         val sources = sourceList.joinToString(",")
         val sortBy = "publishedAt"
-        val client = HttpClient(Java) {
+        val client = HttpClient(engineFactory = Java) {
             install(ContentNegotiation) {
                 json(Json {
                     isLenient = true
