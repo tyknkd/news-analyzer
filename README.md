@@ -11,6 +11,7 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Netty](https://netty.io/) v.4.1.106: Web server
 - [Apache Freemarker](https://freemarker.apache.org/) v.2.3.32: Dynamic webpage templating
 - [PostgreSQL](https://www.postgresql.org/) v.42.5.1: Relational database
+- [Exposed](https://github.com/JetBrains/Exposed) v.0.41.1: Object relational mapping framework
 - [Junit](https://junit.org/junit5/) v.4.13.2: Testing
 - [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
