@@ -30,7 +30,7 @@ class DataGateway(private val database: Database) {
         newSuspendedTransaction(Dispatchers.IO) { block() }
 
     suspend fun addArticles(remoteData: RemoteData) {
-        for (article in remoteData.articles) {
+        for (article in remoteData.articles.reversed()) {
             dbQuery {
                 Articles.insert {
                     it[publisher] = article.source.name
