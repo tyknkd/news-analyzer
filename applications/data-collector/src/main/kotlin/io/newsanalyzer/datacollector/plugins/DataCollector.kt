@@ -67,8 +67,6 @@ class DataCollector {
         }
         client.close()
         val remoteData: RemoteData = response.body()
-        // println("Total results: ${remoteData.totalResults}")
-        // File("remotedata.json").writeText(response.bodyAsText())
         return remoteData
     }
 }
