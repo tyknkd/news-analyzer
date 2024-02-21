@@ -2,8 +2,6 @@ package io.newsanalyzer.datacollector.models
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.kotlin.datetime.*
-import kotlinx.datetime.Instant
-import kotlinx.serialization.Serializable
 
 object Articles: Table() {
     val id = integer("id").autoIncrement()
