@@ -15,28 +15,16 @@ class DataGateway(private val database: Database) {
         }
     }
 
-    private fun rowToArticle(row: ResultRow) = Article(
-            id = row[Articles.id],
-            publisher = row[Articles.publisher],
-            author = row[Articles.author],
-            title = row[Articles.title],
-            description = row[Articles.description],
-            url = row[Articles.url],
-            urlToImage = row[Articles.urlToImage],
-            publishedAt = row[Articles.publishedAt],
-            content = row[Articles.content]
-        )
-
     private fun ResultRow.toArticle() = Article(
-        this[Articles.id],
-        this[Articles.publisher],
-        this[Articles.author],
-        this[Articles.title],
-        this[Articles.description],
-        this[Articles.url],
-        this[Articles.urlToImage],
-        this[Articles.publishedAt],
-        this[Articles.content]
+        id = this[Articles.id],
+        publisher = this[Articles.publisher],
+        author = this[Articles.author],
+        title = this[Articles.title],
+        description = this[Articles.description],
+        url = this[Articles.url],
+        urlToImage = this[Articles.urlToImage],
+        publishedAt = this[Articles.publishedAt],
+        content = this[Articles.content]
     )
 
     private suspend fun <T> dbQuery(block: suspend() -> T): T =
@@ -59,8 +47,9 @@ class DataGateway(private val database: Database) {
         }
     }
     suspend fun allArticles(): List<Article> = dbQuery {
-        Articles.selectAll().map(::rowToArticle)
+        Articles.selectAll().map { row -> row.toArticle() }
     }
+    // ::rowToArticle
     suspend fun mostRecentDate(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
     }
