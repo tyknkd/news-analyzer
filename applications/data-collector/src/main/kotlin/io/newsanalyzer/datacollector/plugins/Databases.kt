@@ -3,7 +3,6 @@ package io.newsanalyzer.datacollector.plugins
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.newsanalyzer.datacollector.Collector
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*

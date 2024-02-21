@@ -1,4 +1,4 @@
-package io.newsanalyzer.datacollector
+package io.newsanalyzer.datacollector.plugins
 
 import io.newsanalyzer.datacollector.models.RemoteData
 import io.ktor.client.*
@@ -10,8 +10,6 @@ import io.ktor.http.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.*
-
-import java.io.File
 
 class Collector {
     suspend fun collectData(): RemoteData {
