@@ -69,8 +69,8 @@ class Collector {
         }
         client.close()
         val remoteData: RemoteData = response.body()
-        println("Total results: ${remoteData.totalResults}")
-        File("example.json").writeText(response.bodyAsText())
+        // println("Total results: ${remoteData.totalResults}")
+        // File("remotedata.json").writeText(response.bodyAsText())
         return remoteData
     }
 }
