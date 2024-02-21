@@ -2,6 +2,7 @@ package io.newsanalyzer.datacollector.plugins
 
 import io.newsanalyzer.datacollector.models.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -26,6 +27,18 @@ class DataGateway(private val database: Database) {
             content = row[Articles.content]
         )
 
+    private fun ResultRow.toArticle() = Article(
+        this[Articles.id],
+        this[Articles.publisher],
+        this[Articles.author],
+        this[Articles.title],
+        this[Articles.description],
+        this[Articles.url],
+        this[Articles.urlToImage],
+        this[Articles.publishedAt],
+        this[Articles.content]
+    )
+
     private suspend fun <T> dbQuery(block: suspend() -> T): T =
         newSuspendedTransaction(Dispatchers.IO) { block() }
 
@@ -48,7 +61,7 @@ class DataGateway(private val database: Database) {
     suspend fun allArticles(): List<Article> = dbQuery {
         Articles.selectAll().map(::rowToArticle)
     }
-    suspend fun lastPublishedDate() {
-        TODO()
+    suspend fun mostRecentDate(): Instant? = dbQuery {
+        Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
     }
 }
