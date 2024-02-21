@@ -1,5 +1,6 @@
 package io.newsanalyzer.datacollector.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -27,7 +28,7 @@ fun Application.configureDatabases() {
 
     routing {
         get("/articles") {
-            call.respond(dataGateway.allArticles())
+            call.respond(status = HttpStatusCode.OK, dataGateway.allArticles())
         }
     }
 }
