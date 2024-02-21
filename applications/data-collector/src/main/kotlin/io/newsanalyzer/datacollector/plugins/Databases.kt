@@ -20,8 +20,8 @@ fun Application.configureDatabases() {
 
     runBlocking {
         launch {
-            val collector = Collector()
-            val remoteData = collector.collectData()
+            val dataCollector = DataCollector()
+            val remoteData = dataCollector.collectData()
             dataGateway.addArticles(remoteData)
         }
     }

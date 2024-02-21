@@ -11,7 +11,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.*
 
-class Collector {
+class DataCollector {
     suspend fun collectData(): RemoteData {
         val newsApiKey = System.getenv("NEWS_API_KEY")
             ?: throw RuntimeException("Obtain API key from https://newsapi.org and set as environment variable NEWS_API_KEY")
