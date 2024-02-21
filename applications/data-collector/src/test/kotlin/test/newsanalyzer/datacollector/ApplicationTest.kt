@@ -11,10 +11,12 @@ class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
         application {
+            configureSerialization()
+            configureDatabases()
             configureRouting()
         }
         client.get("/").apply {
-            assertEquals(HttpStatusCode.PermanentRedirect, status)
+            assertEquals(HttpStatusCode.OK, status)
         }
     }
     @Test
