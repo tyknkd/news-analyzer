@@ -1,7 +1,11 @@
 package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.newsanalyzer.datacollector.Collector
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
 
 fun Application.configureDatabases() {
@@ -14,6 +18,17 @@ fun Application.configureDatabases() {
 
     val dataGateway = DataGateway(database)
 
+    runBlocking {
+        launch {
+            val collector = Collector()
+            val remoteData = collector.collectData()
+            dataGateway.addArticles(remoteData)
+        }
+    }
+
     routing {
+        get("/articles") {
+            call.respond(dataGateway.allArticles())
+        }
     }
 }

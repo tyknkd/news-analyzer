@@ -14,7 +14,7 @@ import kotlinx.serialization.json.*
 import java.io.File
 
 class Collector {
-    suspend fun collectData() {
+    suspend fun collectData(): RemoteData {
         val newsApiKey = System.getenv("NEWS_API_KEY")
             ?: throw RuntimeException("Obtain API key from https://newsapi.org and set as environment variable NEWS_API_KEY")
         // Example API request:
@@ -71,5 +71,6 @@ class Collector {
         val remoteData: RemoteData = response.body()
         println("Total results: ${remoteData.totalResults}")
         File("example.json").writeText(response.bodyAsText())
+        return remoteData
     }
 }

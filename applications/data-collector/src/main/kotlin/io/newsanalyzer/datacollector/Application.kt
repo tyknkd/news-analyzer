@@ -9,12 +9,6 @@ import kotlinx.coroutines.runBlocking
 
 
 fun main() {
-    runBlocking {
-        launch {
-            val collector = Collector()
-            collector.collectData()
-        }
-    }
     val port = System.getenv("COLLECTOR_PORT")?.toInt() ?: 8081
     embeddedServer(factory = Netty, port = port, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
