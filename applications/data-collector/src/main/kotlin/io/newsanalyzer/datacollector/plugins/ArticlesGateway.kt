@@ -1,13 +1,13 @@
 package io.newsanalyzer.datacollector.plugins
 
-import io.newsanalyzer.datacollector.models.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toInstant
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import kotlinx.coroutines.*
+import kotlinx.datetime.*
+import io.newsanalyzer.datacollector.models.*
+import io.newsanalyzer.datacollector.plugins.ArticlesDatabase.dbQuery
 
-class DataGateway {
+
+class ArticlesGateway: ArticlesDAO {
     private fun ResultRow.toArticle() = Article(
         id = this[Articles.id],
         publisher = this[Articles.publisher],
@@ -19,9 +19,6 @@ class DataGateway {
         publishedAt = this[Articles.publishedAt],
         content = this[Articles.content]
     )
-
-    private suspend fun <T> dbQuery(block: suspend() -> T): T =
-        newSuspendedTransaction(Dispatchers.IO) { block() }
 
     suspend fun addArticles(remoteData: RemoteData) {
         for (article in remoteData.articles.reversed()) {
@@ -39,11 +36,26 @@ class DataGateway {
             }
         }
     }
-    suspend fun allArticles(): List<Article> = dbQuery {
+
+    override suspend fun allArticles(): List<Article> = dbQuery {
         Articles.selectAll().map { row -> row.toArticle() }
     }
-    // ::rowToArticle
-    suspend fun mostRecentDate(): Instant? = dbQuery {
+
+    override suspend fun mostRecentDate(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
+    }
+}
+
+val articlesGateway: ArticlesDAO = ArticlesGateway().apply {
+    runBlocking {
+        if(allArticles().isEmpty()) {
+            val dataCollector = DataCollector()
+            val remoteData = dataCollector.collectData()
+            if (remoteData != null) {
+                addArticles(remoteData)
+            } else {
+                println("NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org")
+            }
+        }
     }
 }

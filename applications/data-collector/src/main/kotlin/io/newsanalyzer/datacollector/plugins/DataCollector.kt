@@ -12,9 +12,14 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.*
 
 class DataCollector {
-    suspend fun collectData(): RemoteData {
+    suspend fun collectData(): RemoteData? {
         val newsApiKey = System.getenv("NEWS_API_KEY")
-            ?: throw RuntimeException("Obtain API key from https://newsapi.org and set as environment variable NEWS_API_KEY")
+        val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
+        if ((newsApiKey == null) or (newsApiKey == "0123456789abcdefghijklmnopqrstuv")) {
+            println(apiKeyErrorMessage)
+            // throw RuntimeException(apiKeyErrorMessage)
+            return null
+        }
         // Example API request:
         // GET https://newsapi.org/v2/everything?q=%22tech%20industry%22&sources=ars-technica,associated-press&sortBy=publishedAt&apiKey=NEWS_API_KEY
         // Responds with summaries of up to 100 matching articles/page from past month up to yesterday when using free developer account
@@ -66,6 +71,11 @@ class DataCollector {
             }
         }
         client.close()
+        if(response.status != HttpStatusCode.OK){
+            println(apiKeyErrorMessage)
+            // throw RuntimeException(apiKeyErrorMessage)
+            return null
+        }
         val remoteData: RemoteData = response.body()
         return remoteData
     }
