@@ -6,15 +6,8 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
-class DataGateway(private val database: Database) {
-    init {
-        transaction(database) {
-            SchemaUtils.create(Articles)
-        }
-    }
-
+class DataGateway {
     private fun ResultRow.toArticle() = Article(
         id = this[Articles.id],
         publisher = this[Articles.publisher],
