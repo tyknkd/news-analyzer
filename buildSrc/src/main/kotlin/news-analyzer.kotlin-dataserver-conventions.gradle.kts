@@ -8,6 +8,7 @@ plugins {
 val postgres_version: String by project
 val h2_version: String by project
 val exposed_version: String by project
+val hikaricp_version: String by project
 
 dependencies {
     implementation("org.postgresql:postgresql:$postgres_version")
@@ -16,4 +17,5 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
+    implementation("com.zaxxer:HikariCP:$hikaricp_version")
 }

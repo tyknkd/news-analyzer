@@ -12,6 +12,7 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Apache Freemarker](https://freemarker.apache.org/) v.2.3.32: Dynamic webpage templating
 - [PostgreSQL](https://www.postgresql.org/) v.42.5.1: Relational database
 - [Exposed](https://github.com/JetBrains/Exposed) v.0.41.1: Object relational mapping framework
+- [HikariCP](https://github.com/brettwooldridge/HikariCP) v.5.1.0: Database connection pooling
 - [Junit](https://junit.org/junit5/) v.4.13.2: Testing
 - [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
