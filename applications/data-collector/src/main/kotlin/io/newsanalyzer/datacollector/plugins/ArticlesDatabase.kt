@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.*
 
 object ArticlesDatabase {
     fun init() {
-        val jdbcURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"
+        val jdbcURL = "jdbc:h2:file:./build/db"
         val driverClassName = "org.h2.Driver"
         val user = "root"
         val password = ""
