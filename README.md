@@ -10,7 +10,7 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Ktor](https://ktor.io/) v.2.3.8: Kotlin application framework
 - [Netty](https://netty.io/) v.4.1.106: Web server
 - [Apache Freemarker](https://freemarker.apache.org/) v.2.3.32: Dynamic webpage templating
-- [PostgreSQL](https://www.postgresql.org/) v.42.5.1: Relational database
+- [PostgreSQL](https://www.postgresql.org/) v.16.2: Relational database
 - [Exposed](https://github.com/JetBrains/Exposed) v.0.41.1: Object relational mapping framework
 - [HikariCP](https://github.com/brettwooldridge/HikariCP) v.5.1.0: Database connection pooling
 - [Junit](https://junit.org/junit5/) v.4.13.2: Testing
