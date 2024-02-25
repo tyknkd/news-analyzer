@@ -1,4 +1,4 @@
-.secrets
+*secrets
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
