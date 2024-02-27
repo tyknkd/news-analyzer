@@ -1,0 +1,17 @@
+services:
+  postgres-db:
+    image: postgres:16.2-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    ports:
+      - ${POSTGRES_HOSTPORT}:5432
+    volumes:
+      - ./.docker-data/.pg-data:/var/lib/postgresql/data
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt
