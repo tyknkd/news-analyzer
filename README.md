@@ -49,16 +49,21 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 
 ## Local Development Setup
 1. Install Java 17.
-2. Obtain an API key from [https://newsapi.org](https://newsapi.org) and assign it to `NEWS_API_KEY` in  `environment.env` file.
-3. Assign the environment variables in the same Linux/Unix shell from which you will later build and run the application.
+2. Obtain an API key from [https://newsapi.org](https://newsapi.org) and assign it to `NEWS_API_KEY` in the `sensitive.env` file (i.e., replace the `0123...tuv` string with your key).
+3. Run the following command in a bash shell (changing the `pass1234` password string as desired) to create a Docker secrets file for the PostgreSQL database password.
 ```shell
-source environment.env
+mkdir secrets && echo pass1234 > secrets/postgres_password.txt
 ```
-4. Build the program
+4. Edit the database environment variables in `example.env` as desired and rename the file as `.env` (i.e., without "example").
+5. load the environment variables in the same Linux/Unix shell from which you will later build and run the data collector application.
+```shell
+source .env && source sensitive.env
+```
+6. Build the program
 ```shell
 ./gradlew build
 ```
-5. To check test code coverage:
+7. To check test code coverage:
 ```shell
 ./gradlew koverHtmlReport
 ```
