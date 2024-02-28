@@ -17,9 +17,9 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
 - [Docker](https://www.docker.com/) v.4.26.1: Containerization
-- [Java Virtual Machine](https://openjdk.org/) v.17.0.9: Compilation and libraries
-- [Gradle](https://gradle.org/) v.8.5: Build tool
-- [Ubuntu](https://ubuntu.com/) v.22.0.4: Operating system
+- [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
+- [Gradle](https://gradle.org/) v.8.6: Build tool
+- [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
 
 
 ## Final Project Rubric
@@ -43,29 +43,72 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
   - Event collaboration messaging
   - Continuous delivery
 
-## Production Deployment
+## Live Production Deployment
 
 ## API
 
 ## Local Development Setup
-1. Install Java 17.
-2. Obtain an API key from [https://newsapi.org](https://newsapi.org) and assign it to `NEWS_API_KEY` in the `sensitive.env` file (i.e., replace the `0123...tuv` string with your key).
-3. Run the following command in a bash shell (changing the `pass1234` password string as desired) to create a Docker secrets file for the PostgreSQL database password.
+You can either (A) run the app fully containerized on a local machine or (B) run each server (web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
+In either case, you must perform the preliminary environment setup first.
+### Preliminary Environment Setup
+1. Install [Docker](https://www.docker.com/).
+2. In a bash shell, clone the git repository and change to the project directory.
 ```shell
-mkdir secrets && echo pass1234 > secrets/postgres_password.txt
+git clone https://github.com/tyknkd/news-analyzer.git
+cd news-analyzer
 ```
-4. Edit the database environment variables in `example.env` as desired and rename the file as `.env` (i.e., without "example").
-5. load the environment variables in the same Linux/Unix shell from which you will later build and run the data collector application.
+3. Run the following bash commands to create a secrets file for the PostgreSQL database password (changing the `yourpasswordgoeshere` string as desired).
+```shell
+mkdir secrets && echo yourpasswordgoeshere > secrets/postgres_password.txt
+```
+4. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key.
+```shell
+echo yournewsapikeygoeshere > secrets/news_api_key.txt
+```
+5. Load the environment variables.
+```shell
+source .env
+```
+
+### A. Fully Containerized Setup
+1. Build and start the Docker containers.
+```shell
+docker compose up
+```
+2. In a web browser, open [https://localhost:8080](https://localhost:8080)
+3. To stop the app, press `CTRL+C` in the bash shell from which it was started.
+
+### B. Separate Servers Setup
+1. Install [Java 17](https://openjdk.org/).
+2. Start only the PostgreSQL and RabbitMQ containers.
+```shell
+docker compose up postgresdb rabbitmq
+```
+3. In a separate bash shell, load the environment variables.
 ```shell
 source .env && source sensitive.env
 ```
-6. Build the program
+4. Build and test the project.
 ```shell
 ./gradlew build
 ```
-7. To check test code coverage:
+5. Check test code coverage.
 ```shell
 ./gradlew koverHtmlReport
 ```
+6. Start the data collector server.
+```shell
+./gradlew applications:datacollector:run
+```
+7. In a separate bash shell, start the data analyzer server.
+```shell
+./gradlew applications:dataanalyzer:run
+```
+8. In a separate terminal, start the web server.
+```shell
+./gradlew applications:webserver:run
+```
+9. In a web browser, open [https://localhost:8080](https://localhost:8080)
+10. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
 
 _&copy;2024 Tyler Kinkade, All Rights Reserved_

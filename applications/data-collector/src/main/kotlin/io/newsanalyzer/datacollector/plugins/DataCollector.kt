@@ -15,7 +15,7 @@ class DataCollector {
     suspend fun collectData(): RemoteData? {
         val newsApiKey = System.getenv("NEWS_API_KEY")
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
-        if ((newsApiKey == null) or (newsApiKey == "0123456789abcdefghijklmnopqrstuv")) {
+        if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
             println(apiKeyErrorMessage)
             // throw RuntimeException(apiKeyErrorMessage)
             return null

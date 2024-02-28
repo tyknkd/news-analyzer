@@ -20,7 +20,7 @@ class ApplicationTest {
     fun testApiKey() {
         val newsApiKey = System.getenv("NEWS_API_KEY")
         assertNotNull(newsApiKey, apiKeyErrorMessage)
-        assertNotEquals(newsApiKey,"0123456789abcdefghijklmnopqrstuv", apiKeyErrorMessage)
+        assertNotEquals(newsApiKey,"yournewsapikeygoeshere", apiKeyErrorMessage)
     }
     @Test
     fun testRoot() = testSuspend {

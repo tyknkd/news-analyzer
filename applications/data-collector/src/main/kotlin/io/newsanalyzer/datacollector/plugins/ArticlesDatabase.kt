@@ -10,18 +10,33 @@ import com.zaxxer.hikari.*
 
 object ArticlesDatabase {
     fun init() {
-        val jdbcUrl = "jdbc:h2:file:./build/db"
-        val driverClassName = "org.h2.Driver"
-        val database = Database.connect(createHikariDataSource(url = jdbcUrl, driver = driverClassName))
+        val driverClassName = "org.postgresql.Driver"
+        val host = System.getenv("POSTGRES_HOST")
+        val port = System.getenv("POSTGRES_HOSTPORT")
+        val dbName = System.getenv("POSTGRES_DB")
+        val user = System.getenv("POSTGRES_USER")
+        val password = System.getenv("POSTGRES_PASSWORD")
+        val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName"
+        val database = Database.connect(
+            createHikariDataSource(
+                url = jdbcUrl,
+                driver = driverClassName,
+                user = user,
+                passwd = password))
         transaction(database) {
             SchemaUtils.create(Articles)
         }
     }
 
-    private fun createHikariDataSource(url: String, driver: String) =
+    private fun createHikariDataSource(url: String,
+                                       driver: String,
+                                       user: String,
+                                       passwd: String) =
         HikariDataSource(HikariConfig().apply {
             jdbcUrl = url
             driverClassName = driver
+            username = user
+            password = passwd
             maximumPoolSize = 3
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
