@@ -1,24 +1,33 @@
 package io.newsanalyzer.datacollector.plugins
 
-import io.newsanalyzer.datacollector.models.RemoteData
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.java.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.*
+import io.newsanalyzer.datacollector.models.RemoteData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import java.nio.file.Files
+import java.nio.file.Paths
 
 class DataCollector {
-    suspend fun collectData(): RemoteData? {
-        val newsApiKey = System.getenv("NEWS_API_KEY")
+    suspend fun collectData(): RemoteData {
+        val newsApiKey = if (System.getenv("OS_ENV") == "container") {
+            withContext(Dispatchers.IO) {
+                Files.readAllBytes(Paths.get(System.getenv("NEWS_API_KEY_FILE")))
+            }.toString()
+        } else {
+            System.getenv("NEWS_API_KEY")
+        }
+
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
-            println(apiKeyErrorMessage)
-            // throw RuntimeException(apiKeyErrorMessage)
-            return null
+            throw RuntimeException(apiKeyErrorMessage)
         }
         // Example API request:
         // GET https://newsapi.org/v2/everything?q=%22tech%20industry%22&sources=ars-technica,associated-press&sortBy=publishedAt&apiKey=NEWS_API_KEY
@@ -72,9 +81,7 @@ class DataCollector {
         }
         client.close()
         if(response.status != HttpStatusCode.OK){
-            println(apiKeyErrorMessage)
-            // throw RuntimeException(apiKeyErrorMessage)
-            return null
+            throw RuntimeException(apiKeyErrorMessage)
         }
         val remoteData: RemoteData = response.body()
         return remoteData

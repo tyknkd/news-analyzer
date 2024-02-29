@@ -51,11 +51,7 @@ val articlesGateway: ArticlesDAO = ArticlesGateway().apply {
         if(allArticles().isEmpty()) {
             val dataCollector = DataCollector()
             val remoteData = dataCollector.collectData()
-            if (remoteData != null) {
-                addArticles(remoteData)
-            } else {
-                println("NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org")
-            }
+            addArticles(remoteData)
         }
     }
 }
