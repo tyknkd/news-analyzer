@@ -11,8 +11,15 @@ import com.zaxxer.hikari.*
 object ArticlesDatabase {
     fun init() {
         val driverClassName = "org.postgresql.Driver"
-        val host = System.getenv("POSTGRES_HOST")
-        val port = System.getenv("POSTGRES_HOSTPORT")
+        lateinit var host: String
+        lateinit var port: String
+        if (System.getenv("OS_ENV") == "container") {
+            host = "db"
+            port = System.getenv("POSTGRES_CONTAINER_PORT")
+        } else {
+            host = "localhost"
+            port = System.getenv("POSTGRES_HOST_PORT")
+        }
         val dbName = System.getenv("POSTGRES_DB")
         val user = System.getenv("POSTGRES_USER")
         val password = System.getenv("POSTGRES_PASSWORD")
