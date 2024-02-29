@@ -1,5 +1,33 @@
 services:
-  postgres-db:
+#  web-server:
+#    build: .
+#    container_name: news-web-server
+#    environment:
+#      PORT: 8080
+#      APP: web-server
+#    depends_on:
+#      - data-collector
+
+  data-collector:
+    build: .
+    container_name: news-data-collector
+    environment:
+      PORT: 8081
+      APP: data-collector
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
+      POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      NEWS_API_KEY_FILE: /run/secrets/news_api_key
+    secrets:
+      - postgres_password
+      - news_api_key
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
     image: postgres:16.2-alpine
     container_name: postgres-db
     environment:
@@ -9,9 +37,17 @@ services:
     secrets:
       - postgres_password
     ports:
-      - ${POSTGRES_HOSTPORT}:5432
+      - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
     volumes:
       - ./.docker-data/.pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 secrets:
   postgres_password:
     file: ./secrets/postgres_password.txt
+  news_api_key:
+    file: ./secrets/news_api_key.txt
