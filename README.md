@@ -48,8 +48,8 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 ## API
 
 ## Local Development Setup
-You can either (A) run the app fully containerized on a local machine or (B) run each server (web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
-In either case, you must perform the preliminary environment setup first.
+For local development, you can either (A) run the app fully containerized on a local machine or (B) run each server (web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
+Either way, you must perform the preliminary environment setup first.
 ### Preliminary Environment Setup
 1. Install [Docker](https://www.docker.com/).
 2. In a bash shell, clone the git repository and change to the project directory.
@@ -65,24 +65,20 @@ mkdir secrets && echo yourpasswordgoeshere > secrets/postgres_password.txt
 ```shell
 echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```
-5. Load the environment variables.
-```shell
-source .env
-```
 
 ### A. Fully Containerized Setup
 1. Build and start the Docker containers.
 ```shell
 docker compose up
 ```
-2. In a web browser, open [https://localhost:8080](https://localhost:8080)
+2. In a web browser, open [http://localhost:8080](http://localhost:8080)
 3. To stop the app, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Separate Servers Setup
 1. Install [Java 17](https://openjdk.org/).
-2. Start only the PostgreSQL and RabbitMQ containers.
+2. Start only the database and RabbitMQ containers.
 ```shell
-docker compose up postgresdb rabbitmq
+docker compose up db rabbitmq
 ```
 3. In a separate bash shell, load the environment variables.
 ```shell
@@ -92,7 +88,7 @@ source .env && source sensitive.env
 ```shell
 ./gradlew build
 ```
-5. Check test code coverage.
+5. Optional: Check test code coverage.
 ```shell
 ./gradlew koverHtmlReport
 ```
@@ -108,7 +104,7 @@ source .env && source sensitive.env
 ```shell
 ./gradlew applications:webserver:run
 ```
-9. In a web browser, open [https://localhost:8080](https://localhost:8080)
+9. In a web browser, open [http://localhost:8080](http://localhost:8080)
 10. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
 
 _&copy;2024 Tyler Kinkade, All Rights Reserved_
