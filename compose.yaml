@@ -1,19 +1,25 @@
 services:
-#  web-server:
-#    build: .
-#    container_name: news-web-server
-#    environment:
-#      PORT: 8080
-#      APP: web-server
-#    depends_on:
-#      - data-collector
+  web-server:
+    build:
+      context: .
+      args:
+        APP: web-server
+    container_name: web-server
+    environment:
+      PORT: ${WEB_PORT}
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    depends_on:
+      - data-collector
 
   data-collector:
-    build: .
-    container_name: news-data-collector
+    build:
+      context: .
+      args:
+        APP: data-collector
+    container_name: data-collector
     environment:
-      PORT: 8081
-      APP: data-collector
+      PORT: ${COLLECTOR_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
       POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
@@ -23,13 +29,15 @@ services:
     secrets:
       - postgres_password
       - news_api_key
+    ports:
+      - ${COLLECTOR_PORT}:${COLLECTOR_PORT}
     depends_on:
       db:
         condition: service_healthy
 
   db:
     image: postgres:16.2-alpine
-    container_name: postgres-db
+    container_name: db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
