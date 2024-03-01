@@ -47,11 +47,13 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 
 ## API
 
-## Local Development Setup
-For local development, you can either (A) run the app fully containerized on a local machine or (B) run each server (web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
+## Local Setup
+To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
+(web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
 Either way, you must perform the preliminary environment setup first.
+
 ### Preliminary Environment Setup
-1. Install [Docker](https://www.docker.com/).
+1. Install [Docker Engine](https://www.docker.com/).
 2. In a bash shell, clone the git repository and change to the project directory.
 ```shell
 git clone https://github.com/tyknkd/news-analyzer.git
@@ -67,7 +69,7 @@ echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```
 
 ### A. Fully Containerized Setup
-1. Build and start the Docker containers.
+1. Build and start the Docker containers. (This will take several minutes the first time.)
 ```shell
 docker compose up
 ```
@@ -76,9 +78,9 @@ docker compose up
 
 ### B. Separate Servers Setup
 1. Install [Java 17](https://openjdk.org/).
-2. Start only the database and RabbitMQ containers.
+2. Start only the database and message queue containers.
 ```shell
-docker compose up db rabbitmq
+docker compose up db mq
 ```
 3. In a separate bash shell, load the environment variables.
 ```shell
