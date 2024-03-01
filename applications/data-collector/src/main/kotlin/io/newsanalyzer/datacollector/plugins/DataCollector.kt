@@ -9,22 +9,11 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.datacollector.models.RemoteData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import java.nio.file.Files
-import java.nio.file.Paths
 
 class DataCollector {
     suspend fun collectData(): RemoteData {
-        val newsApiKey = if (System.getenv("OS_ENV") == "container") {
-            withContext(Dispatchers.IO) {
-                Files.readAllBytes(Paths.get(System.getenv("NEWS_API_KEY_FILE")))
-            }.toString()
-        } else {
-            System.getenv("NEWS_API_KEY")
-        }
-
+        val newsApiKey = System.getenv("NEWS_API_KEY")
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
             throw RuntimeException(apiKeyErrorMessage)
