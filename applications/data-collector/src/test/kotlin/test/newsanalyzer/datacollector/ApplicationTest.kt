@@ -11,8 +11,6 @@ import org.junit.BeforeClass
 import org.junit.AfterClass
 import org.junit.FixMethodOrder
 import org.junit.runners.MethodSorters
-import java.nio.file.Files
-import java.nio.file.Paths
 import kotlin.test.assertEquals
 import kotlin.test.assertContains
 import kotlin.test.assertNotEquals
@@ -23,11 +21,7 @@ class ApplicationTest {
     private val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
     @Test
     fun testApiKey() {
-        val newsApiKey = if (System.getenv("OS_ENV") == "container") {
-            Files.readAllBytes(Paths.get(System.getenv("NEWS_API_KEY_FILE"))).toString()
-        } else {
-            System.getenv("NEWS_API_KEY")
-        }
+        val newsApiKey = System.getenv("NEWS_API_KEY")
         assertNotNull(newsApiKey, apiKeyErrorMessage)
         assertNotEquals(newsApiKey,"yournewsapikeygoeshere", apiKeyErrorMessage)
     }
