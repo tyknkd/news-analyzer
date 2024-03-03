@@ -1,5 +1,5 @@
 plugins {
-    id("news-analyzer.kotlin-dataserver-conventions")
+    id("news-analyzer.kotlin-dataanalyzer-conventions")
     id("news-analyzer.kotlin-client-conventions")
 }
 
