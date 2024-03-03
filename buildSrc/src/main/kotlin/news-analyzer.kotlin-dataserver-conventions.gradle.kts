@@ -1,6 +1,3 @@
-import gradle.kotlin.dsl.accessors._d03ce625885c886349b7c56a7c284c10.implementation
-import org.gradle.kotlin.dsl.provideDelegate
-
 plugins {
     id("news-analyzer.kotlin-application-conventions")
 }
