@@ -17,6 +17,8 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
 - [Docker Engine](https://www.docker.com/) v.25.0.3: Containerization
+- [Apache Spark](https://spark.apache.org/) v.3.5.1: Data analytics
+- [Kotlin for Apache Spark](https://github.com/Kotlin/kotlin-spark-api) v.1.2.4: Kotlin-Spark compatibility API
 - [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
 - [Gradle](https://gradle.org/) v.8.6: Build tool
 - [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
@@ -96,15 +98,15 @@ source .env && source sensitive.env
 ```
 6. Start the data collector server.
 ```shell
-./gradlew applications:datacollector:run
+./gradlew applications:data-collector:run
 ```
 7. In a separate bash shell, start the data analyzer server.
 ```shell
-./gradlew applications:dataanalyzer:run
+./gradlew applications:data-analyzer:run
 ```
 8. In a separate terminal, start the web server.
 ```shell
-./gradlew applications:webserver:run
+./gradlew applications:web-server:run
 ```
 9. In a web browser, open [http://localhost:8080](http://localhost:8080)
 10. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
