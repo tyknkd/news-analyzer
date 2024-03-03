@@ -1,6 +1,5 @@
 plugins {
     id("news-analyzer.kotlin-dataserver-conventions")
-    id("com.github.johnrengelman.shadow")
 }
 
 val spark_version: String by project
