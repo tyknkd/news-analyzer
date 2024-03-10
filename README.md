@@ -17,7 +17,7 @@ _CSCA 5028: Applications of Software Architecture for Big Data, University of Co
 - [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
 - [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
 - [Docker Engine](https://www.docker.com/) v.25.0.3: Containerization
-- [Apache Spark](https://spark.apache.org/) v.3.5.1: Data analytics
+- [Apache Spark](https://spark.apache.org/) v.3.3.2: Data analytics
 - [Kotlin for Apache Spark](https://github.com/Kotlin/kotlin-spark-api) v.1.2.4: Kotlin-Spark compatibility API
 - [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
 - [Gradle](https://gradle.org/) v.8.6: Build tool
