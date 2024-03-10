@@ -13,13 +13,11 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.kotlinx.dataframe.*
 import org.jetbrains.kotlinx.dataframe.api.*
 import org.jetbrains.kotlinx.spark.api.*
-//import org.apache.spark.sql.*
 import org.apache.spark.ml.feature.RegexTokenizer
 import org.apache.spark.ml.feature.StopWordsRemover
 import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.clustering.LDA
 import org.apache.spark.ml.linalg.DenseVector
-//import org.jetbrains.kotlinx.spark.api.SparkSession
 
 class DataAnalyzer {
     private suspend fun getData(): List<Article> {
