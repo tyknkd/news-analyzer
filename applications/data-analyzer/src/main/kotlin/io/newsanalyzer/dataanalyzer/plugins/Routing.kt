@@ -24,7 +24,7 @@ fun Application.configureRouting() {
         }
         get("/topics/articles") {
             // TODO: Response: Json: Article data with inferred topics
-            val articles = dataAnalyzer.getData()
+            val articles = dataAnalyzer.articleTopics()
             call.respond(status = HttpStatusCode.OK, articles)
         }
         get("/health") {

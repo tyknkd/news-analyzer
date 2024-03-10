@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 //
 //@DataSchema
 @Serializable
-data class Article(
+data class AnalyzedArticle(
     val id: Int,
     val publisher: String,
     val author: String,
@@ -16,4 +16,6 @@ data class Article(
     val urlToImage: String,
     val publishedAt: Instant,
     val content: String,
+    val topicId: Int,
+    val terms: List<String>
 )
