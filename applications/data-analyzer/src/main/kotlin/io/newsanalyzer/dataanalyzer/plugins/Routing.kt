@@ -23,7 +23,6 @@ fun Application.configureRouting() {
             // TODO: Response: List of most common topics in articles
         }
         get("/topics/articles") {
-            // TODO: Response: Json: Article data with inferred topics
             val articles = dataAnalyzer.articleTopics()
             call.respond(status = HttpStatusCode.OK, articles)
         }
