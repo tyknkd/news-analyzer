@@ -52,8 +52,9 @@ class DataAnalyzer {
         return articleList
     }
 
-    suspend fun extractTopics(): TopicData {
+    private suspend fun extractTopics(): TopicData {
         val articleList = getData()
+        val numberArticles = articleList.size
         val articleKtDf: DataFrame<Article> = articleList.toDataFrame()
 
         // Combine text strings, exclude HTML tags
@@ -83,6 +84,7 @@ class DataAnalyzer {
 
             // Remove stop words
             val stopWordRemover = StopWordsRemover()
+                .setStopWords(StopWords.stopWords)
                 .setInputCol("tokens")
                 .setOutputCol("filtered")
             val filterDf = stopWordRemover
@@ -100,12 +102,12 @@ class DataAnalyzer {
             termList = vectorizer.vocabulary().toList()
 
             // Latent Dirichlet Allocation
-            val numberTopics = 10
+            val numberTopics = numberArticles/10
             val ldaModel = LDA()
                 .setK(numberTopics)
                 .setOptimizer("em") // Expectation maximization
                 .fit(featureDf)
-            val tokensPerTopic = 5
+            val tokensPerTopic = 10
             val termIndicesDf = ldaModel.describeTopics(tokensPerTopic)
             termIndicesList = termIndicesDf.toList<TermIndices>()
             val topicDistDf = ldaModel
