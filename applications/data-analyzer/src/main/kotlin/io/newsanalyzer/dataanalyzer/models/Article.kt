@@ -2,9 +2,7 @@ package io.newsanalyzer.dataanalyzer.models
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-//import org.jetbrains.kotlinx.dataframe.annotations.DataSchema
-//
-//@DataSchema
+
 @Serializable
 data class Article(
     val id: Int,
