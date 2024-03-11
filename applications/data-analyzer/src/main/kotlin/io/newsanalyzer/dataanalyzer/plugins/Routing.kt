@@ -16,14 +16,14 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            // TODO: Redirect to /topics
-            call.respondRedirect("/topics/articles", permanent = true)
+            call.respondRedirect("/articles", permanent = true)
         }
         get("/topics") {
-            // TODO: Response: List of most common topics in articles
+            val topics = analysisGateway.allTopics()
+            call.respond(status = HttpStatusCode.OK, topics)
         }
-        get("/topics/articles") {
-            val articles = dataAnalyzer.articleTopics()
+        get("/articles") {
+            val articles = analysisGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
         }
         get("/health") {

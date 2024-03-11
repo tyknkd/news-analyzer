@@ -20,7 +20,7 @@ import org.apache.spark.ml.clustering.LDA
 import org.apache.spark.ml.linalg.DenseVector
 
 class DataAnalyzer {
-    private suspend fun getData(): List<Article> {
+    private suspend fun getCollectedData(): List<Article> {
         val port = System.getenv("COLLECTOR_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {
             "data-collector:$port"
@@ -50,9 +50,9 @@ class DataAnalyzer {
         return articleList
     }
 
-    private suspend fun extractTopics(): TopicData {
-        val articleList = getData()
+    private fun extractTopics(articleList: List<Article>): TopicData {
         val numberArticles = articleList.size
+
         val articleKtDf: DataFrame<Article> = articleList.toDataFrame()
 
         // Combine text strings, exclude HTML tags
@@ -127,30 +127,36 @@ class DataAnalyzer {
         return TopicData(articleKtDf, termList, termIndicesList, articleTopicList)
     }
 
-    suspend fun articleTopics(): List<AnalyzedArticle> {
-        val (articleDf, termList, termIndicesList, articleTopicList) = extractTopics()
+    private fun getArticleTopics(articleList: List<Article>): Pair<List<Article>,List<Topic>> {
+        val (articleDf, termList, termIndicesList, articleTopicList) = extractTopics(articleList)
         val termIndicesDf = termIndicesList.toDataFrame()
 
         // Replace term indices with term strings
-        val topicTermsDf = termIndicesDf.add("terms") {
+        val topicTermsDf = termIndicesDf
+            .add("termsList") {
             "termIndices"<List<Int>>().map {
-                termList.get(it)
+                termList[it]
             }
-        }.select("topic","terms")
+        }.select("topic","termsList")
 
-        // Join article topic data with topic terms data
+        // Convert list of term strings to string
+        val topicTermsStringDf = topicTermsDf
+            .rename("topic").into("topicId")
+            .add("terms") {
+                "termsList"<List<String>>().toString()
+            }.select("topicId","terms")
+
+        // Update article topics
         val articleTopicDf = articleTopicList.toDataFrame()
-        val articleTopicTermsDf = articleTopicDf.leftJoinWith(topicTermsDf) {
-            right.getValue<Int>("topic") == "topicId"<Int>()
-        }.select("id","topicId","terms")
-
-        // Combine with original article data
-        val analyzedArticleDf = articleDf.leftJoinWith(articleTopicTermsDf) {
+        val analyzedArticleDf = articleDf.remove("topicId").leftJoinWith(articleTopicDf) {
             right.getValue<Int>("id") == "id"<Int>()
         }.remove("id1")
 
-        return analyzedArticleDf.toListOf<AnalyzedArticle>()
+        return Pair(analyzedArticleDf.toListOf<Article>(), topicTermsStringDf.toListOf<Topic>())
+    }
+
+    suspend fun getAnalyzedData(): Pair<List<Article>,List<Topic>> {
+        val articles = getCollectedData()
+        return getArticleTopics(articles)
     }
 }
-
-val dataAnalyzer = DataAnalyzer()

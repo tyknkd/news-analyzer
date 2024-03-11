@@ -14,4 +14,5 @@ data class Article(
     val urlToImage: String,
     val publishedAt: Instant,
     val content: String,
+    val topicId: Int = -1
 )
