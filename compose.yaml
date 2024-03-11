@@ -42,15 +42,17 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      ADDITIONAL_POSTGRES_DB: ${ADDITIONAL_POSTGRES_DB}
     secrets:
       - postgres_password
     ports:
       - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
     volumes:
+      - ./databases/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./.docker-data/.pg-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
 

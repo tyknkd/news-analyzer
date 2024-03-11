@@ -23,7 +23,7 @@ object ArticlesDatabase {
         if (password == null || password == "") {
             throw RuntimeException("Database password file (secrets/postgres_password.txt) is empty or missing")
         }
-        val dbName = System.getenv("POSTGRES_DB")
+        val dbName = System.getenv("COLLECTOR_DB")
         val user = System.getenv("POSTGRES_USER")
         val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName"
         val database = Database.connect(
