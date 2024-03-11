@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import io.newsanalyzer.datacollector.models.*
-import io.newsanalyzer.datacollector.plugins.ArticlesDatabase.dbQuery
+import io.newsanalyzer.datacollector.plugins.CollectorDatabase.dbQuery
 
 
 class ArticlesGateway: ArticlesDAO {
