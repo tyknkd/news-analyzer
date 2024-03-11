@@ -16,7 +16,7 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            call.respondRedirect("/articles", permanent = true)
+            call.respondRedirect("/articles")
         }
         get("/topics") {
             val topics = analysisGateway.allTopics()
