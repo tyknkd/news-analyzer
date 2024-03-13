@@ -16,7 +16,7 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            call.respondRedirect("/articles")
+            call.respondRedirect("/topics/articles")
         }
         get("/topics") {
             val topics = analysisGateway.allTopics()
@@ -25,6 +25,10 @@ fun Application.configureRouting() {
         get("/articles") {
             val articles = analysisGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
+        }
+        get("/topics/articles") {
+            val articlesByTopic = dataRestructuring.groupArticlesByTopic()
+            call.respond(status = HttpStatusCode.OK, articlesByTopic)
         }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
