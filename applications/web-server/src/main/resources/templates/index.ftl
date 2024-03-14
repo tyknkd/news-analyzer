@@ -14,7 +14,7 @@
                                 <a href="${article.url}">${article.title}</a>
                             </h4>
                             <p>
-                                <span class="publisher">${article.publisher}</span>, <span class="date">${article.publishedAt}</span>
+                                <span class="publisher">${article.publisher}</span>, <span class="date">${article.publishedAt.toString()?string?datetime.iso}</span>
                             </p>
                         </li>
                     </#list>
