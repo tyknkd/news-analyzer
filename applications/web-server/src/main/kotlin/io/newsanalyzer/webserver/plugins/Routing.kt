@@ -9,7 +9,7 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import io.newsanalyzer.webserver.models.articles
+import io.newsanalyzer.webserver.models.exampleArticles
 
 fun Application.configureRouting() {
     install(Resources)
@@ -20,14 +20,26 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to articles)))
+            call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to exampleArticles)))
         }
         get("/articles/{id}") {
             val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("article.ftl", mapOf("article" to articles.find { it.id == id })))
+            call.respond(FreeMarkerContent("article.ftl", mapOf("article" to exampleArticles.find { it.id == id })))
         }
         get("/api") {
             call.respondText(text = "News Analyzer API", status = HttpStatusCode.OK)
+        }
+        get("/api/topics") {
+            val topics = analyzedDataGateway.allTopics()
+            call.respond(status = HttpStatusCode.OK, topics)
+        }
+        get("/api/articles") {
+            val articles = analyzedDataGateway.allArticles()
+            call.respond(status = HttpStatusCode.OK, articles)
+        }
+        get("/api/topics/articles") {
+            val articlesByTopic = analyzedDataGateway.allArticlesByTopic()
+            call.respond(status = HttpStatusCode.OK, articlesByTopic)
         }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
