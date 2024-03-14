@@ -8,8 +8,6 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.util.*
-import io.newsanalyzer.webserver.models.exampleArticles
 
 fun Application.configureRouting() {
     install(Resources)
@@ -20,11 +18,11 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to exampleArticles)))
+            val articlesByTopic = analyzedDataGateway.allArticlesByTopic()
+            call.respond(FreeMarkerContent("index.ftl", mapOf("articlesByTopic" to articlesByTopic)))
         }
-        get("/articles/{id}") {
-            val id = call.parameters.getOrFail<Int>("id").toInt()
-            call.respond(FreeMarkerContent("article.ftl", mapOf("article" to exampleArticles.find { it.id == id })))
+        get("/about") {
+            call.respond(FreeMarkerContent("about.ftl",null))
         }
         get("/api") {
             call.respondText(text = "News Analyzer API", status = HttpStatusCode.OK)
@@ -44,7 +42,6 @@ fun Application.configureRouting() {
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
-        staticResources("/static", "static")
         staticResources("/styles", "styles")
     }
 }

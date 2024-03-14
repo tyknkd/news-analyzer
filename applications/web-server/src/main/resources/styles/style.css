@@ -32,6 +32,11 @@ header, h1, h2, h3, hr, footer {
     margin-bottom: 2px;
 }
 
+h4 {
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+
 a {
     text-decoration: none;
     color: var(--text-color);

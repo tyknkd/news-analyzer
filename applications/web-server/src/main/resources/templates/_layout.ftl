@@ -5,11 +5,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/styles/style.css">
-        <title>News Analyzer</title>
+        <title>Tech Industry News Analyzer</title>
     </head>
     <body>
-    <h1><a href="/">News Analyzer</a></h1>
-    <#nested>
+        <header>
+            <h1><a href="/">Tech Industry News Analyzer</a></h1>
+            <h2><a href="/">Articles</a> • <a href="/about">About</a> • <a href="/api">API</a></h2>
+            <hr>
+        </header>
+        <#nested>
     </body>
     <footer>
         <p>&copy; ${.now?string('yyyy')} <a target="_blank" rel="noopener" href="https://tyknkd.github.io">Tyler Kinkade</a>, All Rights Reserved</p>
