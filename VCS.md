@@ -15,3 +15,4 @@ and [Angular Convention](https://github.com/angular/angular/blob/22b96b9/CONTRIB
 - refactor: changes code without adding a feature or fixing a bug
 - style: changes code without changing meaning
 - test: adds or fixes tests
+- ui: changes user interface without adding a feature or fixing a bug
