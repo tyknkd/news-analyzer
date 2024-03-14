@@ -7,7 +7,7 @@
     --field-text-color: #222;
     --form-bg-color: #222;
     --placeholder-color: #444;
-    --link-color: DarkSlateBlue;
+    --link-color: SlateBlue;
     --fonts: Raleway, sans-serif;
 }
 
@@ -33,8 +33,11 @@ header, h1, h2, h3, hr, footer {
 }
 
 h4 {
-    margin-top: 10px;
-    margin-bottom: 2px;
+    margin-top: 5px;
+}
+
+li {
+    margin-left: 30px;
 }
 
 a {
@@ -89,4 +92,8 @@ button, input[type='submit'] {
 button:hover, input[type='submit']:hover {
     background-color: var(--link-color);
     cursor: pointer;
+}
+
+.publisher {
+    font-style: italic;
 }
