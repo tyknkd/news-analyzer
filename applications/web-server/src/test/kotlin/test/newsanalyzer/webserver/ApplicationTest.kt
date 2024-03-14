@@ -9,6 +9,7 @@ import io.ktor.test.dispatcher.*
 import org.junit.Test
 import org.junit.BeforeClass
 import org.junit.AfterClass
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ApplicationTest {
@@ -38,10 +39,30 @@ class ApplicationTest {
             assertEquals(HttpStatusCode.OK, status)
         }
     }
+
+    @Test
+    fun testTopics() = testSuspend {
+        testApp.client.get("/api/topics").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            assertContains(bodyAsText(), "\"terms\":")
+        }
+    }
     @Test
     fun testArticles() = testSuspend {
-        testApp.client.get("/articles/0").apply {
+        testApp.client.get("/api/articles").apply {
             assertEquals(HttpStatusCode.OK, status)
+            assertContains(bodyAsText(), "\"publishedAt\":")
+        }
+    }
+
+    @Test
+    fun testArticlesByTopic() = testSuspend {
+        testApp.client.get("/api/topics/articles").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            assertContains(bodyAsText(), "\"topic\":")
+            assertContains(bodyAsText(), "\"articles\":")
+            assertContains(bodyAsText(), "\"terms\":")
+            assertContains(bodyAsText(), "\"publishedAt\":")
         }
     }
 
@@ -54,6 +75,7 @@ class ApplicationTest {
                 application {
                     configureMonitoring()
                     configureSerialization()
+                    configureDatabases()
                     configureTemplating()
                     configureRouting()
                 }
