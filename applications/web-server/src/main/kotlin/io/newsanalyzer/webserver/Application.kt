@@ -16,6 +16,7 @@ fun main() {
 fun Application.module() {
     configureMonitoring()
     configureSerialization()
+    configureDatabases()
     configureTemplating()
     configureRouting()
 }
