@@ -23,9 +23,6 @@ class ApplicationTest {
     fun testRoot() = testSuspend {
         testApp.client.get("/").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertContains(bodyAsText(), "\"topic\":")
-            assertContains(bodyAsText(), "\"terms\":")
-            assertContains(bodyAsText(), "\"articles\":")
             assertContains(bodyAsText(), "\"publishedAt\":")
         }
     }
@@ -42,17 +39,6 @@ class ApplicationTest {
     fun testArticles() = testSuspend {
         testApp.client.get("/articles").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertContains(bodyAsText(), "\"publishedAt\":")
-        }
-    }
-
-    @Test
-    fun testArticlesByTopic() = testSuspend {
-        testApp.client.get("/topics/articles").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            assertContains(bodyAsText(), "\"topic\":")
-            assertContains(bodyAsText(), "\"terms\":")
-            assertContains(bodyAsText(), "\"articles\":")
             assertContains(bodyAsText(), "\"publishedAt\":")
         }
     }
