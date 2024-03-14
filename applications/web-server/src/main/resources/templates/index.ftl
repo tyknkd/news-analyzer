@@ -6,7 +6,7 @@
             <li>
                 <h3 class="topicHeader">
                     <span class="topicId">Topic Group ${group.topic.topicId + 1}: </span>
-                    <span class="keywords">Keywords: ${group.topic.terms?capitalize}</span>
+                    <span class="keywords">Keywords: ${group.topic.terms?keep_after("[")?keep_before_last("]")?capitalize}</span>
                 </h3>
                 <ul>
                     <#list group.articles as article>
