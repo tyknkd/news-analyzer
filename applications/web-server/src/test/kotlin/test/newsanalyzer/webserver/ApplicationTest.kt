@@ -34,8 +34,8 @@ class ApplicationTest {
         }
     }
     @Test
-    fun testStatic() = testSuspend {
-        testApp.client.get("/static").apply {
+    fun testAbout() = testSuspend {
+        testApp.client.get("/about").apply {
             assertEquals(HttpStatusCode.OK, status)
         }
     }
