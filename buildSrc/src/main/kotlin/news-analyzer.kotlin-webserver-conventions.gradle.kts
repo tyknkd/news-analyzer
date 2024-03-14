@@ -1,5 +1,5 @@
 plugins {
-    id("news-analyzer.kotlin-application-conventions")
+    id("news-analyzer.kotlin-dataserver-conventions")
 }
 
 val prometheus_version: String by project

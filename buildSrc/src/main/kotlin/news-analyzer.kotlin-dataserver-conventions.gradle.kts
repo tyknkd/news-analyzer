@@ -15,4 +15,5 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
+    implementation("org.jetbrains.kotlinx:dataframe:0.13.0")
 }
