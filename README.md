@@ -5,6 +5,12 @@
 
 _CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
 
+## Overview
+This project applies big data software architecture principles and machine learning techniques to analyze recent tech 
+industry news articles, automatically extract common themes, and sort them into groups by topic. The primary aim is to 
+help readers quickly identify current trends in media reporting on the tech industry and focus on the topics of most 
+interest to the reader.
+
 ## Tech Stack
 - [Kotlin](https://kotlinlang.org/) v.1.9.20: Programming language
 - [Ktor](https://ktor.io/) v.2.3.8: Kotlin application framework
