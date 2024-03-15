@@ -50,6 +50,11 @@ fun Application.configureRouting() {
             val articlesByTopic = analyzedDataGateway.allArticlesByTopic()
             call.respond(status = HttpStatusCode.OK, articlesByTopic)
         }
+        get("api/topics/{topicId}/articles") {
+            val topicId = call.parameters.getOrFail<Int>("topicId").toInt()
+            val articlesOnTopic = analyzedDataGateway.articlesOnTopic(topicId)
+            call.respond(status = HttpStatusCode.OK, articlesOnTopic)
+        }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
