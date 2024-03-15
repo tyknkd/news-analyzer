@@ -2,12 +2,13 @@
 
 :root {
     --bg-color: #111;
-    --text-color: #ccc;
-    --field-color: #aaa;
-    --field-text-color: #222;
-    --form-bg-color: #222;
+    --text-color: #aaa;
+    --field-color: #777;
+    --field-text-color: #333;
+    --form-bg-color: #333;
     --placeholder-color: #444;
-    --link-color: SlateBlue;
+    --link-color: #aaa;
+    --hover-color: SlateBlue;
     --fonts: Raleway, sans-serif;
 }
 
@@ -42,11 +43,11 @@ li {
 
 a {
     text-decoration: none;
-    color: var(--text-color);
+    color: var(--link-color);
 }
 
 a:hover {
-    color: var(--link-color);
+    color: var(--hover-color);
 }
 
 form {
@@ -90,7 +91,7 @@ button, input[type='submit'] {
 }
 
 button:hover, input[type='submit']:hover {
-    background-color: var(--link-color);
+    background-color: var(--hover-color);
     cursor: pointer;
 }
 
