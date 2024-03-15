@@ -10,10 +10,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
     fun init() {
         runBlocking {
             if(allTopics().isEmpty()) {
-                val analyzedDataClient = AnalyzedDataClient()
-                val (articles, topics) = analyzedDataClient.getAnalyzedData()
-                addArticles(articles)
-                addTopics(topics)
+                loadDb()
             }
         }
     }
@@ -36,7 +33,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
         terms = this[Topics.terms]
     )
 
-    suspend fun addArticles(articles: List<Article>) {
+    private suspend fun addArticles(articles: List<Article>) {
         for (article in articles) {
             dbQuery {
                 Articles.insert {
@@ -55,7 +52,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
         }
     }
 
-    suspend fun addTopics(topics: List<Topic>) {
+    private suspend fun addTopics(topics: List<Topic>) {
         for (topic in topics) {
             dbQuery {
                 Topics.insert {
@@ -64,6 +61,18 @@ object AnalyzedDataGateway: AnalyzedDAO {
                 }
             }
         }
+    }
+
+    private suspend fun loadDb() = dbQuery {
+        val (articles, topics) = AnalyzedDataClient.getAnalyzedData()
+        addArticles(articles)
+        addTopics(topics)
+    }
+
+    suspend fun reloadDb() = dbQuery {
+        Topics.deleteAll()
+        Articles.deleteAll()
+        loadDb()
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
