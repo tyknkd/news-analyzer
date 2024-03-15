@@ -30,7 +30,7 @@ class ApplicationTest {
     fun testAPI() = testSuspend {
         testApp.client.get("/api").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertEquals("News Analyzer API", bodyAsText())
+            assertContains(bodyAsText(),"Tech News Analyzer API")
         }
     }
     @Test
