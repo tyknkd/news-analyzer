@@ -11,7 +11,7 @@ data class Endpoint (
 )
 
 val entrypoint = Endpoint(
-    title = "Tech News Analyzer API",
+    title = "Tech Industry News Analyzer API",
     rel = "self",
     href = "/api",
     links = listOf(
@@ -31,6 +31,12 @@ val entrypoint = Endpoint(
             title = "Articles by Topic",
             rel = "collection",
             href = "/api/topics/articles",
+            links = null
+        ),
+        Endpoint(
+            title = "Articles on a Topic",
+            rel = "collection",
+            href = "/api/topics/{topicId}/articles",
             links = null
         )
     )
