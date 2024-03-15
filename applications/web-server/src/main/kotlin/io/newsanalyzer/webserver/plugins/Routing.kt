@@ -20,16 +20,16 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            val articlesByTopic = analyzedDataGateway.allArticlesByTopic()
+            val articlesByTopic = AnalyzedDataGateway.allArticlesByTopic()
             call.respond(FreeMarkerContent("index.ftl", mapOf("articlesByTopic" to articlesByTopic)))
         }
         get("/topics") {
-            val topics = analyzedDataGateway.allTopics()
+            val topics = AnalyzedDataGateway.allTopics()
             call.respond(FreeMarkerContent("topics.ftl", mapOf("topics" to topics)))
         }
         get("/topics/{topicId}/articles") {
             val topicId = call.parameters.getOrFail<Int>("topicId").toInt()
-            val articlesOnTopic = analyzedDataGateway.articlesOnTopic(topicId)
+            val articlesOnTopic = AnalyzedDataGateway.articlesOnTopic(topicId)
             call.respond(FreeMarkerContent("articles.ftl", mapOf("articlesOnTopic" to articlesOnTopic)))
         }
         get("/about") {
@@ -39,20 +39,20 @@ fun Application.configureRouting() {
             call.respond(status = HttpStatusCode.OK, entrypoint)
         }
         get("/api/topics") {
-            val topics = analyzedDataGateway.allTopics()
+            val topics = AnalyzedDataGateway.allTopics()
             call.respond(status = HttpStatusCode.OK, topics)
         }
         get("/api/articles") {
-            val articles = analyzedDataGateway.allArticles()
+            val articles = AnalyzedDataGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
         }
         get("/api/topics/articles") {
-            val articlesByTopic = analyzedDataGateway.allArticlesByTopic()
+            val articlesByTopic = AnalyzedDataGateway.allArticlesByTopic()
             call.respond(status = HttpStatusCode.OK, articlesByTopic)
         }
         get("api/topics/{topicId}/articles") {
             val topicId = call.parameters.getOrFail<Int>("topicId").toInt()
-            val articlesOnTopic = analyzedDataGateway.articlesOnTopic(topicId)
+            val articlesOnTopic = AnalyzedDataGateway.articlesOnTopic(topicId)
             call.respond(status = HttpStatusCode.OK, articlesOnTopic)
         }
         get("/health") {

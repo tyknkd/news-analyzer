@@ -6,7 +6,18 @@ import org.jetbrains.kotlinx.dataframe.api.*
 import io.newsanalyzer.webserver.models.*
 import io.newsanalyzer.webserver.plugins.AnalyzedDatabase.dbQuery
 
-class AnalyzedDataGateway: AnalyzedDAO {
+object AnalyzedDataGateway: AnalyzedDAO {
+    fun init() {
+        runBlocking {
+            if(allTopics().isEmpty()) {
+                val analyzedDataClient = AnalyzedDataClient()
+                val (articles, topics) = analyzedDataClient.getAnalyzedData()
+                addArticles(articles)
+                addTopics(topics)
+            }
+        }
+    }
+
     private fun ResultRow.toArticle() = Article(
         id = this[Articles.id],
         publisher = this[Articles.publisher],
@@ -97,16 +108,5 @@ class AnalyzedDataGateway: AnalyzedDAO {
         val topic = topic(topicId)
         val articles = articles(topicId)
         return ArticlesByTopic(topic = topic, articles = articles)
-    }
-}
-
-val analyzedDataGateway: AnalyzedDAO = AnalyzedDataGateway().apply {
-    runBlocking {
-        if(allTopics().isEmpty()) {
-            val analyzedDataClient = AnalyzedDataClient()
-            val (articles, topics) = analyzedDataClient.getAnalyzedData()
-            addArticles(articles)
-            addTopics(topics)
-        }
     }
 }
