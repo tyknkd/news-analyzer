@@ -54,6 +54,8 @@ interest to the reader.
 ## Live Production Deployment
 
 ## API
+The entry point to the REST API is at `\api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied
+to permit hypermedia-driven discovery of the endpoints.
 
 ## Local Setup
 To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
