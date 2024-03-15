@@ -8,6 +8,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.newsanalyzer.webserver.models.entrypoint
 
 fun Application.configureRouting() {
     install(Resources)
@@ -25,7 +26,7 @@ fun Application.configureRouting() {
             call.respond(FreeMarkerContent("about.ftl",null))
         }
         get("/api") {
-            call.respondText(text = "News Analyzer API", status = HttpStatusCode.OK)
+            call.respond(status = HttpStatusCode.OK, entrypoint)
         }
         get("/api/topics") {
             val topics = analyzedDataGateway.allTopics()
