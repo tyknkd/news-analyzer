@@ -70,11 +70,33 @@ class AnalyzedDataGateway: AnalyzedDAO {
         val articlesList = allArticles()
             .sortedByDescending { article -> article.publishedAt }
         val articlesByTopicDf = topicsDf.add("articles") {
-            articlesList.filter{
+            articlesList.filter {
                 article -> article.topicId == "topic"<Topic>().topicId
             }
         }
         return articlesByTopicDf.toListOf<ArticlesByTopic>()
+    }
+
+    private suspend fun articles(topicId: Int): List<Article> = dbQuery {
+        Articles
+            .selectAll()
+            .where { Articles.topicId eq topicId }
+            .map { row -> row.toArticle() }
+            .sortedByDescending { article -> article.publishedAt }
+    }
+
+    private suspend fun topic(topicId: Int): Topic = dbQuery {
+        Topics
+            .selectAll()
+            .where { Topics.topicId eq topicId }
+            .map { row -> row.toTopic() }
+            .first()
+    }
+
+    override suspend fun articlesOnTopic(topicId: Int): ArticlesByTopic {
+        val topic = topic(topicId)
+        val articles = articles(topicId)
+        return ArticlesByTopic(topic = topic, articles = articles)
     }
 }
 

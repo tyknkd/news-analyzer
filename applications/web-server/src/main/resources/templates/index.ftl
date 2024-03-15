@@ -5,11 +5,13 @@
         <#list articlesByTopic as group>
             <li>
                 <h3 class="topicHeader">
-                    <span class="topicId">Topic Group ${group.topic.topicId + 1} • </span>
-                    <span class="keywords">Keywords: ${group.topic.terms?keep_after("[")?keep_before_last("]")?capitalize}</span>
+                    <a href="/topics/${group.topic.topicId}/articles">
+                        <span class="topicId">Topic Group ${group.topic.topicId} • </span>
+                        <span class="keywords">Keywords: ${group.topic.terms?keep_after("[")?keep_before_last("]")?capitalize}</span>
+                    </a>
                 </h3>
                 <ul>
-                    <#list group.articles as article>
+                    <#list group.articles[0..*3] as article>
                         <li>
                             <h4>
                                 <span class="title"><a href="${article.url}">${article.title}</a></span>
@@ -20,6 +22,11 @@
                             </p>
                         </li>
                     </#list>
+                    <li>
+                        <h4>
+                            <a href="/topics/${group.topic.topicId}/articles">More on this topic . . .</a>
+                        </h4>
+                    </li>
                 </ul>
             </li>
             <hr>

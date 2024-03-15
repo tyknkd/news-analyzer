@@ -8,6 +8,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import io.newsanalyzer.webserver.models.entrypoint
 
 fun Application.configureRouting() {
@@ -21,6 +22,15 @@ fun Application.configureRouting() {
         get("/") {
             val articlesByTopic = analyzedDataGateway.allArticlesByTopic()
             call.respond(FreeMarkerContent("index.ftl", mapOf("articlesByTopic" to articlesByTopic)))
+        }
+        get("/topics") {
+            val topics = analyzedDataGateway.allTopics()
+            call.respond(FreeMarkerContent("topics.ftl", mapOf("topics" to topics)))
+        }
+        get("/topics/{topicId}/articles") {
+            val topicId = call.parameters.getOrFail<Int>("topicId").toInt()
+            val articlesOnTopic = analyzedDataGateway.articlesOnTopic(topicId)
+            call.respond(FreeMarkerContent("articles.ftl", mapOf("articlesOnTopic" to articlesOnTopic)))
         }
         get("/about") {
             call.respond(FreeMarkerContent("about.ftl",null))

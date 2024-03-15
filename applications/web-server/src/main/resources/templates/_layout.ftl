@@ -10,7 +10,7 @@
     <body>
         <header>
             <h1><a href="/">Tech Industry News Analyzer</a></h1>
-            <h2><a href="/">Articles</a> • <a href="/about">About</a> • <a href="/api">API</a></h2>
+            <h2><a href="/topics">Topics</a> • <a href="/">Articles</a> • <a href="/about">About</a> • <a href="/api">API</a></h2>
             <hr>
         </header>
         <#nested>
