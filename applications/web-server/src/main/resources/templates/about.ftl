@@ -7,5 +7,5 @@
         and focus on the topics of most interest to the reader.</p>
     <br>
     <p>For information on the technology used to implement this project, please see the project's
-        <a href="https://github.com/tyknkd/news-analyzer">GitHub repository</a>.</p>
+        <a target="_blank" rel="noopener" href="https://github.com/tyknkd/news-analyzer">GitHub repository</a>.</p>
 </@layout.header>

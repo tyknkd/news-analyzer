@@ -11,7 +11,7 @@
         <#list articlesOnTopic.articles as article>
             <li>
                 <h4>
-                    <span class="title"><a href="${article.url}">${article.title}</a></span>
+                    <span class="title"><a target="_blank" rel="noopener" href="${article.url}">${article.title}</a></span>
                 </h4>
                 <p>
                     <span class="publisher">${article.publisher}, </span>
