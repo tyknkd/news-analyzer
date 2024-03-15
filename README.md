@@ -1,4 +1,4 @@
-# News Analyzer App
+# Tech Industry News Analyzer App
 **Tyler Kinkade**
 
 [https://github.com/tyknkd/news-analyzer](https://github.com/tyknkd/news-analyzer)
@@ -54,8 +54,8 @@ interest to the reader.
 ## Live Production Deployment
 
 ## API
-The entry point to the REST API is at `\api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied
-to permit hypermedia-driven discovery of the endpoints.
+The REST API entry point is `\api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
+discovery of the endpoints within the API.
 
 ## Local Setup
 To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
