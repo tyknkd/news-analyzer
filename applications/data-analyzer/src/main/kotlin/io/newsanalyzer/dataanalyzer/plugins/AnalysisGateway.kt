@@ -7,7 +7,14 @@ import io.newsanalyzer.dataanalyzer.models.*
 import io.newsanalyzer.dataanalyzer.plugins.AnalyzerDatabase.dbQuery
 
 
-class AnalysisGateway: AnalysisDAO {
+object AnalysisGateway: AnalysisDAO {
+    fun init() {
+        runBlocking {
+            if(allArticles().isEmpty()) {
+                upsertAll()
+            }
+        }
+    }
     private fun ResultRow.toArticle() = Article(
         id = this[Articles.id],
         publisher = this[Articles.publisher],
@@ -26,45 +33,41 @@ class AnalysisGateway: AnalysisDAO {
         terms = this[Topics.terms]
     )
 
-    suspend fun addArticles(articles: List<Article>) {
-        for (article in articles) {
-            dbQuery {
-                Articles.insert {
-                    it[id] = article.id
-                    it[publisher] = article.publisher
-                    it[author] = article.author
-                    it[title] = article.title
-                    it[description] = article.description
-                    it[url] = article.url
-                    it[urlToImage] = article.urlToImage
-                    it[publishedAt] = article.publishedAt
-                    it[content] = article.content
-                    it[topicId] = article.topicId
-                }
+    private suspend fun upsertArticles(articles: List<Article>) {
+        dbQuery {
+            val onUpdateExclude = (Articles.columns.toSet() - Articles.topicId).toList()
+            Articles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
+                    (id, publisher, author, title, description, url,
+                        urlToImage, publishedAt, content, topicId) ->
+                this[Articles.id] = id
+                this[Articles.publisher] = publisher
+                this[Articles.author] = author
+                this[Articles.title] = title
+                this[Articles.description] = description
+                this[Articles.url] = url
+                this[Articles.urlToImage] = urlToImage
+                this[Articles.publishedAt] = publishedAt
+                this[Articles.content] = content
+                this[Articles.topicId] = topicId
             }
         }
     }
 
-    suspend fun addTopics(topics: List<Topic>) {
-        for (topic in topics) {
-            dbQuery {
-                Topics.insert {
-                    it[topicId] = topic.topicId
-                    it[terms] = topic.terms
-                }
+    private suspend fun upsertTopics(topics: List<Topic>) {
+        dbQuery {
+            val onUpdateExclude = (Topics.columns.toSet() - Topics.terms).toList()
+            Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
+                    (topicId, terms) ->
+                this[Topics.topicId] = topicId
+                this[Topics.terms] = terms
             }
         }
     }
 
-    suspend fun updateArticleTopic(id: Int, topicId: Int): Boolean = dbQuery {
-        Articles.update({ Articles.id eq id }) {
-            it[Articles.id] = id
-            it[Articles.topicId] = topicId
-        } > 0
-    }
-
-    suspend fun clearTopics(): Boolean = dbQuery {
-        Topics.deleteAll() > 0
+    private suspend fun upsertAll() {
+        val (articles, topics) = DataAnalyzer.getAnalyzedData()
+        upsertArticles(articles)
+        upsertTopics(topics)
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
@@ -77,16 +80,5 @@ class AnalysisGateway: AnalysisDAO {
 
     override suspend fun mostRecentDate(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
-    }
-}
-
-val analysisGateway: AnalysisDAO = AnalysisGateway().apply {
-    runBlocking {
-        if(allArticles().isEmpty()) {
-            val dataAnalyzer = DataAnalyzer()
-            val (articles, topics) = dataAnalyzer.getAnalyzedData()
-            addArticles(articles)
-            addTopics(topics)
-        }
     }
 }
