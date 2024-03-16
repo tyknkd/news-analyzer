@@ -7,7 +7,15 @@ import io.newsanalyzer.datacollector.models.*
 import io.newsanalyzer.datacollector.plugins.CollectorDatabase.dbQuery
 
 
-class ArticlesGateway: ArticlesDAO {
+object ArticlesGateway: ArticlesDAO {
+    fun init() {
+        runBlocking {
+            if(allArticles().isEmpty()) {
+                val remoteData = DataCollector.collectData()
+                addArticles(remoteData)
+            }
+        }
+    }
     private fun ResultRow.toArticle() = Article(
         id = this[Articles.id],
         publisher = this[Articles.publisher],
@@ -20,19 +28,19 @@ class ArticlesGateway: ArticlesDAO {
         content = this[Articles.content]
     )
 
-    suspend fun addArticles(remoteData: RemoteData) {
-        for (article in remoteData.articles.reversed()) {
-            dbQuery {
-                Articles.insert {
-                    it[publisher] = article.source.name
-                    it[author] = article.author
-                    it[title] = article.title
-                    it[description] = article.description
-                    it[url] = article.url
-                    it[urlToImage] = article.urlToImage
-                    it[publishedAt] = article.publishedAt.toInstant()
-                    it[content] = article.content
-                }
+    private suspend fun addArticles(remoteData: RemoteData) {
+        dbQuery {
+            Articles.batchInsert(data = remoteData.articles.reversed()) {
+                (source, author, title, description, url,
+                    urlToImage, publishedAt, content) ->
+                this[Articles.publisher] = source.name
+                this[Articles.author] = author
+                this[Articles.title] = title
+                this[Articles.description] = description
+                this[Articles.url] = url
+                this[Articles.urlToImage] = urlToImage
+                this[Articles.publishedAt] = Instant.parse(publishedAt)
+                this[Articles.content] = content
             }
         }
     }
@@ -43,15 +51,5 @@ class ArticlesGateway: ArticlesDAO {
 
     override suspend fun mostRecentDate(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
-    }
-}
-
-val articlesGateway: ArticlesDAO = ArticlesGateway().apply {
-    runBlocking {
-        if(allArticles().isEmpty()) {
-            val dataCollector = DataCollector()
-            val remoteData = dataCollector.collectData()
-            addArticles(remoteData)
-        }
     }
 }
