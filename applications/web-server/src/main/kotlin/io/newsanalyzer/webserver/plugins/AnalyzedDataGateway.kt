@@ -1,5 +1,6 @@
 package io.newsanalyzer.webserver.plugins
 
+//import org.jetbrains.exposed.*
 import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import org.jetbrains.kotlinx.dataframe.api.*
@@ -10,7 +11,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
     fun init() {
         runBlocking {
             if(allTopics().isEmpty()) {
-                loadDb()
+                upsertAll()
             }
         }
     }
@@ -33,46 +34,41 @@ object AnalyzedDataGateway: AnalyzedDAO {
         terms = this[Topics.terms]
     )
 
-    private suspend fun addArticles(articles: List<Article>) {
-        for (article in articles) {
-            dbQuery {
-                Articles.insert {
-                    it[id] = article.id
-                    it[publisher] = article.publisher
-                    it[author] = article.author
-                    it[title] = article.title
-                    it[description] = article.description
-                    it[url] = article.url
-                    it[urlToImage] = article.urlToImage
-                    it[publishedAt] = article.publishedAt
-                    it[content] = article.content
-                    it[topicId] = article.topicId
-                }
+    private suspend fun upsertArticles(articles: List<Article>) {
+        dbQuery {
+            val onUpdateExclude = (Articles.columns.toSet() - Articles.topicId).toList()
+            Articles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
+                (id, publisher, author, title, description, url,
+                    urlToImage, publishedAt, content, topicId) ->
+                this[Articles.id] = id
+                this[Articles.publisher] = publisher
+                this[Articles.author] = author
+                this[Articles.title] = title
+                this[Articles.description] = description
+                this[Articles.url] = url
+                this[Articles.urlToImage] = urlToImage
+                this[Articles.publishedAt] = publishedAt
+                this[Articles.content] = content
+                this[Articles.topicId] = topicId
             }
         }
     }
 
-    private suspend fun addTopics(topics: List<Topic>) {
-        for (topic in topics) {
-            dbQuery {
-                Topics.insert {
-                    it[topicId] = topic.topicId
-                    it[terms] = topic.terms
-                }
+    private suspend fun upsertTopics(topics: List<Topic>) {
+        dbQuery {
+            val onUpdateExclude = (Topics.columns.toSet() - Topics.terms).toList()
+            Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
+                    (topicId, terms) ->
+                this[Topics.topicId] = topicId
+                this[Topics.terms] = terms
             }
         }
     }
 
-    private suspend fun loadDb() = dbQuery {
+    private suspend fun upsertAll() {
         val (articles, topics) = AnalyzedDataClient.getAnalyzedData()
-        addArticles(articles)
-        addTopics(topics)
-    }
-
-    suspend fun reloadDb() = dbQuery {
-        Topics.deleteAll()
-        Articles.deleteAll()
-        loadDb()
+        upsertArticles(articles)
+        upsertTopics(topics)
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {

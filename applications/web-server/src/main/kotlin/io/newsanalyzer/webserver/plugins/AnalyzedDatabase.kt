@@ -25,7 +25,7 @@ object AnalyzedDatabase {
         }
         val dbName = System.getenv("WEBSERVER_DB")
         val user = System.getenv("POSTGRES_USER")
-        val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName"
+        val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName?reWriteBatchedInserts=true"
         val database = Database.connect(
             createHikariDataSource(
                 url = jdbcUrl,
