@@ -11,7 +11,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.datacollector.models.RemoteData
 import kotlinx.serialization.json.Json
 
-class DataCollector {
+object DataCollector {
     suspend fun collectData(): RemoteData {
         val newsApiKey = System.getenv("NEWS_API_KEY")
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
