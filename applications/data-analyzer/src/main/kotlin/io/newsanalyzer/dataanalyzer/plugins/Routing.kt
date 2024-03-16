@@ -19,11 +19,11 @@ fun Application.configureRouting() {
             call.respondRedirect("/articles")
         }
         get("/topics") {
-            val topics = analysisGateway.allTopics()
+            val topics = AnalysisGateway.allTopics()
             call.respond(status = HttpStatusCode.OK, topics)
         }
         get("/articles") {
-            val articles = analysisGateway.allArticles()
+            val articles = AnalysisGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
         }
         get("/health") {
