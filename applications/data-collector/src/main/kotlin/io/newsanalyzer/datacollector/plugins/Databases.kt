@@ -4,4 +4,5 @@ import io.ktor.server.application.*
 
 fun Application.configureDatabases() {
     CollectorDatabase.init()
+    ArticlesGateway.init()
 }

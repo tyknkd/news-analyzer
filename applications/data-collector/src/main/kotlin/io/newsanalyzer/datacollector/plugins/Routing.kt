@@ -22,7 +22,7 @@ fun Application.configureRouting() {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
         get("/articles") {
-            val articles = articlesGateway.allArticles()
+            val articles = ArticlesGateway.allArticles()
             if (articles.isEmpty() ) {
                 call.respond(status = HttpStatusCode.Unauthorized, "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org")
             } else {
