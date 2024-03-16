@@ -19,7 +19,7 @@ import org.apache.spark.ml.feature.CountVectorizer
 import org.apache.spark.ml.clustering.LDA
 import org.apache.spark.ml.linalg.DenseVector
 
-class DataAnalyzer {
+object DataAnalyzer {
     private suspend fun getCollectedData(): List<Article> {
         val port = System.getenv("COLLECTOR_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {
