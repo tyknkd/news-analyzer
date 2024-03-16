@@ -6,6 +6,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.newsanalyzer.datacollector.plugins.database.ArticlesGateway
 
 fun Application.configureRouting() {
     install(Resources)

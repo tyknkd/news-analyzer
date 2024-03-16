@@ -1,10 +1,11 @@
-package io.newsanalyzer.datacollector.plugins
+package io.newsanalyzer.datacollector.plugins.database
 
 import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import io.newsanalyzer.datacollector.models.*
-import io.newsanalyzer.datacollector.plugins.CollectorDatabase.dbQuery
+import io.newsanalyzer.datacollector.plugins.DataCollector
+import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 
 
 object ArticlesGateway: ArticlesDAO {

@@ -1,4 +1,4 @@
-package io.newsanalyzer.dataanalyzer.plugins
+package io.newsanalyzer.dataanalyzer.plugins.database
 
 import io.newsanalyzer.dataanalyzer.models.*
 import kotlinx.datetime.*

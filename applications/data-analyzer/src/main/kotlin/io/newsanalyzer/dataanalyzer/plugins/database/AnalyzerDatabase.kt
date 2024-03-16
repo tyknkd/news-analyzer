@@ -1,4 +1,4 @@
-package io.newsanalyzer.dataanalyzer.plugins
+package io.newsanalyzer.dataanalyzer.plugins.database
 
 import io.newsanalyzer.dataanalyzer.models.*
 import kotlinx.coroutines.*
@@ -31,7 +31,8 @@ object AnalyzerDatabase {
                 url = jdbcUrl,
                 driver = driverClassName,
                 user = user,
-                passwd = password))
+                passwd = password)
+        )
         transaction(database) {
             SchemaUtils.create(Articles)
             SchemaUtils.create(Topics)

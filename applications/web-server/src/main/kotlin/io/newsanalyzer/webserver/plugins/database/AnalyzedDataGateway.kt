@@ -1,10 +1,10 @@
-package io.newsanalyzer.webserver.plugins
+package io.newsanalyzer.webserver.plugins.database
 
 import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import org.jetbrains.kotlinx.dataframe.api.*
 import io.newsanalyzer.webserver.models.*
-import io.newsanalyzer.webserver.plugins.AnalyzedDatabase.dbQuery
+import io.newsanalyzer.webserver.plugins.database.AnalyzedDatabase.dbQuery
 
 object AnalyzedDataGateway: AnalyzedDAO {
     fun init() {

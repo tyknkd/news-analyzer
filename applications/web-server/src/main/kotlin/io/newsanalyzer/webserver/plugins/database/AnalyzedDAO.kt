@@ -1,4 +1,4 @@
-package io.newsanalyzer.webserver.plugins
+package io.newsanalyzer.webserver.plugins.database
 
 import io.newsanalyzer.webserver.models.*
 
