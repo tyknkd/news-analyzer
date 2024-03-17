@@ -3,6 +3,7 @@ package io.newsanalyzer.datacollector.plugins.database
 import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
+import kotlin.time.Duration.Companion.hours
 import io.newsanalyzer.datacollector.models.*
 import io.newsanalyzer.datacollector.plugins.DataCollector
 import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
@@ -11,9 +12,12 @@ import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 object ArticlesGateway: ArticlesDAO {
     fun init() {
         runBlocking {
-            val remoteData = DataCollector.collectData(latestDateTime())
-            if (remoteData.totalResults > 0) {
-                addArticles(remoteData)
+            val latestDateTime = latestDateTime()
+            if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 48.hours ) {
+                val remoteData = DataCollector.collectData(latestDateTime)
+                if (remoteData.totalResults > 0) {
+                    addArticles(remoteData)
+                }
             }
         }
     }
