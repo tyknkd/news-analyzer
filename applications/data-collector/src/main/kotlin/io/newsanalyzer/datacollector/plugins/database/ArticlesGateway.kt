@@ -54,7 +54,7 @@ object ArticlesGateway: ArticlesDAO {
 
     override suspend fun updateArticles(): Boolean {
         val latestDateTime = latestDateTime()
-        if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 48.hours ) {
+        if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 24.hours ) {
             val remoteData = DataCollector.collectData(latestDateTime)
             if (remoteData.totalResults > 0) {
                 addArticles(remoteData)
