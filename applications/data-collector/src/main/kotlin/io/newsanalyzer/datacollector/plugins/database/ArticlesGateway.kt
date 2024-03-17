@@ -11,8 +11,8 @@ import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 object ArticlesGateway: ArticlesDAO {
     fun init() {
         runBlocking {
-            if(allArticles().isEmpty()) {
-                val remoteData = DataCollector.collectData()
+            val remoteData = DataCollector.collectData(mostRecentDate())
+            if (remoteData.totalResults > 0) {
                 addArticles(remoteData)
             }
         }

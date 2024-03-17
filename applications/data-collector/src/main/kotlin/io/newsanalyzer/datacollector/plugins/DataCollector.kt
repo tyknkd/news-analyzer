@@ -10,9 +10,10 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.datacollector.models.RemoteData
 import kotlinx.serialization.json.Json
+import kotlinx.datetime.*
 
 object DataCollector {
-    suspend fun collectData(): RemoteData {
+    suspend fun collectData(fromInstant: Instant?=null): RemoteData {
         val newsApiKey = System.getenv("NEWS_API_KEY")
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
@@ -65,6 +66,7 @@ object DataCollector {
                 parameters.append("q", topic)
                 parameters.append("sources", sources)
                 parameters.append("sortBy", sortBy)
+                if (fromInstant != null) { parameters.append("from", fromInstant.toString())}
                 parameters.append("apiKey", newsApiKey)
             }
         }
