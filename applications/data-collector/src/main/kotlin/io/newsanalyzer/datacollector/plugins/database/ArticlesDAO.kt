@@ -5,5 +5,5 @@ import kotlinx.datetime.*
 
 interface ArticlesDAO {
     suspend fun allArticles(): List<Article>
-    suspend fun mostRecentDate(): Instant?
+    suspend fun latestDateTime(): Instant?
 }

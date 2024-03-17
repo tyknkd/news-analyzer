@@ -6,6 +6,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.newsanalyzer.datacollector.models.LatestDateTime
 import io.newsanalyzer.datacollector.plugins.database.ArticlesGateway
 
 fun Application.configureRouting() {
@@ -30,6 +31,10 @@ fun Application.configureRouting() {
                 call.respond(status = HttpStatusCode.OK, articles)
             }
 
+        }
+        get("/latestDateTime") {
+            val latestDateTime = LatestDateTime(latestDateTime = ArticlesGateway.latestDateTime())
+            call.respond(status = HttpStatusCode.OK, latestDateTime)
         }
     }
 }

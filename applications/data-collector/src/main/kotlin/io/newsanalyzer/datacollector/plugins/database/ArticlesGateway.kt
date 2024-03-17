@@ -11,7 +11,7 @@ import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 object ArticlesGateway: ArticlesDAO {
     fun init() {
         runBlocking {
-            val remoteData = DataCollector.collectData(mostRecentDate())
+            val remoteData = DataCollector.collectData(latestDateTime())
             if (remoteData.totalResults > 0) {
                 addArticles(remoteData)
             }
@@ -50,7 +50,7 @@ object ArticlesGateway: ArticlesDAO {
         Articles.selectAll().map { row -> row.toArticle() }
     }
 
-    override suspend fun mostRecentDate(): Instant? = dbQuery {
+    override suspend fun latestDateTime(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
     }
 }
