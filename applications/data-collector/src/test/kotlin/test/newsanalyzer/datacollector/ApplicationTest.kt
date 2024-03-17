@@ -55,6 +55,13 @@ class ApplicationTest {
             assertContains(bodyAsText(), "\"publishedAt\":")
         }
     }
+    @Test
+    fun testUpdate() = testSuspend {
+        testApp.client.get("/update").apply {
+            assertEquals(HttpStatusCode.OK, status, apiKeyErrorMessage)
+            assertEquals("false",bodyAsText())
+        }
+    }
 
 
     companion object {

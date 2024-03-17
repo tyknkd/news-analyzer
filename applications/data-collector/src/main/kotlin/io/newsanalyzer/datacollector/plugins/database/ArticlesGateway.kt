@@ -12,13 +12,7 @@ import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 object ArticlesGateway: ArticlesDAO {
     fun init() {
         runBlocking {
-            val latestDateTime = latestDateTime()
-            if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 48.hours ) {
-                val remoteData = DataCollector.collectData(latestDateTime)
-                if (remoteData.totalResults > 0) {
-                    addArticles(remoteData)
-                }
-            }
+            updateArticles()
         }
     }
     private fun ResultRow.toArticle() = Article(
@@ -56,5 +50,17 @@ object ArticlesGateway: ArticlesDAO {
 
     override suspend fun latestDateTime(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
+    }
+
+    override suspend fun updateArticles(): Boolean {
+        val latestDateTime = latestDateTime()
+        if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 48.hours ) {
+            val remoteData = DataCollector.collectData(latestDateTime)
+            if (remoteData.totalResults > 0) {
+                addArticles(remoteData)
+                return true
+            }
+        }
+        return false
     }
 }

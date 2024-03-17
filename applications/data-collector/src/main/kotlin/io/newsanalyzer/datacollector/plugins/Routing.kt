@@ -36,5 +36,8 @@ fun Application.configureRouting() {
             val latestDateTime = LatestDateTime(latestDateTime = ArticlesGateway.latestDateTime())
             call.respond(status = HttpStatusCode.OK, latestDateTime)
         }
+        get("/update") {
+            call.respondText(text = ArticlesGateway.updateArticles().toString(), status = HttpStatusCode.OK)
+        }
     }
 }
