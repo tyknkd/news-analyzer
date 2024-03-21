@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
 import com.zaxxer.hikari.*
+import javax.xml.validation.Schema
 
 object AnalyzerDatabase {
     fun init() {
@@ -34,6 +35,7 @@ object AnalyzerDatabase {
                 passwd = password)
         )
         transaction(database) {
+            SchemaUtils.create(RawArticles)
             SchemaUtils.create(AnalyzedArticles)
             SchemaUtils.create(Topics)
         }
