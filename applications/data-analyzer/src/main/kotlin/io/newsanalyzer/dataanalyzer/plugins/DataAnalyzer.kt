@@ -1,15 +1,6 @@
 package io.newsanalyzer.dataanalyzer.plugins
 
 import io.newsanalyzer.dataanalyzer.models.*
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.java.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 import org.jetbrains.kotlinx.dataframe.*
 import org.jetbrains.kotlinx.dataframe.api.*
 import org.jetbrains.kotlinx.spark.api.*
@@ -20,36 +11,6 @@ import org.apache.spark.ml.clustering.LDA
 import org.apache.spark.ml.linalg.DenseVector
 
 object DataAnalyzer {
-    private suspend fun getCollectedData(): List<Article> {
-        val port = System.getenv("COLLECTOR_PORT")
-        val apiHost = if (System.getenv("OS_ENV") == "container") {
-            "data-collector:$port"
-        } else {
-            "localhost:$port"
-        }
-        val path = "articles"
-        val client = HttpClient(engineFactory = Java) {
-            install(ContentNegotiation) {
-                json(Json {
-                    isLenient = true
-                    coerceInputValues = true
-                    ignoreUnknownKeys = true
-                    encodeDefaults = true
-                })
-            }
-        }
-        val response: HttpResponse = client.get {
-            url {
-                protocol = URLProtocol.HTTP
-                host = apiHost
-                path(path)
-            }
-        }
-        client.close()
-        val articleList: List<Article> = response.body()
-        return articleList
-    }
-
     private fun extractTopics(articleList: List<Article>): TopicData {
         val numberArticles = articleList.size
 
@@ -156,7 +117,7 @@ object DataAnalyzer {
     }
 
     suspend fun getAnalyzedData(): Pair<List<Article>,List<Topic>> {
-        val articles = getCollectedData()
+        val articles = CollectedDataClient.getCollectedData()
         return getArticleTopics(articles)
     }
 }
