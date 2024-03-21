@@ -9,15 +9,6 @@ import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzerDatabase.dbQuery
 
 
 object RawDataGateway: RawDAO {
-    fun init() {
-        runBlocking {
-            if(allArticles().isEmpty()) {
-                val articles = CollectedDataClient.getCollectedData()
-                addArticles(articles)
-            }
-        }
-    }
-
     private fun ResultRow.toArticle() = Article(
         id = this[RawArticles.id],
         publisher = this[RawArticles.publisher],

@@ -7,5 +7,4 @@ import io.newsanalyzer.dataanalyzer.plugins.database.RawDataGateway
 
 fun Application.configureDatabases() {
     AnalyzerDatabase.init()
-    RawDataGateway.init()
 }
