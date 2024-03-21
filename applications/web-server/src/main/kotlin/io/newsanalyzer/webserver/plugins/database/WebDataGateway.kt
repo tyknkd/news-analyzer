@@ -4,9 +4,9 @@ import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import org.jetbrains.kotlinx.dataframe.api.*
 import io.newsanalyzer.webserver.models.*
-import io.newsanalyzer.webserver.plugins.database.AnalyzedDatabase.dbQuery
+import io.newsanalyzer.webserver.plugins.database.WebDatabase.dbQuery
 
-object AnalyzedDataGateway: AnalyzedDAO {
+object WebDataGateway: WebDAO {
     fun init() {
         runBlocking {
             if(allTopics().isEmpty()) {
@@ -65,7 +65,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
     }
 
     private suspend fun upsertAll() {
-        val (articles, topics) = AnalyzedDataClient.getAnalyzedData()
+        val (articles, topics) = WebDataClient.getAnalyzedData()
         upsertArticles(articles)
         upsertTopics(topics)
     }

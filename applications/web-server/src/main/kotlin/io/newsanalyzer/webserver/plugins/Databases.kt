@@ -1,10 +1,10 @@
 package io.newsanalyzer.webserver.plugins
 
 import io.ktor.server.application.*
-import io.newsanalyzer.webserver.plugins.database.AnalyzedDataGateway
-import io.newsanalyzer.webserver.plugins.database.AnalyzedDatabase
+import io.newsanalyzer.webserver.plugins.database.WebDataGateway
+import io.newsanalyzer.webserver.plugins.database.WebDatabase
 
 fun Application.configureDatabases() {
-    AnalyzedDatabase.init()
-    AnalyzedDataGateway.init()
+    WebDatabase.init()
+    WebDataGateway.init()
 }

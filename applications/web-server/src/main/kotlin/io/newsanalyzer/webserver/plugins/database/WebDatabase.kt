@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.sql.transactions.experimental.*
 import com.zaxxer.hikari.*
 
-object AnalyzedDatabase {
+object WebDatabase {
     fun init() {
         val driverClassName = "org.postgresql.Driver"
         lateinit var host: String

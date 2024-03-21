@@ -12,7 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.webserver.models.*
 import kotlinx.serialization.json.Json
 
-object AnalyzedDataClient {
+object WebDataClient {
     suspend fun getAnalyzedData(): Pair<List<Article>,List<Topic>> {
         val port = System.getenv("ANALYZER_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {

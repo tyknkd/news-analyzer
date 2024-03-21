@@ -2,7 +2,7 @@ package io.newsanalyzer.webserver.plugins.database
 
 import io.newsanalyzer.webserver.models.*
 
-interface AnalyzedDAO {
+interface WebDAO {
     suspend fun allArticles(): List<Article>
     suspend fun allTopics(): List<Topic>
     suspend fun allArticlesByTopic(): List<ArticlesByTopic>
