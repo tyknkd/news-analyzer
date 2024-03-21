@@ -5,6 +5,7 @@ import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import kotlin.time.Duration.Companion.hours
 import io.newsanalyzer.datacollector.models.*
+import io.newsanalyzer.datacollector.plugins.AnalyzerDataClient
 import io.newsanalyzer.datacollector.plugins.DataCollector
 import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 
@@ -48,6 +49,18 @@ object CollectorGateway: CollectorDAO {
         Articles.selectAll().map { row -> row.toArticle() }
     }
 
+    override suspend fun articlesAfter(instant: Instant?): List<Article> {
+        return if (instant == null ) {
+            allArticles()
+        } else {
+            dbQuery{
+                Articles.selectAll()
+                    .where { Articles.publishedAt greater instant }
+                    .map { row -> row.toArticle() }
+            }
+        }
+    }
+
     override suspend fun latestDateTime(): Instant? = dbQuery {
         Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
     }
@@ -58,6 +71,7 @@ object CollectorGateway: CollectorDAO {
             val remoteData = DataCollector.collectData(latestDateTime)
             if (remoteData.totalResults > 0) {
                 addArticles(remoteData)
+                AnalyzerDataClient.postArticles(articlesAfter(latestDateTime))
                 return true
             }
         }
