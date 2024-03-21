@@ -9,7 +9,7 @@ import io.newsanalyzer.datacollector.plugins.DataCollector
 import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
 
 
-object ArticlesGateway: ArticlesDAO {
+object CollectorGateway: CollectorDAO {
     fun init() {
         runBlocking {
             updateArticles()

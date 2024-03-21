@@ -7,7 +7,7 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.newsanalyzer.datacollector.models.LatestDateTime
-import io.newsanalyzer.datacollector.plugins.database.ArticlesGateway
+import io.newsanalyzer.datacollector.plugins.database.CollectorGateway
 
 fun Application.configureRouting() {
     install(Resources)
@@ -24,7 +24,7 @@ fun Application.configureRouting() {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
         get("/articles") {
-            val articles = ArticlesGateway.allArticles()
+            val articles = CollectorGateway.allArticles()
             if (articles.isEmpty() ) {
                 call.respond(status = HttpStatusCode.Unauthorized, "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org")
             } else {
@@ -33,11 +33,11 @@ fun Application.configureRouting() {
 
         }
         get("/latestDateTime") {
-            val latestDateTime = LatestDateTime(latestDateTime = ArticlesGateway.latestDateTime())
+            val latestDateTime = LatestDateTime(latestDateTime = CollectorGateway.latestDateTime())
             call.respond(status = HttpStatusCode.OK, latestDateTime)
         }
         get("/update") {
-            call.respondText(text = ArticlesGateway.updateArticles().toString(), status = HttpStatusCode.OK)
+            call.respondText(text = CollectorGateway.updateArticles().toString(), status = HttpStatusCode.OK)
         }
     }
 }
