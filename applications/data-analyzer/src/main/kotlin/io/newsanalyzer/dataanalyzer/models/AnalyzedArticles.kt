@@ -3,7 +3,7 @@ package io.newsanalyzer.dataanalyzer.models
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.kotlin.datetime.*
 
-object Articles: Table() {
+object AnalyzedArticles: Table() {
     val id = integer("id")
     val publisher = varchar("publisher", 64)
     val author = varchar("author", 128)

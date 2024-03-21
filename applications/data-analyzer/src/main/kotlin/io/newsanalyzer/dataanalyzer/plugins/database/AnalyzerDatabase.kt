@@ -34,7 +34,7 @@ object AnalyzerDatabase {
                 passwd = password)
         )
         transaction(database) {
-            SchemaUtils.create(Articles)
+            SchemaUtils.create(AnalyzedArticles)
             SchemaUtils.create(Topics)
         }
     }

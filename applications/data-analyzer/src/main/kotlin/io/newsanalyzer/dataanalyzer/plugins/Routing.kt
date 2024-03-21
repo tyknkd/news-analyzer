@@ -6,7 +6,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.newsanalyzer.dataanalyzer.plugins.database.AnalysisGateway
+import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzedDataGateway
 
 fun Application.configureRouting() {
     install(Resources)
@@ -20,11 +20,11 @@ fun Application.configureRouting() {
             call.respondRedirect("/articles")
         }
         get("/topics") {
-            val topics = AnalysisGateway.allTopics()
+            val topics = AnalyzedDataGateway.allTopics()
             call.respond(status = HttpStatusCode.OK, topics)
         }
         get("/articles") {
-            val articles = AnalysisGateway.allArticles()
+            val articles = AnalyzedDataGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
         }
         get("/health") {
