@@ -17,7 +17,7 @@ services:
     ports:
       - ${WEBSERVER_PORT}:${WEBSERVER_PORT}
     depends_on:
-      - data-analyzer
+      - data-collector
 
   data-analyzer:
     build:
@@ -37,7 +37,8 @@ services:
     ports:
       - ${ANALYZER_PORT}:${ANALYZER_PORT}
     depends_on:
-      - data-collector
+      db:
+        condition: service_healthy
 
   data-collector:
     build:
@@ -59,8 +60,7 @@ services:
     ports:
       - ${COLLECTOR_PORT}:${COLLECTOR_PORT}
     depends_on:
-      db:
-        condition: service_healthy
+      - data-analyzer
 
   db:
     image: postgres:16.2-alpine
