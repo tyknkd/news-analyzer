@@ -9,13 +9,7 @@ import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzerDatabase.dbQuery
 
 
 object AnalyzedDataGateway: AnalyzedDAO {
-    fun init() {
-        runBlocking {
-            if(allArticles().isEmpty()) {
-                upsertAll()
-            }
-        }
-    }
+
     private fun ResultRow.toArticle() = Article(
         id = this[AnalyzedArticles.id],
         publisher = this[AnalyzedArticles.publisher],
@@ -69,6 +63,11 @@ object AnalyzedDataGateway: AnalyzedDAO {
         val (articles, topics) = DataAnalyzer.getAnalyzedData()
         upsertArticles(articles)
         upsertTopics(topics)
+    }
+
+    override suspend fun updateAll(): Boolean {
+        upsertAll()
+        return true
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {

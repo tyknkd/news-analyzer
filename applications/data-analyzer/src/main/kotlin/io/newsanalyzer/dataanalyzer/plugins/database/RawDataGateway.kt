@@ -53,6 +53,7 @@ object RawDataGateway: RawDAO {
 
     override suspend fun addArticles(articles: List<Article>): Boolean {
         upsertArticles(articles)
+        AnalyzedDataGateway.updateAll()
         return true
     }
 
