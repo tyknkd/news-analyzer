@@ -30,7 +30,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
 
     private suspend fun upsertArticles(articles: List<Article>) {
         dbQuery {
-            val onUpdateExclude = (AnalyzedArticles.columns.toSet() - AnalyzedArticles.topicId).toList()
+            val onUpdateExclude = AnalyzedArticles.columns - setOf(AnalyzedArticles.topicId)
             AnalyzedArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
                     (id, publisher, author, title, description, url,
                         urlToImage, publishedAt, content, topicId) ->
@@ -50,7 +50,7 @@ object AnalyzedDataGateway: AnalyzedDAO {
 
     private suspend fun upsertTopics(topics: List<Topic>) {
         dbQuery {
-            val onUpdateExclude = (Topics.columns.toSet() - Topics.terms).toList()
+            val onUpdateExclude = Topics.columns - setOf(Topics.terms)
             Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
                     (topicId, terms) ->
                 this[Topics.topicId] = topicId
