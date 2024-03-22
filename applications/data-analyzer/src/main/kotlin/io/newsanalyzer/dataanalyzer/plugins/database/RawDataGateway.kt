@@ -22,10 +22,11 @@ object RawDataGateway: RawDAO {
         topicId = this[RawArticles.topicId]
     )
 
-    private suspend fun upsertArticles(articles: List<Article>) {
+    private suspend fun upsertArticles(articles: List<Article>): Boolean {
+        var success = false
         dbQuery {
-            val onUpdateExclude = (RawArticles.columns.toSet() - RawArticles.topicId).toList()
-            RawArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
+            val onUpdateExclude = RawArticles.columns - setOf(RawArticles.topicId)
+            val results = RawArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
                     (id, publisher, author, title, description, url,
                         urlToImage, publishedAt, content, topicId) ->
                 this[RawArticles.id] = id
@@ -39,13 +40,17 @@ object RawDataGateway: RawDAO {
                 this[RawArticles.content] = content
                 this[RawArticles.topicId] = topicId
             }
+            success = results.isNotEmpty()
         }
+        return success
     }
 
     override suspend fun addArticles(articles: List<Article>): Boolean {
-        upsertArticles(articles)
-        AnalyzedDataGateway.updateAll()
-        return true
+        if (upsertArticles(articles)) {
+            return (AnalyzedDataGateway.updateAll())
+        } else {
+            return false
+        }
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
