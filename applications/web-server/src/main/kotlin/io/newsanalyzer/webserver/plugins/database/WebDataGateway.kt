@@ -8,11 +8,6 @@ import io.newsanalyzer.webserver.plugins.AnalyzerDataClient
 import io.newsanalyzer.webserver.plugins.database.WebDatabase.dbQuery
 
 object WebDataGateway: WebDAO {
-    fun init() {
-        runBlocking {
-            updateAll()
-        }
-    }
 
     private fun ResultRow.toArticle() = Article(
         id = this[Articles.id],
@@ -32,10 +27,11 @@ object WebDataGateway: WebDAO {
         terms = this[Topics.terms]
     )
 
-    private suspend fun upsertArticles(articles: List<Article>) {
+    private suspend fun upsertArticles(articles: List<Article>): Boolean {
+        var success = false
         dbQuery {
             val onUpdateExclude = Articles.columns - setOf(Articles.topicId)
-            Articles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
+            val results = Articles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
                 (id, publisher, author, title, description, url,
                     urlToImage, publishedAt, content, topicId) ->
                 this[Articles.id] = id
@@ -49,24 +45,27 @@ object WebDataGateway: WebDAO {
                 this[Articles.content] = content
                 this[Articles.topicId] = topicId
             }
+            success = results.isNotEmpty()
         }
+        return success
     }
 
-    private suspend fun upsertTopics(topics: List<Topic>) {
+    private suspend fun upsertTopics(topics: List<Topic>): Boolean {
+        var success = false
         dbQuery {
             val onUpdateExclude = Topics.columns - setOf(Topics.terms)
-            Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
+            val results = Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
                     (topicId, terms) ->
                 this[Topics.topicId] = topicId
                 this[Topics.terms] = terms
             }
+            success = results.isNotEmpty()
         }
+        return success
     }
 
-    private suspend fun updateAll() {
-        val (articles, topics) = AnalyzerDataClient.getAnalyzedData()
-        upsertArticles(articles)
-        upsertTopics(topics)
+    override suspend fun updateAll(articles: List<Article>, topics: List<Topic>): Boolean {
+        return (upsertArticles(articles) && upsertTopics(topics))
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {

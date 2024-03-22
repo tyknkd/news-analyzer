@@ -5,11 +5,12 @@ import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import io.newsanalyzer.webserver.models.entrypoint
+import io.newsanalyzer.webserver.models.*
 import io.newsanalyzer.webserver.plugins.database.WebDataGateway
 
 fun Application.configureRouting() {
@@ -56,9 +57,13 @@ fun Application.configureRouting() {
             val articlesOnTopic = WebDataGateway.articlesOnTopic(topicId)
             call.respond(status = HttpStatusCode.OK, articlesOnTopic)
         }
-        get("/api/update") {
-            val result = CollectorDataClient.requestUpdate()
-            call.respondText(text = result.toString(), status = HttpStatusCode.OK)
+        post("/api/update") {
+            val (articles, topics) = call.receive<AnalyzedData>()
+            if(WebDataGateway.updateAll(articles, topics)) {
+                call.respondText("Updated", status = HttpStatusCode.OK)
+            } else {
+                call.respondText("Not updated", status = HttpStatusCode.OK)
+            }
         }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)

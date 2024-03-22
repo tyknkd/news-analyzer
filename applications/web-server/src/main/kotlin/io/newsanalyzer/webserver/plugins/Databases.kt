@@ -6,5 +6,4 @@ import io.newsanalyzer.webserver.plugins.database.WebDatabase
 
 fun Application.configureDatabases() {
     WebDatabase.init()
-    WebDataGateway.init()
 }
