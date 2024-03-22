@@ -28,10 +28,11 @@ object AnalyzedDataGateway: AnalyzedDAO {
         terms = this[Topics.terms]
     )
 
-    private suspend fun upsertArticles(articles: List<Article>) {
+    private suspend fun upsertArticles(articles: List<Article>): Boolean {
+        var success = false
         dbQuery {
             val onUpdateExclude = AnalyzedArticles.columns - setOf(AnalyzedArticles.topicId)
-            AnalyzedArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
+            val results = AnalyzedArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
                     (id, publisher, author, title, description, url,
                         urlToImage, publishedAt, content, topicId) ->
                 this[AnalyzedArticles.id] = id
@@ -45,29 +46,28 @@ object AnalyzedDataGateway: AnalyzedDAO {
                 this[AnalyzedArticles.content] = content
                 this[AnalyzedArticles.topicId] = topicId
             }
+            success = results.isNotEmpty()
         }
+        return success
     }
 
-    private suspend fun upsertTopics(topics: List<Topic>) {
+    private suspend fun upsertTopics(topics: List<Topic>): Boolean {
+        var success = false
         dbQuery {
             val onUpdateExclude = Topics.columns - setOf(Topics.terms)
-            Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
+            val results = Topics.batchUpsert(data = topics, onUpdateExclude = onUpdateExclude) {
                     (topicId, terms) ->
                 this[Topics.topicId] = topicId
                 this[Topics.terms] = terms
             }
+            success = results.isNotEmpty()
         }
-    }
-
-    private suspend fun upsertAll() {
-        val (articles, topics) = DataAnalyzer.getAnalyzedData()
-        upsertArticles(articles)
-        upsertTopics(topics)
+        return success
     }
 
     override suspend fun updateAll(): Boolean {
-        upsertAll()
-        return true
+        val (articles, topics) = DataAnalyzer.getAnalyzedData()
+        return (upsertArticles(articles) && upsertTopics(topics))
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {

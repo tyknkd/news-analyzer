@@ -32,8 +32,11 @@ fun Application.configureRouting() {
         }
         post("/articles") {
             val articles = call.receive<List<Article>>()
-            RawDataGateway.addArticles(articles)
-            call.respondText("Articles received", status = HttpStatusCode.OK)
+            if(RawDataGateway.addArticles(articles)) {
+                call.respondText("Updated", status = HttpStatusCode.OK)
+            } else {
+                call.respondText("Not updated", status = HttpStatusCode.NotModified)
+            }
         }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
