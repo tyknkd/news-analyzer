@@ -1,4 +1,4 @@
-package io.newsanalyzer.webserver.plugins.database
+package io.newsanalyzer.webserver.plugins
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -12,7 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.webserver.models.*
 import kotlinx.serialization.json.Json
 
-object WebDataClient {
+object AnalyzerDataClient {
     suspend fun getAnalyzedData(): Pair<List<Article>,List<Topic>> {
         val port = System.getenv("ANALYZER_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {
