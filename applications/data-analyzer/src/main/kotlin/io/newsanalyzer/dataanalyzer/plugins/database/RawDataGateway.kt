@@ -24,7 +24,7 @@ object RawDataGateway: RawDAO {
 
     private suspend fun upsertArticles(articles: List<Article>) {
         dbQuery {
-            val onUpdateExclude = (RawArticles.columns.toSet() - RawArticles.topicId).toList()
+            val onUpdateExclude = RawArticles.columns - setOf(RawArticles.topicId)
             RawArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
                     (id, publisher, author, title, description, url,
                         urlToImage, publishedAt, content, topicId) ->
