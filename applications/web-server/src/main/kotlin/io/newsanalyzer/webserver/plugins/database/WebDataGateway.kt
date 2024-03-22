@@ -10,9 +10,7 @@ import io.newsanalyzer.webserver.plugins.database.WebDatabase.dbQuery
 object WebDataGateway: WebDAO {
     fun init() {
         runBlocking {
-            if(allTopics().isEmpty()) {
-                upsertAll()
-            }
+            updateAll()
         }
     }
 
@@ -65,7 +63,7 @@ object WebDataGateway: WebDAO {
         }
     }
 
-    private suspend fun upsertAll() {
+    private suspend fun updateAll() {
         val (articles, topics) = AnalyzerDataClient.getAnalyzedData()
         upsertArticles(articles)
         upsertTopics(topics)
