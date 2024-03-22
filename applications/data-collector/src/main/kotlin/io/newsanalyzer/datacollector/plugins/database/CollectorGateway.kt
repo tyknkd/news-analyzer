@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.seconds
 import io.newsanalyzer.datacollector.models.*
 import io.newsanalyzer.datacollector.plugins.AnalyzerDataClient
 import io.newsanalyzer.datacollector.plugins.DataCollector
@@ -68,7 +69,8 @@ object CollectorGateway: CollectorDAO {
     override suspend fun updateArticles(): Boolean {
         val latestDateTime = latestDateTime()
         if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 24.hours ) {
-            val remoteData = DataCollector.collectData(latestDateTime)
+            val latestPlusOne = latestDateTime?.plus(1.seconds)
+            val remoteData = DataCollector.collectData(latestPlusOne)
             if (remoteData.totalResults > 0) {
                 addArticles(remoteData)
                 AnalyzerDataClient.postArticles(articlesAfter(latestDateTime))
