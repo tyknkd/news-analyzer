@@ -44,10 +44,10 @@ object RawDataGateway: RawDAO {
     }
 
     override suspend fun addArticles(articles: List<Article>): Boolean {
-        if (upsertArticles(articles)) {
-            return (AnalyzedDataGateway.updateAll())
+        return if (upsertArticles(articles)) {
+            (AnalyzedDataGateway.updateAll())
         } else {
-            return false
+            false
         }
     }
 

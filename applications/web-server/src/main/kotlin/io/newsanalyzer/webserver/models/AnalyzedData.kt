@@ -1,6 +1,5 @@
 package io.newsanalyzer.webserver.models
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

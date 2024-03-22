@@ -1,7 +1,6 @@
 package io.newsanalyzer.dataanalyzer.plugins.database
 
 import org.jetbrains.exposed.sql.*
-import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import io.newsanalyzer.dataanalyzer.models.*
 import io.newsanalyzer.dataanalyzer.plugins.DataAnalyzer
@@ -10,7 +9,6 @@ import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzerDatabase.dbQuery
 
 
 object AnalyzedDataGateway: AnalyzedDAO {
-
     private fun ResultRow.toArticle() = Article(
         id = this[AnalyzedArticles.id],
         publisher = this[AnalyzedArticles.publisher],
