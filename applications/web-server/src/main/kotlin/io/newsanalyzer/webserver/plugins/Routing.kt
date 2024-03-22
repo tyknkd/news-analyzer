@@ -56,6 +56,10 @@ fun Application.configureRouting() {
             val articlesOnTopic = WebDataGateway.articlesOnTopic(topicId)
             call.respond(status = HttpStatusCode.OK, articlesOnTopic)
         }
+        get("/api/update") {
+            val result = CollectorDataClient.requestUpdate()
+            call.respondText(text = result.toString(), status = HttpStatusCode.OK)
+        }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
