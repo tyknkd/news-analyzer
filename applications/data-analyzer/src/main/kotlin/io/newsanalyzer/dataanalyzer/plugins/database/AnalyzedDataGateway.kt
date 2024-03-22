@@ -5,6 +5,7 @@ import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import io.newsanalyzer.dataanalyzer.models.*
 import io.newsanalyzer.dataanalyzer.plugins.DataAnalyzer
+import io.newsanalyzer.dataanalyzer.plugins.WebServerDataClient
 import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzerDatabase.dbQuery
 
 
@@ -67,7 +68,11 @@ object AnalyzedDataGateway: AnalyzedDAO {
 
     override suspend fun updateAll(): Boolean {
         val (articles, topics) = DataAnalyzer.getAnalyzedData()
-        return (upsertArticles(articles) && upsertTopics(topics))
+        return if (upsertArticles(articles) && upsertTopics(topics)) {
+            WebServerDataClient.postAnalyzedData(AnalyzedData(articles, topics))
+        } else {
+            false
+        }
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
