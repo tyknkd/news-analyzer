@@ -35,7 +35,7 @@ fun Application.configureRouting() {
             if(RawDataGateway.addArticles(articles)) {
                 call.respondText("Updated", status = HttpStatusCode.OK)
             } else {
-                call.respondText("Not updated", status = HttpStatusCode.NotModified)
+                call.respondText("Not updated", status = HttpStatusCode.OK)
             }
         }
         get("/health") {
