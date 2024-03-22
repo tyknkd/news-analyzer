@@ -38,6 +38,13 @@ fun Application.configureRouting() {
                 call.respondText("Not updated", status = HttpStatusCode.OK)
             }
         }
+        get("/reanalyze") {
+            if(AnalyzedDataGateway.updateAll()) {
+                call.respondText("Updated", status = HttpStatusCode.OK)
+            } else {
+                call.respondText("Not updated", status = HttpStatusCode.OK)
+            }
+        }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
