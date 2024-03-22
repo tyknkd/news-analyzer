@@ -37,7 +37,11 @@ fun Application.configureRouting() {
             call.respond(status = HttpStatusCode.OK, latestDateTime)
         }
         get("/update") {
-            call.respondText(text = CollectorGateway.updateArticles().toString(), status = HttpStatusCode.OK)
+            if (CollectorGateway.updateArticles()) {
+                call.respondText(text = "Updated", status = HttpStatusCode.OK)
+            } else {
+                call.respondText(text = "No update", status = HttpStatusCode.OK)
+            }
         }
     }
 }

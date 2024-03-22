@@ -43,10 +43,6 @@ object AnalyzerDataClient {
 
         client.close()
 
-        return if (response.status == HttpStatusCode.OK) {
-            true
-        } else {
-            false
-        }
+        return (response.bodyAsText() == "Updated")
     }
 }

@@ -29,9 +29,10 @@ object CollectorGateway: CollectorDAO {
         content = this[Articles.content]
     )
 
-    private suspend fun addArticles(remoteData: RemoteData) {
+    private suspend fun addArticles(remoteData: RemoteData): Boolean {
+        var success = false
         dbQuery {
-            Articles.batchInsert(data = remoteData.articles.reversed()) {
+            val results = Articles.batchInsert(data = remoteData.articles.reversed()) {
                 (source, author, title, description, url,
                     urlToImage, publishedAt, content) ->
                 this[Articles.publisher] = source.name
@@ -43,7 +44,9 @@ object CollectorGateway: CollectorDAO {
                 this[Articles.publishedAt] = Instant.parse(publishedAt)
                 this[Articles.content] = content
             }
+            success = results.isNotEmpty()
         }
+        return success
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
@@ -72,9 +75,9 @@ object CollectorGateway: CollectorDAO {
             val latestPlusOne = latestDateTime?.plus(1.seconds)
             val remoteData = DataCollector.collectData(latestPlusOne)
             if (remoteData.totalResults > 0) {
-                addArticles(remoteData)
-                AnalyzerDataClient.postArticles(articlesAfter(latestDateTime))
-                return true
+                if (addArticles(remoteData)) {
+                    return(AnalyzerDataClient.postArticles(articlesAfter(latestDateTime)))
+                }
             }
         }
         return false
