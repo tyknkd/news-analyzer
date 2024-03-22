@@ -1,10 +1,8 @@
 package io.newsanalyzer.dataanalyzer.plugins.database
 
 import org.jetbrains.exposed.sql.*
-import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import io.newsanalyzer.dataanalyzer.models.*
-import io.newsanalyzer.dataanalyzer.plugins.CollectedDataClient
 import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzerDatabase.dbQuery
 
 

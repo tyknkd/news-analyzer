@@ -11,7 +11,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
-object CollectedDataClient {
+object CollectorDataClient {
     suspend fun getCollectedData(): List<Article> {
         val port = System.getenv("COLLECTOR_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {
