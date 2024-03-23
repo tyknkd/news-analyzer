@@ -95,7 +95,7 @@ object DataAnalyzer {
             termList = vectorizer.vocabulary().toList()
 
             // Latent Dirichlet Allocation
-            val numberTopics = numberArticles/10
+            val numberTopics = numberArticles/8
             val ldaModel = LDA()
                 .setK(numberTopics)
                 .setOptimizer("em") // Expectation maximization
