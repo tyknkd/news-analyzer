@@ -11,7 +11,6 @@ import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.datacollector.models.*
 import kotlinx.serialization.json.Json
 import kotlinx.datetime.*
-import org.jetbrains.kotlinx.dataframe.*
 import org.jetbrains.kotlinx.dataframe.api.*
 
 object DataCollector {
