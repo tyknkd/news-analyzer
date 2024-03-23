@@ -1,6 +1,5 @@
 plugins {
     id("news-analyzer.kotlin-webserver-conventions")
-    id("news-analyzer.kotlin-client-conventions")
 }
 
 application {
