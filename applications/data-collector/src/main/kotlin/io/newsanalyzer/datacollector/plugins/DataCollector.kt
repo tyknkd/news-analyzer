@@ -84,7 +84,7 @@ object DataCollector {
     }
     private suspend fun cleanData(remoteData: RemoteData): List<RemoteArticle> {
         val articlesDf = remoteData.articles.reversed().toDataFrame()
-        val filteredArticlesDf = articlesDf.drop { it["title"] == "[Removed]"}
+        val filteredArticlesDf = articlesDf.drop { it["title"] == "[Removed]" || it["title"] == "" }
         return filteredArticlesDf.toList()
     }
 }
