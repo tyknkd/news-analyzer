@@ -8,12 +8,14 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.newsanalyzer.datacollector.models.RemoteData
+import io.newsanalyzer.datacollector.models.*
 import kotlinx.serialization.json.Json
 import kotlinx.datetime.*
+import org.jetbrains.kotlinx.dataframe.*
+import org.jetbrains.kotlinx.dataframe.api.*
 
 object DataCollector {
-    suspend fun collectData(fromInstant: Instant?=null): RemoteData {
+    suspend fun collectData(fromInstant: Instant?=null): List<RemoteArticle>? {
         val newsApiKey = System.getenv("NEWS_API_KEY")
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
@@ -75,6 +77,15 @@ object DataCollector {
             throw RuntimeException(apiKeyErrorMessage)
         }
         val remoteData: RemoteData = response.body()
-        return remoteData
+        return if (remoteData.totalResults > 0) {
+            cleanData(remoteData)
+        } else {
+            null
+        }
+    }
+    private suspend fun cleanData(remoteData: RemoteData): List<RemoteArticle> {
+        val articlesDf = remoteData.articles.reversed().toDataFrame()
+        val filteredArticlesDf = articlesDf.drop { it["title"] == "[Removed]"}
+        return filteredArticlesDf.toList()
     }
 }
