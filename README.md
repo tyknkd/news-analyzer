@@ -104,17 +104,17 @@ source .env && source sensitive.env
 ```shell
 ./gradlew koverHtmlReport
 ```
-6. Start the data collector server.
+6. In a separate terminal, start the web server.
 ```shell
-./gradlew applications:data-collector:run
+./gradlew applications:web-server:run
 ```
 7. In a separate bash shell, start the data analyzer server.
 ```shell
 ./gradlew applications:data-analyzer:run
 ```
-8. In a separate terminal, start the web server.
+8. Start the data collector server.
 ```shell
-./gradlew applications:web-server:run
+./gradlew applications:data-collector:run
 ```
 9. In a web browser, open [http://localhost:8080](http://localhost:8080)
 10. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
