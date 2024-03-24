@@ -2,22 +2,22 @@ package io.newsanalyzer.webserver.plugins.database
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.kotlinx.dataframe.api.*
-import io.newsanalyzer.webserver.models.*
+import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.webserver.plugins.database.WebDatabase.dbQuery
 
 object WebDataGateway: WebDAO {
 
     private fun ResultRow.toArticle() = Article(
-        id = this[Articles.id],
-        publisher = this[Articles.publisher],
-        author = this[Articles.author],
-        title = this[Articles.title],
-        description = this[Articles.description],
-        url = this[Articles.url],
-        urlToImage = this[Articles.urlToImage],
-        publishedAt = this[Articles.publishedAt],
-        content = this[Articles.content],
-        topicId = this[Articles.topicId]
+        id = this[AnalyzedArticles.id],
+        publisher = this[AnalyzedArticles.publisher],
+        author = this[AnalyzedArticles.author],
+        title = this[AnalyzedArticles.title],
+        description = this[AnalyzedArticles.description],
+        url = this[AnalyzedArticles.url],
+        urlToImage = this[AnalyzedArticles.urlToImage],
+        publishedAt = this[AnalyzedArticles.publishedAt],
+        content = this[AnalyzedArticles.content],
+        topicId = this[AnalyzedArticles.topicId]
     )
 
     private fun ResultRow.toTopic() = Topic(
@@ -28,20 +28,20 @@ object WebDataGateway: WebDAO {
     private suspend fun upsertArticles(articles: List<Article>): Boolean {
         var success = false
         dbQuery {
-            val onUpdateExclude = Articles.columns - setOf(Articles.topicId)
-            val results = Articles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
+            val onUpdateExclude = AnalyzedArticles.columns - setOf(AnalyzedArticles.topicId)
+            val results = AnalyzedArticles.batchUpsert(data = articles, onUpdateExclude = onUpdateExclude) {
                 (id, publisher, author, title, description, url,
                     urlToImage, publishedAt, content, topicId) ->
-                this[Articles.id] = id
-                this[Articles.publisher] = publisher
-                this[Articles.author] = author
-                this[Articles.title] = title
-                this[Articles.description] = description
-                this[Articles.url] = url
-                this[Articles.urlToImage] = urlToImage
-                this[Articles.publishedAt] = publishedAt
-                this[Articles.content] = content
-                this[Articles.topicId] = topicId
+                this[AnalyzedArticles.id] = id
+                this[AnalyzedArticles.publisher] = publisher
+                this[AnalyzedArticles.author] = author
+                this[AnalyzedArticles.title] = title
+                this[AnalyzedArticles.description] = description
+                this[AnalyzedArticles.url] = url
+                this[AnalyzedArticles.urlToImage] = urlToImage
+                this[AnalyzedArticles.publishedAt] = publishedAt
+                this[AnalyzedArticles.content] = content
+                this[AnalyzedArticles.topicId] = topicId
             }
             success = results.isNotEmpty()
         }
@@ -67,7 +67,7 @@ object WebDataGateway: WebDAO {
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
-        Articles.selectAll().map { row -> row.toArticle() }
+        AnalyzedArticles.selectAll().map { row -> row.toArticle() }
     }
 
     override suspend fun allTopics(): List<Topic> = dbQuery {
@@ -89,9 +89,9 @@ object WebDataGateway: WebDAO {
     }
 
     private suspend fun articles(topicId: Int): List<Article> = dbQuery {
-        Articles
+        AnalyzedArticles
             .selectAll()
-            .where { Articles.topicId eq topicId }
+            .where { AnalyzedArticles.topicId eq topicId }
             .map { row -> row.toArticle() }
             .sortedByDescending { article -> article.publishedAt }
     }

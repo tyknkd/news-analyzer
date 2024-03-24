@@ -1,6 +1,13 @@
-package io.newsanalyzer.dataanalyzer.models
+package io.newsanalyzer.datasupport.models
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.*
+
+@Serializable
+data class Topic (
+    val topicId: Int,
+    val terms: String
+)
 
 object Topics: Table() {
     val topicId = integer("topicId")

@@ -1,7 +1,7 @@
 package io.newsanalyzer.dataanalyzer.plugins.database
 
-import io.newsanalyzer.databasesupport.DatabaseTemplate
-import io.newsanalyzer.dataanalyzer.models.*
+import io.newsanalyzer.datasupport.DatabaseTemplate
+import io.newsanalyzer.datasupport.models.*
 
 object AnalyzerDatabase: DatabaseTemplate {
     override val envDbName = "ANALYZER_DB"

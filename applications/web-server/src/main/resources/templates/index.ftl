@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="articlesByTopic" type="kotlin.collections.List<io.newsanalyzer.webserver.models.ArticlesByTopic>" -->
+<#-- @ftlvariable name="articlesByTopic" type="kotlin.collections.List<io.newsanalyzer.datasupport.models.ArticlesByTopic>" -->
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <ul>

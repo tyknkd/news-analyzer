@@ -1,6 +1,6 @@
 package io.newsanalyzer.dataanalyzer.plugins.database
 
-import io.newsanalyzer.dataanalyzer.models.*
+import io.newsanalyzer.datasupport.models.Article
 import kotlinx.datetime.*
 
 interface RawDAO {

@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="articlesOnTopic" type="io.newsanalyzer.webserver.models.ArticlesByTopic" -->
+<#-- @ftlvariable name="articlesOnTopic" type="io.newsanalyzer.datasupport.models.ArticlesByTopic" -->
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <h3 class="topicHeader">

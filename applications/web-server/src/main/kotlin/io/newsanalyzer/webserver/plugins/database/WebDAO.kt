@@ -1,6 +1,6 @@
 package io.newsanalyzer.webserver.plugins.database
 
-import io.newsanalyzer.webserver.models.*
+import io.newsanalyzer.datasupport.models.*
 
 interface WebDAO {
     suspend fun allArticles(): List<Article>

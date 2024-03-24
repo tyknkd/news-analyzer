@@ -1,6 +1,6 @@
 package io.newsanalyzer.datacollector.plugins.database
 
-import io.newsanalyzer.datacollector.models.*
+import io.newsanalyzer.datasupport.models.*
 import kotlinx.datetime.*
 
 interface CollectorDAO {

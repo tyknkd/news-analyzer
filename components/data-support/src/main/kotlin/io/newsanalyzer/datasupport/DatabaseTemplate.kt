@@ -1,4 +1,4 @@
-package io.newsanalyzer.databasesupport
+package io.newsanalyzer.datasupport
 
 import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*

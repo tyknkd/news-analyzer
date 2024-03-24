@@ -8,7 +8,7 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzedDataGateway
-import io.newsanalyzer.dataanalyzer.models.Article
+import io.newsanalyzer.datasupport.models.Article
 import io.newsanalyzer.dataanalyzer.plugins.database.RawDataGateway
 
 fun Application.configureRouting() {

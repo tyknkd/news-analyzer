@@ -8,3 +8,18 @@ data class RemoteData(
     val totalResults: Int,
     val articles: List<RemoteArticle>
 )
+
+@Serializable
+data class RemoteArticle(
+    val source: RemoteSource,
+    val author: String = "",
+    val title: String = "",
+    val description: String = "",
+    val url: String = "",
+    val urlToImage: String = "",
+    val publishedAt: String = "",
+    val content: String = ""
+)
+
+@Serializable
+data class RemoteSource(val id: String?, val name: String = "")

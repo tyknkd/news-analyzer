@@ -1,6 +1,7 @@
 package io.newsanalyzer.dataanalyzer.plugins
 
 import io.newsanalyzer.dataanalyzer.models.*
+import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.dataanalyzer.plugins.database.RawDataGateway
 import org.jetbrains.kotlinx.dataframe.*
 import org.jetbrains.kotlinx.dataframe.api.*

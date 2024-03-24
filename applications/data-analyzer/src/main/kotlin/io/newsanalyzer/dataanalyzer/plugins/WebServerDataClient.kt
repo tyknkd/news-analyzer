@@ -8,7 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.newsanalyzer.dataanalyzer.models.*
+import io.newsanalyzer.datasupport.models.*
 import kotlinx.serialization.json.Json
 
 object WebServerDataClient {

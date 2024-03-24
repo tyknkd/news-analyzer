@@ -1,9 +1,9 @@
 package io.newsanalyzer.datacollector.plugins.database
 
-import io.newsanalyzer.databasesupport.DatabaseTemplate
-import io.newsanalyzer.datacollector.models.Articles
+import io.newsanalyzer.datasupport.DatabaseTemplate
+import io.newsanalyzer.datasupport.models.RawArticles
 
 object CollectorDatabase: DatabaseTemplate {
     override val envDbName = "COLLECTOR_DB"
-    override val tables = listOf(Articles)
+    override val tables = listOf(RawArticles)
 }

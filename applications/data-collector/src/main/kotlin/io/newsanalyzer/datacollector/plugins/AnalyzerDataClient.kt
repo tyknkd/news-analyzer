@@ -1,7 +1,6 @@
 package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.engine.java.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -9,7 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.newsanalyzer.datacollector.models.*
+import io.newsanalyzer.datasupport.models.*
 import kotlinx.serialization.json.Json
 
 object AnalyzerDataClient {

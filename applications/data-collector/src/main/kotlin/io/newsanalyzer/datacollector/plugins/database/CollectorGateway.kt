@@ -5,11 +5,11 @@ import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
-import io.newsanalyzer.datacollector.models.*
+import io.newsanalyzer.datasupport.models.*
+import io.newsanalyzer.datacollector.models.RemoteArticle
 import io.newsanalyzer.datacollector.plugins.AnalyzerDataClient
 import io.newsanalyzer.datacollector.plugins.DataCollector
 import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
-
 
 object CollectorGateway: CollectorDAO {
     fun init() {
@@ -18,31 +18,33 @@ object CollectorGateway: CollectorDAO {
         }
     }
     private fun ResultRow.toArticle() = Article(
-        id = this[Articles.id],
-        publisher = this[Articles.publisher],
-        author = this[Articles.author],
-        title = this[Articles.title],
-        description = this[Articles.description],
-        url = this[Articles.url],
-        urlToImage = this[Articles.urlToImage],
-        publishedAt = this[Articles.publishedAt],
-        content = this[Articles.content]
+        id = this[RawArticles.id],
+        publisher = this[RawArticles.publisher],
+        author = this[RawArticles.author],
+        title = this[RawArticles.title],
+        description = this[RawArticles.description],
+        url = this[RawArticles.url],
+        urlToImage = this[RawArticles.urlToImage],
+        publishedAt = this[RawArticles.publishedAt],
+        content = this[RawArticles.content],
+        topicId = this[RawArticles.topicId]
     )
 
     private suspend fun addArticles(articles: List<RemoteArticle>): Boolean {
         var success = false
         dbQuery {
-            val results = Articles.batchInsert(data = articles) {
+            val results = RawArticles.batchInsert(data = articles) {
                 (source, author, title, description, url,
                     urlToImage, publishedAt, content) ->
-                this[Articles.publisher] = source.name
-                this[Articles.author] = author
-                this[Articles.title] = title
-                this[Articles.description] = description
-                this[Articles.url] = url
-                this[Articles.urlToImage] = urlToImage
-                this[Articles.publishedAt] = Instant.parse(publishedAt)
-                this[Articles.content] = content
+                this[RawArticles.publisher] = source.name
+                this[RawArticles.author] = author
+                this[RawArticles.title] = title
+                this[RawArticles.description] = description
+                this[RawArticles.url] = url
+                this[RawArticles.urlToImage] = urlToImage
+                this[RawArticles.publishedAt] = Instant.parse(publishedAt)
+                this[RawArticles.content] = content
+                this[RawArticles.topicId] = -1
             }
             success = results.isNotEmpty()
         }
@@ -50,7 +52,7 @@ object CollectorGateway: CollectorDAO {
     }
 
     override suspend fun allArticles(): List<Article> = dbQuery {
-        Articles.selectAll().map { row -> row.toArticle() }
+        RawArticles.selectAll().map { row -> row.toArticle() }
     }
 
     override suspend fun articlesAfter(instant: Instant?): List<Article> {
@@ -58,15 +60,15 @@ object CollectorGateway: CollectorDAO {
             allArticles()
         } else {
             dbQuery{
-                Articles.selectAll()
-                    .where { Articles.publishedAt greater instant }
+                RawArticles.selectAll()
+                    .where { RawArticles.publishedAt greater instant }
                     .map { row -> row.toArticle() }
             }
         }
     }
 
     override suspend fun latestDateTime(): Instant? = dbQuery {
-        Articles.selectAll().lastOrNull()?.toArticle()?.publishedAt
+        RawArticles.selectAll().lastOrNull()?.toArticle()?.publishedAt
     }
 
     override suspend fun updateArticles(): Boolean {
