@@ -9,33 +9,36 @@ import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datacollector.models.RemoteArticle
 import io.newsanalyzer.datacollector.plugins.AnalyzerDataClient
 import io.newsanalyzer.datacollector.plugins.DataCollector
-import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase.dbQuery
+import io.newsanalyzer.datasupport.RawArticlesGatewayTemplate
 
-object CollectorGateway: CollectorDAO {
+object CollectorGateway: RawArticlesGatewayTemplate {
     fun init() {
         runBlocking {
             updateArticles()
         }
     }
-    private fun ResultRow.toArticle() = Article(
-        id = this[RawArticles.id],
-        publisher = this[RawArticles.publisher],
-        author = this[RawArticles.author],
-        title = this[RawArticles.title],
-        description = this[RawArticles.description],
-        url = this[RawArticles.url],
-        urlToImage = this[RawArticles.urlToImage],
-        publishedAt = this[RawArticles.publishedAt],
-        content = this[RawArticles.content],
-        topicId = this[RawArticles.topicId]
-    )
 
-    private suspend fun addArticles(articles: List<RemoteArticle>): Boolean {
+    suspend fun updateArticles(): Boolean {
+        val latestDateTime = latestDateTime()
+        if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 24.hours ) {
+            val latestPlusOne = latestDateTime?.plus(1.minutes)
+            val remoteArticles = DataCollector.collectData(latestPlusOne)
+            if (remoteArticles.isNullOrEmpty()) { return false
+            } else {
+                if (addRemoteArticles(remoteArticles)) {
+                    return AnalyzerDataClient.postArticles(articlesAfter(latestDateTime))
+                }
+            }
+        }
+        return false
+    }
+
+    private suspend fun addRemoteArticles(remoteArticles: List<RemoteArticle>): Boolean {
         var success = false
         dbQuery {
-            val results = RawArticles.batchInsert(data = articles) {
-                (source, author, title, description, url,
-                    urlToImage, publishedAt, content) ->
+            val results = RawArticles.batchInsert(data = remoteArticles) {
+                    (source, author, title, description, url,
+                        urlToImage, publishedAt, content) ->
                 this[RawArticles.publisher] = source.name
                 this[RawArticles.author] = author
                 this[RawArticles.title] = title
@@ -51,11 +54,7 @@ object CollectorGateway: CollectorDAO {
         return success
     }
 
-    override suspend fun allArticles(): List<Article> = dbQuery {
-        RawArticles.selectAll().map { row -> row.toArticle() }
-    }
-
-    override suspend fun articlesAfter(instant: Instant?): List<Article> {
+    private suspend fun articlesAfter(instant: Instant?): List<Article> {
         return if (instant == null ) {
             allArticles()
         } else {
@@ -67,22 +66,7 @@ object CollectorGateway: CollectorDAO {
         }
     }
 
-    override suspend fun latestDateTime(): Instant? = dbQuery {
+    private suspend fun latestDateTime(): Instant? = dbQuery {
         RawArticles.selectAll().lastOrNull()?.toArticle()?.publishedAt
-    }
-
-    override suspend fun updateArticles(): Boolean {
-        val latestDateTime = latestDateTime()
-        if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 24.hours ) {
-            val latestPlusOne = latestDateTime?.plus(1.minutes)
-            val articles = DataCollector.collectData(latestPlusOne)
-            if (articles.isNullOrEmpty()) { return false
-                } else {
-                if (addArticles(articles)) {
-                    return AnalyzerDataClient.postArticles(articlesAfter(latestDateTime))
-                }
-            }
-        }
-        return false
     }
 }

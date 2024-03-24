@@ -1,9 +1,7 @@
 package io.newsanalyzer.datasupport
 
-import kotlinx.coroutines.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
-import org.jetbrains.exposed.sql.transactions.experimental.*
 import com.zaxxer.hikari.*
 
 interface DatabaseTemplate {
@@ -55,7 +53,4 @@ interface DatabaseTemplate {
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
             validate()
         })
-
-    suspend fun <T> dbQuery(block: suspend() -> T): T =
-        newSuspendedTransaction(Dispatchers.IO) { block() }
 }
