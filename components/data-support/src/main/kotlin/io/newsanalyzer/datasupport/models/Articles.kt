@@ -20,7 +20,7 @@ data class Article(
 )
 
 open class ArticlesTemplate : Table() {
-    val id = integer("id")
+    val id = integer("id").autoIncrement()
     val publisher = varchar("publisher", 64)
     val author = varchar("author", 128)
     val title = varchar("title", 256)
