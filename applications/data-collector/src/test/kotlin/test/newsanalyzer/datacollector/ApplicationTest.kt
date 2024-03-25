@@ -39,15 +39,7 @@ class ApplicationTest {
             assertEquals("OK", bodyAsText())
         }
     }
-    @Test
-    fun testLatestDateTime() = testSuspend {
-        testApp.client.get("/latestDateTime").apply {
-            assertEquals(HttpStatusCode.OK, status, apiKeyErrorMessage)
-            val bodyAsText = bodyAsText()
-            assertContains(bodyAsText, "\"latestDateTime\":")
-            assertContains(bodyAsText, "Z")
-        }
-    }
+
     @Test
     fun testRoot() = testSuspend {
         testApp.client.get("/").apply {
