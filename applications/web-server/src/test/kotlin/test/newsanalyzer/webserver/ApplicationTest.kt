@@ -1,6 +1,5 @@
 package test.newsanalyzer.webserver
 
-import io.ktor.client.call.*
 import io.newsanalyzer.webserver.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
