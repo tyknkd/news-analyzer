@@ -1,3 +1,5 @@
+package test.newsanalyzer.dataanalyzer
+
 import io.newsanalyzer.dataanalyzer.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
