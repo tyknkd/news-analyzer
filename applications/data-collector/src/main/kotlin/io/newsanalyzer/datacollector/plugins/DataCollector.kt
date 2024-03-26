@@ -14,20 +14,19 @@ import kotlinx.datetime.*
 import org.jetbrains.kotlinx.dataframe.api.*
 
 object DataCollector {
-    val collectorClient = HttpClient(engineFactory = Java) {
-        install(ContentNegotiation) {
-            json(Json {
-                isLenient = true
-                coerceInputValues = true
-                ignoreUnknownKeys = true
-            })
-        }
-    }
-
     suspend fun collectData(fromInstant: Instant?=null): List<RemoteArticle>? {
         val sourceList = listOf("ars-technica","associated-press","bbc-news","bloomberg","business-insider","engadget",
             "fortune","hacker-news","new-scientist","newsweek","next-big-future","recode","reuters","techcrunch",
             "techradar","the-next-web","the-verge","the-wall-street-journal","the-washington-post","wired")
+        val collectorClient = HttpClient(engineFactory = Java) {
+            install(ContentNegotiation) {
+                json(Json {
+                    isLenient = true
+                    coerceInputValues = true
+                    ignoreUnknownKeys = true
+                })
+            }
+        }
         return getNewsApiData("tech industry", sourceList, getNewsApiKey(), fromInstant, collectorClient)
     }
 
