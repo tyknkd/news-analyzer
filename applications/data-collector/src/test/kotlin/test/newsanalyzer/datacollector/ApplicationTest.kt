@@ -1,11 +1,19 @@
 package test.newsanalyzer.datacollector
 
+import io.ktor.client.plugins.api.*
 import io.newsanalyzer.datacollector.plugins.*
+import io.newsanalyzer.testsupport.TestDoubles
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import io.newsanalyzer.httpsupport.HttpClientTemplate
 import org.junit.Test
 import org.junit.BeforeClass
 import org.junit.AfterClass
@@ -62,10 +70,35 @@ class ApplicationTest {
         @BeforeClass
         fun setup() {
             testApp = TestApplication {
+                externalServices {
+                    hosts("https://newsapi.org") {
+                        install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
+                        routing {
+                            get("v2/everything{params}") {
+                                call.respond(status = HttpStatusCode.OK, TestDoubles().remoteData)
+                            }
+                        }
+                    }
+                    val port = System.getenv("ANALYZER_PORT")
+                    val apiHost = if (System.getenv("OS_ENV") == "container") {
+                        "data-analyzer:$port"
+                    } else {
+                        "localhost:$port"
+                    }
+                    hosts(apiHost) {
+                        install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
+                        routing {
+                            post("articles") {
+                                call.respondText("Updated", status = HttpStatusCode.OK)
+                            }
+                        }
+                    }
+                }
+                val testClient = HttpClientTemplate().httpClient
                 application {
                     configureSerialization()
-                    configureDatabases()
-                    configureRouting()
+                    configureDatabases("COLLECTOR_TEST_DB")
+                    configureRouting(testClient)
                 }
             }
         }
