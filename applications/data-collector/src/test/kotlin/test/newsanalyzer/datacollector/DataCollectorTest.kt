@@ -1,7 +1,6 @@
 package test.newsanalyzer.datacollector
 
 import io.newsanalyzer.datacollector.plugins.*
-import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.testsupport.TestDoubles
 import io.ktor.http.*
 import io.ktor.server.testing.*
