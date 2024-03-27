@@ -1,32 +1,34 @@
 package io.newsanalyzer.datacollector.plugins.database
 
+import io.ktor.client.*
 import org.jetbrains.exposed.sql.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import io.newsanalyzer.datasupport.models.*
-import io.newsanalyzer.datacollector.models.RemoteArticle
+import io.newsanalyzer.datasupport.models.RemoteArticle
 import io.newsanalyzer.datacollector.plugins.AnalyzerDataClient
 import io.newsanalyzer.datacollector.plugins.DataCollector
 import io.newsanalyzer.datasupport.RawArticlesGatewayTemplate
+import io.newsanalyzer.httpsupport.HttpClientTemplate
 
-object CollectorGateway: RawArticlesGatewayTemplate {
-    fun init() {
+class CollectorGateway(val httpClient: HttpClient = HttpClientTemplate().httpClient): RawArticlesGatewayTemplate {
+    init {
         runBlocking {
-            updateArticles()
+            updateArticles(httpClient)
         }
     }
 
-    suspend fun updateArticles(): Boolean {
+    suspend fun updateArticles(client: HttpClient = httpClient): Boolean {
         val latestDateTime = latestDateTime()
         if (latestDateTime == null || Clock.System.now().minus(latestDateTime) > 24.hours ) {
             val latestPlusOne = latestDateTime?.plus(1.minutes)
-            val remoteArticles = DataCollector.collectData(latestPlusOne)
+            val remoteArticles = DataCollector.collectData(latestPlusOne, client)
             if (remoteArticles.isNullOrEmpty()) { return false
             } else {
                 if (addRemoteArticles(remoteArticles)) {
-                    return AnalyzerDataClient.postArticles(articlesAfter(latestDateTime))
+                    return AnalyzerDataClient.postArticles(articlesAfter(latestDateTime), client)
                 }
             }
         }

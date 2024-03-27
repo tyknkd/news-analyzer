@@ -2,23 +2,21 @@ package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.engine.java.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.newsanalyzer.datacollector.models.*
-import kotlinx.serialization.json.Json
+import io.newsanalyzer.datasupport.models.RemoteArticle
+import io.newsanalyzer.datasupport.models.RemoteData
+import io.newsanalyzer.httpsupport.HttpClientTemplate
 import kotlinx.datetime.*
 import org.jetbrains.kotlinx.dataframe.api.*
 
 object DataCollector {
-    suspend fun collectData(fromInstant: Instant?=null): List<RemoteArticle>? {
+    suspend fun collectData(fromInstant: Instant?=null, client: HttpClient = HttpClientTemplate().httpClient): List<RemoteArticle>? {
         val sourceList = listOf("ars-technica","associated-press","bbc-news","bloomberg","business-insider","engadget",
             "fortune","hacker-news","new-scientist","newsweek","next-big-future","recode","reuters","techcrunch",
             "techradar","the-next-web","the-verge","the-wall-street-journal","the-washington-post","wired")
-        return getNewsApiData("tech industry", sourceList, getNewsApiKey(), fromInstant)
+        return getNewsApiData("tech industry", sourceList, getNewsApiKey(), fromInstant, client)
     }
 
     private fun getNewsApiKey(): String? {
@@ -29,7 +27,7 @@ object DataCollector {
                                sourceList: List<String>,
                                newsApiKey: String?,
                                fromInstant: Instant? = null,
-                               client: HttpClient = CollectorClient.httpClient): List<RemoteArticle>? {
+                               client: HttpClient = HttpClientTemplate().httpClient): List<RemoteArticle>? {
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
             throw RuntimeException(apiKeyErrorMessage)
