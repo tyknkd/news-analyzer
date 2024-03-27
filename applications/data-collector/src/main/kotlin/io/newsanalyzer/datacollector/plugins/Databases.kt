@@ -1,10 +1,10 @@
 package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.server.application.*
-import io.newsanalyzer.datacollector.plugins.database.CollectorGateway
-import io.newsanalyzer.datacollector.plugins.database.CollectorDatabase
+import org.jetbrains.exposed.sql.*
+import io.newsanalyzer.datasupport.DatabaseClassTemplate
+import io.newsanalyzer.datasupport.models.RawArticles
 
-fun Application.configureDatabases() {
-    CollectorDatabase.init()
-    CollectorGateway.init()
+fun Application.configureDatabases(envDbName: String = "COLLECTOR_DB", tables: List<Table> = listOf(RawArticles)) {
+    val collectorDatabase = DatabaseClassTemplate(envDbName, tables)
 }
