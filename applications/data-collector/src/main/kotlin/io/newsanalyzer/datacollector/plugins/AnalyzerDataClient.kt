@@ -19,6 +19,7 @@ object AnalyzerDataClient {
         } else {
             "localhost:$port"
         }
+        val path = "articles"
         val client = HttpClient(engineFactory = Java) {
             install(ContentNegotiation) {
                 json(Json {
@@ -28,14 +29,13 @@ object AnalyzerDataClient {
                     encodeDefaults = true
                 })
             }
-            install(DefaultRequest) {
-                url {
-                    protocol = URLProtocol.HTTP
-                    host = apiHost
-                }
-            }
         }
-        val response: HttpResponse = client.post("articles") {
+        val response: HttpResponse = client.post {
+            url {
+                protocol = URLProtocol.HTTP
+                host = apiHost
+                path(path)
+            }
             contentType(ContentType.Application.Json)
             setBody(articles)
         }
