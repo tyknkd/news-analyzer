@@ -32,7 +32,6 @@ fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().h
             } else {
                 call.respond(status = HttpStatusCode.OK, articles)
             }
-
         }
         get("/update") {
             if (collectorGateway.updateArticles(httpClient)) {
