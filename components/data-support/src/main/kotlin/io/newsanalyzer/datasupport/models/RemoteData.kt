@@ -1,4 +1,4 @@
-package io.newsanalyzer.datacollector.models
+package io.newsanalyzer.datasupport.models
 
 import kotlinx.serialization.Serializable
 
