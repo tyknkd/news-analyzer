@@ -1,7 +1,7 @@
 package test.newsanalyzer.datacollector
 
 import io.newsanalyzer.datacollector.plugins.*
-import io.newsanalyzer.datacollector.models.*
+import io.newsanalyzer.datasupport.models.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.*
