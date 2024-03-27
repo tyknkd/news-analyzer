@@ -12,36 +12,23 @@ import io.newsanalyzer.datasupport.models.*
 import kotlinx.serialization.json.Json
 
 object WebServerDataClient {
-    suspend fun postAnalyzedData(analyzedData: AnalyzedData): Boolean {
+    suspend fun postAnalyzedData(analyzedData: AnalyzedData, client: HttpClient = AnalyzerClient.httpClient): Boolean {
         val port = System.getenv("WEBSERVER_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {
             "web-server:$port"
         } else {
             "localhost:$port"
         }
-        val client = HttpClient(engineFactory = Java) {
-            install(ContentNegotiation) {
-                json(Json {
-                    isLenient = true
-                    coerceInputValues = true
-                    ignoreUnknownKeys = true
-                    encodeDefaults = true
-                })
+        val path = "api/update"
+        val response: HttpResponse = client.post {
+            url {
+                protocol = URLProtocol.HTTP
+                host = apiHost
+                path(path)
             }
-            install(DefaultRequest) {
-                url {
-                    protocol = URLProtocol.HTTP
-                    host = apiHost
-                }
-            }
-        }
-        val response: HttpResponse = client.post("api/update") {
             contentType(ContentType.Application.Json)
             setBody(analyzedData)
         }
-
-        client.close()
-
         return (response.bodyAsText() == "Updated")
     }
 }

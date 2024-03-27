@@ -18,23 +18,18 @@ object DataCollector {
         val sourceList = listOf("ars-technica","associated-press","bbc-news","bloomberg","business-insider","engadget",
             "fortune","hacker-news","new-scientist","newsweek","next-big-future","recode","reuters","techcrunch",
             "techradar","the-next-web","the-verge","the-wall-street-journal","the-washington-post","wired")
-        val collectorClient = HttpClient(engineFactory = Java) {
-            install(ContentNegotiation) {
-                json(Json {
-                    isLenient = true
-                    coerceInputValues = true
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-        return getNewsApiData("tech industry", sourceList, getNewsApiKey(), fromInstant, collectorClient)
+        return getNewsApiData("tech industry", sourceList, getNewsApiKey(), fromInstant)
     }
 
     private fun getNewsApiKey(): String? {
         return System.getenv("NEWS_API_KEY")
     }
 
-    suspend fun getNewsApiData(topic: String, sourceList: List<String>, newsApiKey: String?, fromInstant: Instant? = null, client: HttpClient): List<RemoteArticle>? {
+    suspend fun getNewsApiData(topic: String,
+                               sourceList: List<String>,
+                               newsApiKey: String?,
+                               fromInstant: Instant? = null,
+                               client: HttpClient = CollectorClient.httpClient): List<RemoteArticle>? {
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
             throw RuntimeException(apiKeyErrorMessage)

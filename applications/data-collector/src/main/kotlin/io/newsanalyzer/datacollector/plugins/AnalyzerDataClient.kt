@@ -2,7 +2,6 @@ package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.client.*
 import io.ktor.client.engine.java.*
-import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -12,7 +11,7 @@ import io.newsanalyzer.datasupport.models.*
 import kotlinx.serialization.json.Json
 
 object AnalyzerDataClient {
-    suspend fun postArticles(articles: List<Article>): Boolean {
+    suspend fun postArticles(articles: List<Article>, client: HttpClient = CollectorClient.httpClient): Boolean {
         val port = System.getenv("ANALYZER_PORT")
         val apiHost = if (System.getenv("OS_ENV") == "container") {
             "data-analyzer:$port"
@@ -20,16 +19,6 @@ object AnalyzerDataClient {
             "localhost:$port"
         }
         val path = "articles"
-        val client = HttpClient(engineFactory = Java) {
-            install(ContentNegotiation) {
-                json(Json {
-                    isLenient = true
-                    coerceInputValues = true
-                    ignoreUnknownKeys = true
-                    encodeDefaults = true
-                })
-            }
-        }
         val response: HttpResponse = client.post {
             url {
                 protocol = URLProtocol.HTTP
@@ -39,9 +28,6 @@ object AnalyzerDataClient {
             contentType(ContentType.Application.Json)
             setBody(articles)
         }
-
-        client.close()
-
         return (response.bodyAsText() == "Updated")
     }
 }

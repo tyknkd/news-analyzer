@@ -3,4 +3,5 @@ include("applications:web-server",
     "applications:data-collector",
     "applications:data-analyzer",
     "applications:integration",
-    "components:data-support")
+    "components:data-support",
+    "components:http-support")
