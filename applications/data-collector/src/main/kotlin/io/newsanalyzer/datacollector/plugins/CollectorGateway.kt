@@ -1,4 +1,4 @@
-package io.newsanalyzer.datacollector.plugins.database
+package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.client.*
 import org.jetbrains.exposed.sql.*
@@ -7,8 +7,6 @@ import kotlinx.datetime.*
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import io.newsanalyzer.datasupport.models.*
-import io.newsanalyzer.datacollector.plugins.AnalyzerDataClient
-import io.newsanalyzer.datacollector.plugins.DataCollector
 import io.newsanalyzer.datasupport.RawArticlesGatewayTemplate
 import io.newsanalyzer.httpsupport.HttpClientTemplate
 
