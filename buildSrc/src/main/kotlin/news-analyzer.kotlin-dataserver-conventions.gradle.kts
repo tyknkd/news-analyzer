@@ -5,5 +5,6 @@ plugins {
 
 dependencies {
     implementation(project(":components:data-support"))
+    implementation(project(":components:test-support"))
     implementation("org.jetbrains.kotlinx:dataframe:0.13.0")
 }
