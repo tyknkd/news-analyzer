@@ -1,11 +1,15 @@
 package test.newsanalyzer.dataanalyzer
 
 import io.newsanalyzer.dataanalyzer.plugins.*
+import io.newsanalyzer.datasupport.models.*
+import io.newsanalyzer.httpsupport.*
+import org.jetbrains.exposed.sql.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
@@ -46,14 +50,17 @@ class ApplicationTest {
     }
 
     companion object {
+        private val testClient = HttpClientTemplate().httpClient
         lateinit var testApp: TestApplication
+        private lateinit var database: Database
+        private val tables: List<Table> = listOf(RawArticles, AnalyzedArticles, Topics)
         @JvmStatic
         @BeforeClass
         fun setup() {
             testApp = TestApplication {
                 application {
                     configureSerialization()
-                    configureDatabases()
+                    database = configureDatabases("ANALYZER_TEST_DB")
                     configureRouting()
                 }
             }
@@ -62,6 +69,11 @@ class ApplicationTest {
         @JvmStatic
         @AfterClass
         fun teardown() {
+            transaction(database) {
+                for (table in tables) {
+                    SchemaUtils.drop(table)
+                }
+            }
             testApp.stop()
         }
     }

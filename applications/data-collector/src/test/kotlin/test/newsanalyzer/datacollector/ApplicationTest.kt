@@ -11,8 +11,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
-import io.newsanalyzer.httpsupport.HostPaths
-import io.newsanalyzer.httpsupport.HttpClientTemplate
+import io.newsanalyzer.datasupport.models.RawArticles
+import io.newsanalyzer.httpsupport.*
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 import org.junit.BeforeClass
 import org.junit.AfterClass
@@ -64,7 +66,10 @@ class ApplicationTest {
 
 
     companion object {
+        private val testClient = HttpClientTemplate().httpClient
         lateinit var testApp: TestApplication
+        private lateinit var database: Database
+        private val tables: List<Table> = listOf(RawArticles)
         @JvmStatic
         @BeforeClass
         fun setup() {
@@ -74,24 +79,25 @@ class ApplicationTest {
                         install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
                         routing {
                             get("v2/everything{params}") {
+                                println("In mock newsapi")
                                 call.respond(status = HttpStatusCode.OK, TestDoubles().remoteData)
                             }
                         }
                     }
                     val apiHost = HostPaths().getAnalyzerPath()
-                    hosts(apiHost) {
+                    hosts("http://${apiHost}") {
                         install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
                         routing {
                             post("articles") {
+                                println("In mock analyzer")
                                 call.respondText("Updated", status = HttpStatusCode.OK)
                             }
                         }
                     }
                 }
-                val testClient = HttpClientTemplate().httpClient
                 application {
                     configureSerialization()
-                    configureDatabases("COLLECTOR_TEST_DB")
+                    database = configureDatabases("COLLECTOR_TEST_DB")
                     configureRouting(testClient)
                 }
             }
@@ -100,6 +106,11 @@ class ApplicationTest {
         @JvmStatic
         @AfterClass
         fun teardown() {
+            transaction(database) {
+                for (table in tables) {
+                    SchemaUtils.drop(table)
+                }
+            }
             testApp.stop()
         }
     }

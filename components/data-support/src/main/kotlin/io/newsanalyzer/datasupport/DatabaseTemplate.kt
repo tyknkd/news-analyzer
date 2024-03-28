@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.transactions.*
 import com.zaxxer.hikari.*
 
 open class DatabaseTemplate(envDbName: String, tables: List<Table>) {
+    lateinit var database: Database
     init {
         val driverClassName = "org.postgresql.Driver"
         lateinit var host: String
@@ -23,7 +24,7 @@ open class DatabaseTemplate(envDbName: String, tables: List<Table>) {
         val dbName = System.getenv(envDbName)
         val user = System.getenv("POSTGRES_USER")
         val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName?reWriteBatchedInserts=true"
-        val database = Database.connect(
+        database = Database.connect(
             createHikariDataSource(
                 url = jdbcUrl,
                 driver = driverClassName,

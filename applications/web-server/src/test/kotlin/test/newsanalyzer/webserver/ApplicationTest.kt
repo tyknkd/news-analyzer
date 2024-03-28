@@ -1,11 +1,18 @@
 package test.newsanalyzer.webserver
 
 import io.newsanalyzer.webserver.plugins.*
+import io.newsanalyzer.testsupport.TestDoubles
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import io.newsanalyzer.datasupport.models.AnalyzedArticles
+import io.newsanalyzer.datasupport.models.Topics
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 import org.junit.BeforeClass
 import org.junit.AfterClass
@@ -116,6 +123,8 @@ class ApplicationTest {
 
     companion object {
         lateinit var testApp: TestApplication
+        private lateinit var database: Database
+        private val tables: List<Table> = listOf(AnalyzedArticles, Topics)
         @JvmStatic
         @BeforeClass
         fun setup(): Unit {
@@ -123,7 +132,7 @@ class ApplicationTest {
                 application {
                     configureMonitoring()
                     configureSerialization()
-                    configureDatabases()
+                    database = configureDatabases("WEBSERVER_TEST_DB", tables)
                     configureTemplating()
                     configureRouting()
                 }
@@ -133,6 +142,11 @@ class ApplicationTest {
         @JvmStatic
         @AfterClass
         fun teardown() {
+            transaction(database) {
+                for (table in tables) {
+                    SchemaUtils.drop(table)
+                }
+            }
             testApp.stop()
         }
     }
