@@ -1,8 +1,12 @@
 package io.newsanalyzer.webserver.plugins
 
 import io.ktor.server.application.*
-import io.newsanalyzer.webserver.plugins.database.WebDatabase
+import org.jetbrains.exposed.sql.Table
+import io.newsanalyzer.datasupport.DatabaseClassTemplate
+import io.newsanalyzer.datasupport.models.*
 
-fun Application.configureDatabases() {
-    WebDatabase.init()
+fun Application.configureDatabases(
+    envDbName: String = "WEBSERVER_DB",
+    tables: List<Table> = listOf(AnalyzedArticles, Topics)) {
+    DatabaseClassTemplate(envDbName, tables)
 }

@@ -2,7 +2,6 @@ package io.newsanalyzer.dataanalyzer.plugins
 
 import io.newsanalyzer.dataanalyzer.models.*
 import io.newsanalyzer.datasupport.models.*
-import io.newsanalyzer.dataanalyzer.plugins.database.RawDataGateway
 import org.jetbrains.kotlinx.dataframe.*
 import org.jetbrains.kotlinx.dataframe.api.*
 import org.jetbrains.kotlinx.spark.api.*
@@ -14,7 +13,7 @@ import org.apache.spark.ml.linalg.DenseVector
 
 object DataAnalyzer {
     suspend fun getAnalyzedData(): Pair<List<Article>,List<Topic>> {
-        val articles = RawDataGateway.allArticles()
+        val articles = RawDataGateway().allArticles()
         return getArticleTopics(articles)
     }
 

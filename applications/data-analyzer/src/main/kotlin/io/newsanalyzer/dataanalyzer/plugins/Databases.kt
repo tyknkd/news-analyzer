@@ -1,8 +1,12 @@
 package io.newsanalyzer.dataanalyzer.plugins
 
 import io.ktor.server.application.*
-import io.newsanalyzer.dataanalyzer.plugins.database.AnalyzerDatabase
+import org.jetbrains.exposed.sql.Table
+import io.newsanalyzer.datasupport.DatabaseClassTemplate
+import io.newsanalyzer.datasupport.models.*
 
-fun Application.configureDatabases() {
-    AnalyzerDatabase.init()
+fun Application.configureDatabases(
+    envDbName: String = "ANALYZER_DB",
+    tables: List<Table> = listOf(RawArticles, AnalyzedArticles, Topics)) {
+    DatabaseClassTemplate(envDbName, tables)
 }

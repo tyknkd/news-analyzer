@@ -12,7 +12,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.webserver.models.entrypoint
-import io.newsanalyzer.webserver.plugins.database.WebDataGateway
 
 fun Application.configureRouting() {
     install(Resources)

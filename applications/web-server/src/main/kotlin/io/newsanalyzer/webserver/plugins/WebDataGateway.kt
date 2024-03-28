@@ -1,4 +1,4 @@
-package io.newsanalyzer.webserver.plugins.database
+package io.newsanalyzer.webserver.plugins
 
 import io.newsanalyzer.datasupport.*
 import org.jetbrains.exposed.sql.*
