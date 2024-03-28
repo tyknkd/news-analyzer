@@ -4,10 +4,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import com.zaxxer.hikari.*
 
-interface DatabaseTemplate {
-    val envDbName: String
-    val tables: List<Table>
-    fun init() {
+open class DatabaseTemplate(envDbName: String, tables: List<Table>) {
+    init {
         val driverClassName = "org.postgresql.Driver"
         lateinit var host: String
         lateinit var port: String
