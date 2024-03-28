@@ -2,6 +2,7 @@ package test.newsanalyzer.datacollector
 
 import io.newsanalyzer.datacollector.plugins.*
 import io.newsanalyzer.testsupport.TestDoubles
+import io.newsanalyzer.httpsupport.HostPaths
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.*
@@ -15,12 +16,7 @@ class AnalyzerDataClientTest {
     @Test
     fun testPostArticles() = testApplication {
         // Mock data-analyzer API
-        val port = System.getenv("ANALYZER_PORT")
-        val apiHost = if (System.getenv("OS_ENV") == "container") {
-            "data-analyzer:$port"
-        } else {
-            port
-        }
+        val apiHost = HostPaths().getAnalyzerPath()
         externalServices {
             hosts(apiHost) {
                 install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }

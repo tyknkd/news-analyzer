@@ -11,6 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import io.newsanalyzer.httpsupport.HostPaths
 import io.newsanalyzer.httpsupport.HttpClientTemplate
 import org.junit.Test
 import org.junit.BeforeClass
@@ -77,12 +78,7 @@ class ApplicationTest {
                             }
                         }
                     }
-                    val port = System.getenv("ANALYZER_PORT")
-                    val apiHost = if (System.getenv("OS_ENV") == "container") {
-                        "data-analyzer:$port"
-                    } else {
-                        "localhost:$port"
-                    }
+                    val apiHost = HostPaths().getAnalyzerPath()
                     hosts(apiHost) {
                         install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
                         routing {

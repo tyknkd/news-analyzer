@@ -5,16 +5,11 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.newsanalyzer.datasupport.models.*
-import io.newsanalyzer.httpsupport.HttpClientTemplate
+import io.newsanalyzer.httpsupport.*
 
 object AnalyzerDataClient {
     suspend fun postArticles(articles: List<Article>, client: HttpClient = HttpClientTemplate().httpClient): Boolean {
-        val port = System.getenv("ANALYZER_PORT")
-        val apiHost = if (System.getenv("OS_ENV") == "container") {
-            "data-analyzer:$port"
-        } else {
-            "localhost:$port"
-        }
+        val apiHost = HostPaths().getAnalyzerPath()
         val path = "articles"
         val response: HttpResponse = client.post {
             url {

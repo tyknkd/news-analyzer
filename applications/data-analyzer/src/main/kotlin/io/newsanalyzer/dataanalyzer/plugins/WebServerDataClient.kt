@@ -9,16 +9,12 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.newsanalyzer.datasupport.models.*
+import io.newsanalyzer.httpsupport.HostPaths
 import kotlinx.serialization.json.Json
 
 object WebServerDataClient {
     suspend fun postAnalyzedData(analyzedData: AnalyzedData, client: HttpClient = AnalyzerClient.httpClient): Boolean {
-        val port = System.getenv("WEBSERVER_PORT")
-        val apiHost = if (System.getenv("OS_ENV") == "container") {
-            "web-server:$port"
-        } else {
-            "localhost:$port"
-        }
+        val apiHost = HostPaths().getWebServerPath()
         val path = "api/update"
         val response: HttpResponse = client.post {
             url {
