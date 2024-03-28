@@ -18,10 +18,10 @@ class AnalyzerDataClientTest {
         // Mock data-analyzer API
         val apiHost = HostPaths().getAnalyzerPath()
         externalServices {
-            hosts(apiHost) {
+            hosts("http://${apiHost}") {
                 install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
                 routing {
-                    post("/articles") {
+                    post("articles") {
                         call.respondText("Updated", status = HttpStatusCode.OK)
                     }
                 }
