@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 import io.newsanalyzer.httpsupport.HttpClientTemplate
 
 fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().httpClient) {
-    val collectorGateway = CollectorGateway(httpClient)
+    val collectorDataGateway = CollectorDataGateway(httpClient)
     install(Resources)
     install(StatusPages) {
         exception<Throwable> { call, cause ->
@@ -25,7 +25,7 @@ fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().h
             call.respondText(text = "OK", status = HttpStatusCode.OK)
         }
         get("/articles") {
-            val articles = collectorGateway.allArticles()
+            val articles = collectorDataGateway.allArticles()
             if (articles.isEmpty() ) {
                 call.respond(status = HttpStatusCode.Unauthorized, "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org")
             } else {
@@ -33,7 +33,7 @@ fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().h
             }
         }
         get("/update") {
-            if (collectorGateway.updateArticles(httpClient)) {
+            if (collectorDataGateway.updateArticles(httpClient)) {
                 call.respondText(text = "Updated", status = HttpStatusCode.OK)
             } else {
                 call.respondText(text = "No update", status = HttpStatusCode.OK)

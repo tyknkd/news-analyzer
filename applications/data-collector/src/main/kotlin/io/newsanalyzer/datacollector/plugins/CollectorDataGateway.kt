@@ -10,7 +10,7 @@ import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datasupport.RawArticlesGatewayTemplate
 import io.newsanalyzer.httpsupport.HttpClientTemplate
 
-class CollectorGateway(
+class CollectorDataGateway(
     val httpClient: HttpClient = HttpClientTemplate().httpClient): RawArticlesGatewayTemplate {
     init {
         runBlocking {
