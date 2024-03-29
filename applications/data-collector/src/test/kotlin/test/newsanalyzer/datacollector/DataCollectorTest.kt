@@ -12,11 +12,10 @@ import io.ktor.server.routing.*
 import kotlin.test.assertEquals
 
 class DataCollectorTest {
-    val testDoubles = TestDoubles()
     @Test
     fun testCleanData() = testApplication {
-        val result = DataCollector.cleanData(testDoubles.remoteData)
-        assertEquals(testDoubles.filteredSortedRemoteArticles, result)
+        val result = DataCollector.cleanData(TestDoubles.remoteData)
+        assertEquals(TestDoubles.filteredSortedRemoteArticles, result)
     }
     @Test
     fun testGetNewsApiData() = testApplication {
@@ -26,7 +25,7 @@ class DataCollectorTest {
                 install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) { json() }
                 routing {
                     get("v2/everything{params}") {
-                        call.respond(status = HttpStatusCode.OK, testDoubles.remoteData)
+                        call.respond(status = HttpStatusCode.OK, TestDoubles.remoteData)
                     }
                 }
             }
@@ -39,7 +38,7 @@ class DataCollectorTest {
             sourceList = listOf("publisher-id","another-publisher"),
             newsApiKey = "abc123",
             client = testClient)
-        assertEquals(testDoubles.filteredSortedRemoteArticles, result)
+        assertEquals(TestDoubles.filteredSortedRemoteArticles, result)
 
     }
 }

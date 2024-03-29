@@ -12,7 +12,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 class AnalyzerDataClientTest {
-    private val testDoubles = TestDoubles()
     @Test
     fun testPostArticles() = testApplication {
         // Mock data-analyzer API
@@ -31,7 +30,7 @@ class AnalyzerDataClientTest {
             install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
         }
         val result = AnalyzerDataClient.postArticles(
-            articles = testDoubles.rawArticles,
+            articles = TestDoubles.rawArticles,
             client = testClient)
         assertTrue(result)
     }

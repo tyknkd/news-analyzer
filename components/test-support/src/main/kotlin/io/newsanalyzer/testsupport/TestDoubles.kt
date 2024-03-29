@@ -3,8 +3,8 @@ package io.newsanalyzer.testsupport
 import io.newsanalyzer.datasupport.models.*
 import kotlinx.datetime.Instant
 
-class TestDoubles {
-    private val remoteArticle1 = RemoteArticle(
+object TestDoubles {
+    private val remoteArticle2 = RemoteArticle(
         source = RemoteSource(
             id = "another-publisher",
             name = "Another Publisher",
@@ -17,7 +17,7 @@ class TestDoubles {
         publishedAt = "2024-02-21T00:06:38Z",
         content = "This article's content… [+4506 chars]",
     )
-    private val remoteArticle0 = RemoteArticle(
+    private val remoteArticle1 = RemoteArticle(
         source = RemoteSource(
             id = "publisher-id",
             name = "Publisher Name",
@@ -59,10 +59,10 @@ class TestDoubles {
     val remoteData = RemoteData(
         status = "ok",
         totalResults = 4,
-        articles = listOf(remoteArticle1, remoteArticle0, removedRemoteArticle, remoteArticleMissingInfo)
+        articles = listOf(remoteArticle2, remoteArticle1, removedRemoteArticle, remoteArticleMissingInfo)
     )
-    val filteredSortedRemoteArticles = listOf(remoteArticle0, remoteArticle1)
-    private val remoteArticle2 = RemoteArticle(
+    val filteredSortedRemoteArticles = listOf(remoteArticle1, remoteArticle2)
+    private val remoteArticle3 = RemoteArticle(
         source = RemoteSource(
             id = "another-publisher",
             name = "Another Publisher",
@@ -75,10 +75,10 @@ class TestDoubles {
         publishedAt = "2024-02-23T00:00:12Z",
         content = "This other article's content… [+4506 chars]",
     )
-    val remoteArticlesUpdate = listOf(remoteArticle2)
+    val remoteArticlesUpdate = listOf(remoteArticle3)
     private fun buildArticlesList(remoteArticles: List<RemoteArticle>, topicId: Int): List<Article> {
         val rawArticles = emptyList<Article>().toMutableList()
-        var counter = 0
+        var counter = 1
         for (remoteArticle in remoteArticles) {
             rawArticles += Article(
                 id = counter,
