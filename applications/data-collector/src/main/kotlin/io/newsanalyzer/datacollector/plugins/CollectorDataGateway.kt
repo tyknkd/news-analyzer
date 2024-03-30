@@ -2,7 +2,6 @@ package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.client.*
 import org.jetbrains.exposed.sql.*
-import kotlinx.coroutines.*
 import kotlinx.datetime.*
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
@@ -10,12 +9,10 @@ import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datasupport.RawArticlesGatewayTemplate
 import io.newsanalyzer.httpsupport.HttpClientTemplate
 
-class CollectorDataGateway(
-    val httpClient: HttpClient = HttpClientTemplate().httpClient): RawArticlesGatewayTemplate {
-    init {
-        runBlocking {
-            updateArticles(httpClient)
-        }
+object CollectorDataGateway: RawArticlesGatewayTemplate {
+    private var httpClient: HttpClient = HttpClientTemplate().httpClient
+    fun updateClient(client: HttpClient) {
+        httpClient = client
     }
 
     suspend fun updateArticles(client: HttpClient = httpClient): Boolean {
@@ -33,7 +30,7 @@ class CollectorDataGateway(
         return false
     }
 
-    private suspend fun addRemoteArticles(remoteArticles: List<RemoteArticle>): Boolean {
+    suspend fun addRemoteArticles(remoteArticles: List<RemoteArticle>): Boolean {
         var success = false
         dbQuery {
             val results = RawArticles.batchInsert(data = remoteArticles) {
@@ -54,7 +51,7 @@ class CollectorDataGateway(
         return success
     }
 
-    private suspend fun articlesAfter(instant: Instant?): List<Article> {
+    suspend fun articlesAfter(instant: Instant?): List<Article> {
         return if (instant == null ) {
             allArticles()
         } else {
@@ -66,7 +63,7 @@ class CollectorDataGateway(
         }
     }
 
-    private suspend fun latestDateTime(): Instant? = dbQuery {
+    suspend fun latestDateTime(): Instant? = dbQuery {
         RawArticles.selectAll().lastOrNull()?.toArticle()?.publishedAt
     }
 }
