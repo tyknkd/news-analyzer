@@ -11,9 +11,7 @@ import io.ktor.server.routing.*
 import io.newsanalyzer.datasupport.models.Article
 import io.newsanalyzer.httpsupport.HttpClientTemplate
 
-fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().httpClient) {
-    val rawDataGateway = RawDataGateway(httpClient)
-    val analyzedDataGateway = AnalyzedDataGateway(httpClient)
+fun Application.configureRouting() {
     install(Resources)
     install(StatusPages) {
         exception<Throwable> { call, cause ->
@@ -25,23 +23,23 @@ fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().h
             call.respondRedirect("/articles")
         }
         get("/topics") {
-            val topics = analyzedDataGateway.allTopics()
+            val topics = AnalyzedDataGateway.allTopics()
             call.respond(status = HttpStatusCode.OK, topics)
         }
         get("/articles") {
-            val articles = analyzedDataGateway.allArticles()
+            val articles = AnalyzedDataGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
         }
         post("/articles") {
             val articles = call.receive<List<Article>>()
-            if(rawDataGateway.addArticles(articles)) {
+            if(RawDataGateway.addArticles(articles)) {
                 call.respondText("Updated", status = HttpStatusCode.OK)
             } else {
                 call.respondText("Not updated", status = HttpStatusCode.OK)
             }
         }
         get("/reanalyze") {
-            if(analyzedDataGateway.updateAll(httpClient)) {
+            if(AnalyzedDataGateway.updateAll()) {
                 call.respondText("Updated", status = HttpStatusCode.OK)
             } else {
                 call.respondText("Not updated", status = HttpStatusCode.OK)
