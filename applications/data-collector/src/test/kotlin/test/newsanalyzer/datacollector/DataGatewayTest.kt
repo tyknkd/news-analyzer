@@ -18,8 +18,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.*
 
 class DataGatewayTest {
-    val tables: List<Table> = listOf(RawArticles)
-    val database: Database = DatabaseTemplate("COLLECTOR_DB", emptyList()).database
+    private val tables: List<Table> = listOf(RawArticles)
+    private val database: Database = DatabaseTemplate("COLLECTOR_DB", emptyList()).database
     @BeforeTest
     fun setup() {
         transaction(database) {
