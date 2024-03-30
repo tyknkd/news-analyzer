@@ -22,7 +22,7 @@ import kotlin.test.*
 
 class ApplicationTest {
     private val tables: List<Table> = listOf(RawArticles)
-    private val database: Database = DatabaseTemplate("COLLECTOR_DB", emptyList()).database
+    private val database: Database = DatabaseTemplate("COLLECTOR_TEST_DB", emptyList()).database
     private val testApp = TestApplication {
         externalServices {
             hosts("https://newsapi.org") {

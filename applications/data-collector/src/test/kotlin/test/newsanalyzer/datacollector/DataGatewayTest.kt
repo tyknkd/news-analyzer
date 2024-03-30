@@ -19,7 +19,7 @@ import kotlin.test.*
 
 class DataGatewayTest {
     private val tables: List<Table> = listOf(RawArticles)
-    private val database: Database = DatabaseTemplate("COLLECTOR_DB", emptyList()).database
+    private val database: Database = DatabaseTemplate("COLLECTOR_TEST_DB", emptyList()).database
     @BeforeTest
     fun setup() {
         transaction(database) {
