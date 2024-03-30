@@ -14,29 +14,16 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
+import io.ktor.test.dispatcher.*
+import io.newsanalyzer.datasupport.DatabaseTemplate
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.Test
-import org.junit.FixMethodOrder
-import org.junit.runners.MethodSorters
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNotNull
+import kotlin.test.*
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ApplicationTest {
-    private val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
-
-    @Test
-    fun testApiKey() {
-        val newsApiKey = System.getenv("NEWS_API_KEY")
-        assertNotNull(newsApiKey, apiKeyErrorMessage)
-        assertNotEquals(newsApiKey,"yournewsapikeygoeshere", apiKeyErrorMessage)
-    }
-    @Test
-    fun testArticles() = testApplication {
-        lateinit var database: Database
-        val tables: List<Table> = listOf(RawArticles)
+    private val tables: List<Table> = listOf(RawArticles)
+    private val database: Database = DatabaseTemplate("COLLECTOR_DB", emptyList()).database
+    private val testApp = TestApplication {
         externalServices {
             hosts("https://newsapi.org") {
                 install(ContentNegotiation) { json() }
@@ -56,64 +43,44 @@ class ApplicationTest {
                 }
             }
         }
-        val testClient = createClient {
-            install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
-        }
         application {
             configureSerialization()
-            database = configureDatabases("COLLECTOR_TEST_DB", tables)
-            configureRouting(testClient)
+            configureRouting()
         }
-        val response = testClient.get("/")
-        assertEquals(HttpStatusCode.OK, response.status)
-        val articles: List<Article> = response.body()
-        assertEquals(TestDoubles.rawArticles, articles)
-
+    }
+    private val testClient = testApp.createClient {
+        install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
+    }
+    @BeforeTest
+    fun setup() {
         transaction(database) {
             for (table in tables) {
-                    SchemaUtils.drop(table)
+                SchemaUtils.create(table)
             }
         }
+        CollectorDataGateway.updateClient(testClient)
+        testSuspend { CollectorDataGateway.updateArticles() }
     }
-    @Test
-    fun testHealth() = testApplication {
-        lateinit var database: Database
-        val tables: List<Table> = listOf(RawArticles)
-        externalServices {
-            hosts("https://newsapi.org") {
-                install(ContentNegotiation) { json() }
-                routing {
-                    get("v2/everything{params}") {
-                        call.respond(status = HttpStatusCode.OK, TestDoubles.remoteData)
-                    }
-                }
-            }
-            val apiHost = HostPaths().getAnalyzerPath()
-            hosts("http://${apiHost}") {
-                install(ContentNegotiation) { json() }
-                routing {
-                    post("articles") {
-                        call.respondText("Updated", status = HttpStatusCode.OK)
-                    }
-                }
-            }
-        }
-        val testClient = createClient {
-            install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
-        }
-        application {
-            configureSerialization()
-            database = configureDatabases("COLLECTOR_TEST_DB", tables)
-            configureRouting(testClient)
-        }
-        testClient.get("/health").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            assertEquals("OK", bodyAsText())
-        }
+    @AfterTest
+    fun teardown() {
         transaction(database) {
             for (table in tables) {
                 SchemaUtils.drop(table)
             }
+        }
+    }
+    @Test
+    fun testArticles() = testSuspend {
+        val response = testClient.get("/")
+        assertEquals(HttpStatusCode.OK, response.status)
+        val articles: List<Article> = response.body()
+        assertEquals(TestDoubles.rawArticles, articles)
+    }
+    @Test
+    fun testHealth() = testSuspend {
+        testClient.get("/health").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            assertEquals("OK", bodyAsText())
         }
     }
 }
