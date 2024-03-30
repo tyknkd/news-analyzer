@@ -1,6 +1,5 @@
 package io.newsanalyzer.dataanalyzer.plugins
 
-import io.ktor.client.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
@@ -9,7 +8,6 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.newsanalyzer.datasupport.models.Article
-import io.newsanalyzer.httpsupport.HttpClientTemplate
 
 fun Application.configureRouting() {
     install(Resources)
