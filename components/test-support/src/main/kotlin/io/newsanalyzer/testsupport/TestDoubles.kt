@@ -102,4 +102,10 @@ object TestDoubles {
     val updatedRawArticles = rawArticles + rawArticlesUpdateOnly
     val analyzedArticles = buildArticlesList(filteredSortedRemoteArticles, 1,0)
     val updatedAnalyzedArticles = buildArticlesList(filteredSortedRemoteArticles + remoteArticlesUpdate, 1,0)
+    val topics = listOf(
+        Topic(
+            topicId = 0,
+            terms = "some, terms"
+        )
+    )
 }
