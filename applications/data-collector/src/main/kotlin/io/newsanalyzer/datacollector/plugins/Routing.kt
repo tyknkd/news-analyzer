@@ -1,18 +1,13 @@
 package io.newsanalyzer.datacollector.plugins
 
-import io.ktor.client.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.newsanalyzer.httpsupport.HttpClientTemplate
-import kotlinx.coroutines.runBlocking
 
-fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().httpClient) {
-    CollectorDataGateway.updateClient(httpClient)
-    runBlocking { CollectorDataGateway.updateArticles(httpClient) }
+fun Application.configureRouting() {
     install(Resources)
     install(StatusPages) {
         exception<Throwable> { call, cause ->
@@ -35,7 +30,7 @@ fun Application.configureRouting(httpClient: HttpClient = HttpClientTemplate().h
             }
         }
         get("/update") {
-            if (CollectorDataGateway.updateArticles(httpClient)) {
+            if (CollectorDataGateway.updateArticles()) {
                 call.respondText(text = "Updated", status = HttpStatusCode.OK)
             } else {
                 call.respondText(text = "No update", status = HttpStatusCode.OK)
