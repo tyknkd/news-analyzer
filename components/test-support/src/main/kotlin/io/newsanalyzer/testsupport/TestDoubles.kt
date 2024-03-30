@@ -62,6 +62,7 @@ object TestDoubles {
         articles = listOf(remoteArticle2, remoteArticle1, removedRemoteArticle, remoteArticleMissingInfo)
     )
     val filteredSortedRemoteArticles = listOf(remoteArticle1, remoteArticle2)
+    val secondArticlePublishedAt = Instant.parse(remoteArticle2.publishedAt)
     private val remoteArticle3 = RemoteArticle(
         source = RemoteSource(
             id = "another-publisher",
@@ -76,9 +77,9 @@ object TestDoubles {
         content = "This other article's content… [+4506 chars]",
     )
     val remoteArticlesUpdate = listOf(remoteArticle3)
-    private fun buildArticlesList(remoteArticles: List<RemoteArticle>, topicId: Int): List<Article> {
+    private fun buildArticlesList(remoteArticles: List<RemoteArticle>, firstIdx: Int = 1, topicId: Int = -1): List<Article> {
         val rawArticles = emptyList<Article>().toMutableList()
-        var counter = 1
+        var counter = firstIdx
         for (remoteArticle in remoteArticles) {
             rawArticles += Article(
                 id = counter,
@@ -96,8 +97,9 @@ object TestDoubles {
         }
         return rawArticles.toList()
     }
-    val rawArticles = buildArticlesList(filteredSortedRemoteArticles, -1)
-    val updatedRawArticles = buildArticlesList(filteredSortedRemoteArticles + remoteArticlesUpdate, -1)
-    val analyzedArticles = buildArticlesList(filteredSortedRemoteArticles, 0)
-    val updatedAnalyzedArticles = buildArticlesList(filteredSortedRemoteArticles + remoteArticlesUpdate, 0)
+    val rawArticles = buildArticlesList(filteredSortedRemoteArticles,1, -1)
+    val rawArticlesUpdateOnly = buildArticlesList(remoteArticlesUpdate,3, -1)
+    val updatedRawArticles = rawArticles + rawArticlesUpdateOnly
+    val analyzedArticles = buildArticlesList(filteredSortedRemoteArticles, 1,0)
+    val updatedAnalyzedArticles = buildArticlesList(filteredSortedRemoteArticles + remoteArticlesUpdate, 1,0)
 }
