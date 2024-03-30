@@ -8,7 +8,9 @@ import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.httpsupport.*
 
 object WebServerDataClient {
-    suspend fun postAnalyzedData(analyzedData: AnalyzedData, client: HttpClient = HttpClientTemplate().httpClient): Boolean {
+    suspend fun postAnalyzedData(
+        analyzedData: AnalyzedData,
+        client: HttpClient = HttpClientTemplate().httpClient): Boolean {
         val apiHost = HostPaths().getWebServerPath()
         val path = "api/update"
         val response: HttpResponse = client.post {
