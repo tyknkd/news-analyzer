@@ -77,12 +77,36 @@ object TestDoubles {
         content = "This other article's content… [+4506 chars]",
     )
     val remoteArticlesUpdate = listOf(remoteArticle3)
-    private fun buildArticlesList(remoteArticles: List<RemoteArticle>, firstIdx: Int = 1, topicId: Int = -1): List<Article> {
+    private fun buildRawArticlesList(remoteArticles: List<RemoteArticle>, firstId: Int = 1): List<Article> {
         val rawArticles = emptyList<Article>().toMutableList()
-        var counter = firstIdx
+        var id = firstId
         for (remoteArticle in remoteArticles) {
             rawArticles += Article(
-                id = counter,
+                id = id,
+                publisher = remoteArticle.source.name,
+                author = remoteArticle.author,
+                title = remoteArticle.title,
+                description = remoteArticle.description,
+                url = remoteArticle.url,
+                urlToImage = remoteArticle.urlToImage,
+                publishedAt = Instant.parse(remoteArticle.publishedAt),
+                content = remoteArticle.content,
+                topicId = -1
+            )
+            id++
+        }
+        return rawArticles.toList()
+    }
+    val rawArticles = buildRawArticlesList(filteredSortedRemoteArticles,1)
+    val rawArticlesUpdateOnly = buildRawArticlesList(remoteArticlesUpdate,3)
+    val updatedRawArticles = rawArticles + rawArticlesUpdateOnly
+    private fun buildAnalyzedArticlesList(remoteArticles: List<RemoteArticle>, firstId: Int = 1): List<Article> {
+        val rawArticles = emptyList<Article>().toMutableList()
+        var id = firstId
+        var topicId = 0
+        for (remoteArticle in remoteArticles) {
+            rawArticles += Article(
+                id = id,
                 publisher = remoteArticle.source.name,
                 author = remoteArticle.author,
                 title = remoteArticle.title,
@@ -93,19 +117,21 @@ object TestDoubles {
                 content = remoteArticle.content,
                 topicId = topicId
             )
-            counter++
+            id++
+            topicId++
         }
         return rawArticles.toList()
     }
-    val rawArticles = buildArticlesList(filteredSortedRemoteArticles,1, -1)
-    val rawArticlesUpdateOnly = buildArticlesList(remoteArticlesUpdate,3, -1)
-    val updatedRawArticles = rawArticles + rawArticlesUpdateOnly
-    val analyzedArticles = buildArticlesList(filteredSortedRemoteArticles, 1,0)
-    val updatedAnalyzedArticles = buildArticlesList(filteredSortedRemoteArticles + remoteArticlesUpdate, 1,0)
+    val analyzedArticles = buildAnalyzedArticlesList(filteredSortedRemoteArticles, 1)
+    val updatedAnalyzedArticles = buildAnalyzedArticlesList(filteredSortedRemoteArticles + remoteArticlesUpdate, 1)
     val topics = listOf(
         Topic(
             topicId = 0,
-            terms = "some, terms"
+            terms = "[article, description, second, title, begins, note, organization, info, content, example]"
+        ),
+        Topic(
+            topicId = 1,
+            terms = "[article, title, second, description, example, content, info, organization, note, begins]"
         )
     )
     val analyzedData = AnalyzedData(analyzedArticles, topics)
