@@ -13,7 +13,7 @@ import org.apache.spark.ml.linalg.DenseVector
 
 object DataAnalyzer {
     suspend fun getAnalyzedData(): Pair<List<Article>,List<Topic>> {
-        val articles = RawDataGateway().allArticles()
+        val articles = RawDataGateway.allArticles()
         return getArticleTopics(articles)
     }
 
