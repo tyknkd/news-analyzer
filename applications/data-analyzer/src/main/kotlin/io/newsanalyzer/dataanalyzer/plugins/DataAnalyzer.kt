@@ -44,7 +44,6 @@ object DataAnalyzer {
 
         return Pair(analyzedArticleDf.toListOf<Article>(), topicTermsStringDf.toListOf<Topic>())
     }
-
     private fun extractTopics(articleList: List<Article>): TopicData {
         val numberArticles = articleList.size
 
@@ -95,7 +94,7 @@ object DataAnalyzer {
             termList = vectorizer.vocabulary().toList()
 
             // Latent Dirichlet Allocation
-            val numberTopics = numberArticles/8
+            val numberTopics = maxOf(numberArticles/8, 2)
             val ldaModel = LDA()
                 .setK(numberTopics)
                 .setOptimizer("em") // Expectation maximization
