@@ -108,4 +108,5 @@ object TestDoubles {
             terms = "some, terms"
         )
     )
+    val analyzedData = AnalyzedData(analyzedArticles, topics)
 }
