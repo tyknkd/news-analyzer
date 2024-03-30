@@ -39,7 +39,6 @@ class DataCollectorTest {
             newsApiKey = "abc123",
             client = testClient)
         assertEquals(TestDoubles.filteredSortedRemoteArticles, result)
-
     }
 }
 
