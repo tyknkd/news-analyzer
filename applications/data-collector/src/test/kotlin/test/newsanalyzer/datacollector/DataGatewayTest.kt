@@ -40,7 +40,7 @@ class DataGatewayTest {
     @Test
     fun testAddRemoteArticles() = testSuspend {
         val result = CollectorDataGateway.addRemoteArticles(TestDoubles.filteredSortedRemoteArticles)
-        assertTrue(result)
+        assertTrue(result,"Data was not added to database")
         val articles: List<Article> = CollectorDataGateway.allArticles()
         assertEquals(TestDoubles.rawArticles, articles)
     }
@@ -48,14 +48,14 @@ class DataGatewayTest {
     @Test
     fun testArticlesAfter() = testSuspend {
         val result = CollectorDataGateway.addRemoteArticles(TestDoubles.filteredSortedRemoteArticles + TestDoubles.remoteArticlesUpdate)
-        assertTrue(result)
+        assertTrue(result,"Data was not added to database")
         val articles: List<Article> = CollectorDataGateway.articlesAfter(TestDoubles.secondArticlePublishedAt)
         assertEquals(TestDoubles.rawArticlesUpdateOnly, articles)
     }
     @Test
     fun testLatestDateTime() = testSuspend {
         val result = CollectorDataGateway.addRemoteArticles(TestDoubles.filteredSortedRemoteArticles)
-        assertTrue(result)
+        assertTrue(result,"Data was not added to database")
         val latestDateTime = CollectorDataGateway.latestDateTime()
         assertEquals(TestDoubles.secondArticlePublishedAt, latestDateTime)
     }
@@ -85,9 +85,9 @@ class DataGatewayTest {
         }
         CollectorDataGateway.updateClient(testClient)
         val firstResult = CollectorDataGateway.addRemoteArticles(TestDoubles.filteredSortedRemoteArticles)
-        assertTrue(firstResult)
+        assertTrue(firstResult,"Data was not added to database")
         val secondResult = CollectorDataGateway.addRemoteArticles(TestDoubles.remoteArticlesUpdate)
-        assertTrue(secondResult)
+        assertTrue(secondResult,"Data was not added to database")
         val articles: List<Article> = CollectorDataGateway.allArticles()
         assertEquals(TestDoubles.updatedRawArticles, articles)
     }

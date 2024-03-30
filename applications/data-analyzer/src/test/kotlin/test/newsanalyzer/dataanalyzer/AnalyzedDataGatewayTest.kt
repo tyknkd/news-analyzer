@@ -31,14 +31,14 @@ class AnalyzedDataGatewayTest {
     @Test
     fun testUpsertArticles() = testSuspend {
         val result = AnalyzedDataGateway.upsertArticles(TestDoubles.analyzedArticles)
-        assertTrue(result)
+        assertTrue(result,"No data was added to database")
         val articles: List<Article> = AnalyzedDataGateway.allArticles()
         assertEquals(TestDoubles.analyzedArticles, articles)
     }
     @Test
     fun testUpsertTopics() = testSuspend {
         val result = AnalyzedDataGateway.upsertTopics(TestDoubles.topics)
-        assertTrue(result)
+        assertTrue(result,"Data was not added to database")
         val topics: List<Topic> = AnalyzedDataGateway.allTopics()
         assertEquals(TestDoubles.topics, topics)
     }

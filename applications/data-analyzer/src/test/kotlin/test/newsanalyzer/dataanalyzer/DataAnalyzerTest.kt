@@ -31,7 +31,7 @@ class DataAnalyzerTest {
     @Test
     fun testGetAnalyzedData() = testSuspend {
         val result = RawDataGateway.upsertArticles(TestDoubles.rawArticles)
-        assertTrue(result)
+        assertTrue(result,"Data was not added to database")
         val (articles, topics) = DataAnalyzer.getAnalyzedData()
         assertEquals(TestDoubles.analyzedArticles, articles)
         assertEquals(TestDoubles.topics, topics)
