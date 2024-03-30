@@ -5,12 +5,9 @@ import org.jetbrains.exposed.sql.Table
 import io.newsanalyzer.datasupport.DatabaseTemplate
 import io.newsanalyzer.datasupport.models.RawArticles
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.Database
 
-fun Application.configureDatabases(
-    envDbName: String = "COLLECTOR_DB",
-    tables: List<Table> = listOf(RawArticles)): Database {
-    val database = DatabaseTemplate(envDbName, tables).database
+fun Application.configureDatabases() {
+    val tables: List<Table> = listOf(RawArticles)
+    DatabaseTemplate("COLLECTOR_DB", tables)
     runBlocking { CollectorDataGateway.updateArticles() }
-    return database
 }
