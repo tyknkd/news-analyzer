@@ -11,7 +11,7 @@ import kotlin.test.*
 
 class AnalyzedDataGatewayTest {
     private val tables: List<Table> = listOf(AnalyzedArticles, Topics)
-    private val database: Database = DatabaseTemplate("ANALYZER_DB", emptyList()).database
+    private val database: Database = DatabaseTemplate("ANALYZER_TEST_DB", emptyList()).database
     @BeforeTest
     fun setup() {
         transaction(database) {
