@@ -3,8 +3,8 @@ package test.newsanalyzer.webserver
 import io.newsanalyzer.webserver.plugins.*
 import io.newsanalyzer.testsupport.TestDoubles
 import io.newsanalyzer.datasupport.models.*
-import io.ktor.test.dispatcher.*
 import io.newsanalyzer.datasupport.DatabaseTemplate
+import io.ktor.test.dispatcher.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.*

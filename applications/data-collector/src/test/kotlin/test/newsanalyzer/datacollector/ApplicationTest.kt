@@ -1,10 +1,11 @@
 package test.newsanalyzer.datacollector
 
-import io.ktor.client.call.*
 import io.newsanalyzer.datacollector.plugins.*
 import io.newsanalyzer.testsupport.TestDoubles
 import io.newsanalyzer.datasupport.models.*
+import io.newsanalyzer.datasupport.DatabaseTemplate
 import io.newsanalyzer.httpsupport.HostPaths
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -15,7 +16,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
-import io.newsanalyzer.datasupport.DatabaseTemplate
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.*

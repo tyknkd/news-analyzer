@@ -4,12 +4,11 @@ import io.newsanalyzer.datacollector.plugins.*
 import io.newsanalyzer.testsupport.TestDoubles
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kotlin.test.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class DataCollectorTest {
     @Test
