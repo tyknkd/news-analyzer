@@ -30,9 +30,13 @@ class RawDataGatewayTest {
     }
     @Test
     fun testUpsertArticles() = testSuspend {
-        val result = RawDataGateway.upsertArticles(TestDoubles.rawArticles)
-        assertTrue(result,"Data was not added to database")
+        val firstResult = RawDataGateway.upsertArticles(TestDoubles.rawArticles)
+        assertTrue(firstResult,"Data was not added to database")
         val articles: List<Article> = RawDataGateway.allArticles()
         assertEquals(TestDoubles.rawArticles, articles)
+        val secondResult = RawDataGateway.upsertArticles(TestDoubles.updatedRawArticles)
+        assertTrue(secondResult,"Data was not added to database")
+        val updatedArticles: List<Article> = RawDataGateway.allArticles()
+        assertEquals(TestDoubles.updatedRawArticles, updatedArticles)
     }
 }

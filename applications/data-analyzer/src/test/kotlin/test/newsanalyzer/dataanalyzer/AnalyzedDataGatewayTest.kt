@@ -30,16 +30,24 @@ class AnalyzedDataGatewayTest {
     }
     @Test
     fun testUpsertArticles() = testSuspend {
-        val result = AnalyzedDataGateway.upsertArticles(TestDoubles.analyzedArticles)
-        assertTrue(result,"No data was added to database")
+        val firstResult = AnalyzedDataGateway.upsertArticles(TestDoubles.analyzedArticles)
+        assertTrue(firstResult,"No data was added to database")
         val articles: List<Article> = AnalyzedDataGateway.allArticles()
         assertEquals(TestDoubles.analyzedArticles, articles)
+        val secondResult = AnalyzedDataGateway.upsertArticles(TestDoubles.updatedAnalyzedArticles)
+        assertTrue(secondResult,"No data was added to database")
+        val updatedArticles: List<Article> = AnalyzedDataGateway.allArticles()
+        assertEquals(TestDoubles.updatedAnalyzedArticles, updatedArticles)
     }
     @Test
     fun testUpsertTopics() = testSuspend {
-        val result = AnalyzedDataGateway.upsertTopics(TestDoubles.topics)
-        assertTrue(result,"Data was not added to database")
+        val firstResult = AnalyzedDataGateway.upsertTopics(TestDoubles.topics)
+        assertTrue(firstResult,"Data was not added to database")
         val topics: List<Topic> = AnalyzedDataGateway.allTopics()
         assertEquals(TestDoubles.topics, topics)
+        val secondResult = AnalyzedDataGateway.upsertTopics(TestDoubles.updatedTopics)
+        assertTrue(secondResult,"Data was not added to database")
+        val updatedTopics: List<Topic> = AnalyzedDataGateway.allTopics()
+        assertEquals(TestDoubles.updatedTopics, updatedTopics)
     }
 }
