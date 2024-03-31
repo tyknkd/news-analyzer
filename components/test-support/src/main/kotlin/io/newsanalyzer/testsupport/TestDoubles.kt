@@ -165,6 +165,7 @@ object TestDoubles {
         }
         return articlesByTopic.toList()
     }
+    val articlesByTopic = buildArticlesByTopicList(analyzedArticles, topics)
     val updatedArticlesByTopic = buildArticlesByTopicList(updatedAnalyzedArticles, updatedTopics)
 
     private fun buildArticlesOnTopic(analyzedArticles: List<Article>, topics: List<Topic>, topicId: Int): ArticlesByTopic {
@@ -173,5 +174,6 @@ object TestDoubles {
             articles = analyzedArticles.filter { it.topicId == topicId }
         )
     }
+    val articlesOnTopic = buildArticlesOnTopic(analyzedArticles, topics, 0)
     val updatedArticlesOnTopic = buildArticlesOnTopic(updatedAnalyzedArticles, updatedTopics, 0)
 }
