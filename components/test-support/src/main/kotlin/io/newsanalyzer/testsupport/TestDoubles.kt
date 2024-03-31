@@ -63,6 +63,7 @@ object TestDoubles {
     )
     val filteredSortedRemoteArticles = listOf(remoteArticle1, remoteArticle2)
     val secondArticlePublishedAt = Instant.parse(remoteArticle2.publishedAt)
+
     private val remoteArticle3 = RemoteArticle(
         source = RemoteSource(
             id = "another-publisher",
@@ -77,6 +78,7 @@ object TestDoubles {
         content = "This third article's content goes like this… [+4506 chars]",
     )
     val remoteArticlesUpdate = listOf(remoteArticle3)
+
     private fun buildRawArticlesList(remoteArticles: List<RemoteArticle>, firstId: Int = 1): List<Article> {
         val rawArticles = emptyList<Article>().toMutableList()
         var id = firstId
@@ -97,9 +99,11 @@ object TestDoubles {
         }
         return rawArticles.toList()
     }
+
     val rawArticles = buildRawArticlesList(filteredSortedRemoteArticles)
     val rawArticlesUpdateOnly = buildRawArticlesList(remoteArticlesUpdate,3)
     val updatedRawArticles = rawArticles + rawArticlesUpdateOnly
+
     private fun buildAnalyzedArticlesList(rawArticles: List<Article>, firstId: Int = 1, firstTopicId: Int = 0): List<Article> {
         val analyzedArticles = emptyList<Article>().toMutableList()
         var id = firstId
@@ -122,6 +126,7 @@ object TestDoubles {
         }
         return analyzedArticles.toList()
     }
+
     val analyzedArticles = buildAnalyzedArticlesList(rawArticles)
     private val analyzedArticlesUpdateOnly = buildAnalyzedArticlesList(rawArticlesUpdateOnly, 3, 1)
     val updatedAnalyzedArticles = analyzedArticles + analyzedArticlesUpdateOnly
@@ -148,4 +153,25 @@ object TestDoubles {
         )
     )
     val analyzedData = AnalyzedData(analyzedArticles, topics)
+    val updatedAnalyzedData = AnalyzedData(updatedAnalyzedArticles, updatedTopics)
+
+    private fun buildArticlesByTopicList(analyzedArticles: List<Article>, topics: List<Topic>): List<ArticlesByTopic> {
+        val articlesByTopic = emptyList<ArticlesByTopic>().toMutableList()
+        for (topic in topics) {
+            articlesByTopic += ArticlesByTopic(
+                topic = topic,
+                articles = analyzedArticles.reversed().filter { it.topicId == topic.topicId }
+            )
+        }
+        return articlesByTopic.toList()
+    }
+    val updatedArticlesByTopic = buildArticlesByTopicList(updatedAnalyzedArticles, updatedTopics)
+
+    private fun buildArticlesOnTopic(analyzedArticles: List<Article>, topics: List<Topic>, topicId: Int): ArticlesByTopic {
+        return ArticlesByTopic(
+            topic = topics.first { it.topicId == topicId },
+            articles = analyzedArticles.filter { it.topicId == topicId }
+        )
+    }
+    val updatedArticlesOnTopic = buildArticlesOnTopic(updatedAnalyzedArticles, updatedTopics, 0)
 }
