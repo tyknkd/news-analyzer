@@ -63,8 +63,8 @@ class ApplicationTest {
             AnalyzedDataGateway.updateClient(testClient)
             testSuspend { RawDataGateway.addArticles(TestDoubles.rawArticles) }
         }
-        @JvmStatic
         @AfterClass
+        @JvmStatic
         fun teardown() {
             transaction(database) {
                 for (table in tables) {
