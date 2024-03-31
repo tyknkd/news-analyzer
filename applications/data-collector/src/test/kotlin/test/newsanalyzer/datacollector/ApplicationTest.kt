@@ -71,10 +71,11 @@ class ApplicationTest {
     }
     @Test
     fun testArticles() = testSuspend {
-        val response = testClient.get("/")
-        assertEquals(HttpStatusCode.OK, response.status)
-        val articles: List<Article> = response.body()
-        assertEquals(TestDoubles.rawArticles, articles)
+        testClient.get("/").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val articles: List<Article> = body()
+            assertEquals(TestDoubles.rawArticles, articles)
+        }
     }
     @Test
     fun testHealth() = testSuspend {

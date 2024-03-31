@@ -28,6 +28,51 @@ import kotlin.test.assertTrue
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ApplicationTest {
+    @Test
+    fun testArticles() = testSuspend {
+        testClient.get("/").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val articles: List<Article> = body()
+            assertEquals(TestDoubles.rawArticles.size, articles.size)
+            for (article in articles) {
+                assertTrue(article.topicId >= 0)
+            }
+        }
+
+    }
+    @Test
+    fun testHealth() = testSuspend {
+        testClient.get("health").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            assertEquals("OK", bodyAsText())
+        }
+    }
+    @Test
+    fun testTopics() = testSuspend {
+        testClient.get("topics").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val topics: List<Topic> = body()
+            assertTrue(topics.size >= 2)
+        }
+    }
+    @Test
+    fun testUpdate() = testSuspend {
+        testClient.post("articles") {
+            contentType(ContentType.Application.Json)
+            setBody(TestDoubles.updatedRawArticles)
+        }.apply {
+            assertEquals(HttpStatusCode.OK, status)
+            assertEquals("Updated", bodyAsText())
+        }
+        testClient.get("articles").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val articles: List<Article> = body()
+            assertEquals(TestDoubles.updatedRawArticles.size, articles.size)
+            for (article in articles) {
+                assertTrue(article.topicId >= 0)
+            }
+        }
+    }
     companion object {
         private val tables: List<Table> = listOf(RawArticles, AnalyzedArticles, Topics)
         private val database: Database = DatabaseTemplate("ANALYZER_TEST_DB", emptyList()).database
@@ -72,46 +117,6 @@ class ApplicationTest {
                 }
             }
             testApp.stop()
-        }
-    }
-    @Test
-    fun testArticles() = testSuspend {
-        val response = testClient.get("/")
-        assertEquals(HttpStatusCode.OK, response.status)
-        val articles: List<Article> = response.body()
-        assertEquals(TestDoubles.rawArticles.size, articles.size)
-        for (article in articles) {
-            assertTrue(article.topicId >= 0)
-        }
-    }
-    @Test
-    fun testHealth() = testSuspend {
-        testClient.get("health").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            assertEquals("OK", bodyAsText())
-        }
-    }
-    @Test
-    fun testTopics() = testSuspend {
-        val response = testClient.get("topics")
-        assertEquals(HttpStatusCode.OK, response.status)
-        val topics: List<Topic> = response.body()
-        assertTrue(topics.size >= 2)
-    }
-    @Test
-    fun testUpdate() = testSuspend {
-        val postResponse = testClient.post("articles") {
-            contentType(ContentType.Application.Json)
-            setBody(TestDoubles.updatedRawArticles)
-        }
-        assertEquals("Updated", postResponse.bodyAsText())
-        assertEquals(HttpStatusCode.OK, postResponse.status)
-        val getResponse = testClient.get("articles")
-        assertEquals(HttpStatusCode.OK, getResponse.status)
-        val articles: List<Article> = getResponse.body()
-        assertEquals(TestDoubles.updatedRawArticles.size, articles.size)
-        for (article in articles) {
-            assertTrue(article.topicId >= 0)
         }
     }
 }
