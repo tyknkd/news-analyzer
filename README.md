@@ -37,14 +37,14 @@ interest to the reader.
   - [x] Data collection: [applications/data-collector](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector)
   - [x] Data analyzer: [applications/data-analyzer](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer)
   - [x] Unit tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/) 
-  - [x] Data persistence in any data store: [components/data-support](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support)
-  - [x] REST collaboration internal or API endpoint: [web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt)
+  - [x] Data persistence: [components/data-support](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support)
+  - [x] REST API endpoint: [web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt)
   - Production environment
 - B-level
   - Integration tests
-  - [x] Using mock objects or any test doubles: [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support)
+  - [x] Test doubles: [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support)
   - Continuous integration
-  - Production monitoring instrumenting
+  - Production monitoring
       - `/health` endpoint
       - `/metrics` endpoint
 - A-level
