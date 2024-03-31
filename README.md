@@ -33,16 +33,16 @@ interest to the reader.
 ## Final Project Rubric
 (Click links to see relevant code)
 - C-level
-  - Web application basic form, reporting
-  - Data collection
-  - Data analyzer
-  - Unit tests
-  - Data persistence in any data store
-  - REST collaboration internal or API endpoint
+  - [x] Web application: [applications/web-server](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server)
+  - [x] Data collection: [applications/data-collector](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector)
+  - [x] Data analyzer: [applications/data-analyzer](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer)
+  - [x] Unit tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/) 
+  - [x] Data persistence in any data store: [components/data-support](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support)
+  - [x] REST collaboration internal or API endpoint: [web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt)
   - Production environment
 - B-level
   - Integration tests
-  - Using mock objects or any test doubles
+  - [x] Using mock objects or any test doubles: [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support)
   - Continuous integration
   - Production monitoring instrumenting
       - `/health` endpoint
@@ -59,7 +59,7 @@ discovery of the endpoints within the API.
 
 ## Local Setup
 To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
-(web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
+(web, data collector, data analyzer) from separate terminals with only the database, analytics, and message queue in Docker containers.
 Either way, you must perform the preliminary environment setup first.
 
 ### Preliminary Environment Setup
@@ -88,9 +88,9 @@ docker compose up
 
 ### B. Separate Servers Setup
 1. Install [Java 17](https://openjdk.org/).
-2. Start only the database and message queue containers.
+2. Start only the database, analytics, and message queue containers.
 ```shell
-docker compose up db mq
+docker compose up db spark mq
 ```
 3. In a separate bash shell, load the environment variables.
 ```shell
@@ -104,15 +104,15 @@ source .env && source sensitive.env
 ```shell
 ./gradlew koverHtmlReport
 ```
-6. In a separate terminal, start the web server.
+6. In a separate terminal, start the web server first.
 ```shell
 ./gradlew applications:web-server:run
 ```
-7. In a separate bash shell, start the data analyzer server.
+7. In a separate bash shell, start the data analyzer server second.
 ```shell
 ./gradlew applications:data-analyzer:run
 ```
-8. Start the data collector server.
+8. Start the data collector server last.
 ```shell
 ./gradlew applications:data-collector:run
 ```
