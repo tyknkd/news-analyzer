@@ -8,7 +8,7 @@ import java.util.*
 
 fun main() {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-    val port = System.getenv("WEBSERVER_PORT")?.toInt() ?: 8080
+    val port = System.getenv("WEBSERVER_PORT")?.toInt() ?: 8083
     embeddedServer(factory = Netty, port = port, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
