@@ -83,7 +83,7 @@ echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```shell
 docker compose up
 ```
-2. In a web browser, open [http://localhost:8080](http://localhost:8080)
+2. In a web browser, open [http://localhost:8083](http://localhost:8080)
 3. To stop the app, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Separate Servers Setup
@@ -116,7 +116,7 @@ source .env && source sensitive.env
 ```shell
 ./gradlew applications:data-collector:run
 ```
-9. In a web browser, open [http://localhost:8080](http://localhost:8080)
+9. In a web browser, open [http://localhost:8083](http://localhost:8080)
 10. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
 
 _&copy;2024 Tyler Kinkade, All Rights Reserved_
