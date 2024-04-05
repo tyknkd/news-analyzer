@@ -4,7 +4,7 @@ FROM gradle:8.6-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 ARG APP
-RUN gradle application:${APP}:buildFatJar --no-daemon
+RUN gradle applications:${APP}:buildFatJar --no-daemon
 # Run app stage
 FROM eclipse-temurin:17-jre-alpine AS app
 ARG APP
