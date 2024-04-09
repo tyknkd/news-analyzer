@@ -26,7 +26,7 @@ interest to the reader.
 - [Apache Spark](https://spark.apache.org/) v.3.3.2: Data analytics
 - [Kotlin for Apache Spark](https://github.com/Kotlin/kotlin-spark-api) v.1.2.4: Kotlin-Spark compatibility API
 - [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
-- [Gradle](https://gradle.org/) v.8.6: Build tool
+- [Gradle](https://gradle.org/) v.8.7: Build tool
 - [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
 
 
