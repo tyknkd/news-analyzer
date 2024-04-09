@@ -2,6 +2,7 @@ services:
   web-server:
     build:
       context: .
+      target: app
       args:
         APP: web-server
     container_name: web-server
@@ -23,12 +24,17 @@ services:
   data-analyzer:
     build:
       context: .
+      target: spark-app
       args:
         APP: data-analyzer
+        SPARK_VERSION: ${SPARK_VERSION}
+        HADOOP_MAJOR_VERSION: ${HADOOP_MAJOR_VERSION}
+        SCALA_VERSION: ${SCALA_VERSION}
     container_name: data-analyzer
     environment:
       PORT: ${ANALYZER_PORT}
-      WEBSERVER_DB: ${ANALYZER_DB}
+      WEBSERVER_PORT: ${WEBSERVER_PORT}
+      ANALYZER_DB: ${ANALYZER_DB}
       POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
       POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -38,17 +44,19 @@ services:
     ports:
       - ${ANALYZER_PORT}:${ANALYZER_PORT}
     depends_on:
+      - db
       - web-server
-
 
   data-collector:
     build:
       context: .
+      target: app
       args:
         APP: data-collector
     container_name: data-collector
     environment:
       PORT: ${COLLECTOR_PORT}
+      ANALYZER_PORT: ${ANALYZER_PORT}
       COLLECTOR_DB: ${COLLECTOR_DB}
       POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
       POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
@@ -61,6 +69,7 @@ services:
     ports:
       - ${COLLECTOR_PORT}:${COLLECTOR_PORT}
     depends_on:
+      - db
       - data-analyzer
 
   db:
