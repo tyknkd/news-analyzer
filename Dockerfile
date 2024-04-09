@@ -24,7 +24,7 @@ ENV OS_ENV="container"
 RUN mkdir -p /app
 COPY --from=gradle-build /home/gradle/src/applications/${APP}/build/libs/*-all.jar /app/${APP}.jar
 ADD --chmod=775 ./app-entrypoint.sh /
-ENTRYPOINT ["app-entrypoint.sh"]
+ENTRYPOINT ["/app-entrypoint.sh"]
 
 FROM jammy-jre-spark AS spark-app
 ARG APP
@@ -33,4 +33,4 @@ ENV OS_ENV="container"
 RUN mkdir -p /app
 COPY --from=gradle-build /home/gradle/src/applications/${APP}/build/libs/*-all.jar /app/${APP}.jar
 ADD --chmod=775 ./app-entrypoint.sh /
-ENTRYPOINT ["app-entrypoint.sh"]
+ENTRYPOINT ["/app-entrypoint.sh"]
