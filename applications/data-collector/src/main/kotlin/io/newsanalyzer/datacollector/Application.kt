@@ -8,7 +8,7 @@ import io.newsanalyzer.datacollector.plugins.*
 
 fun main() {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-    val port = System.getenv("COLLECTOR_PORT")?.toInt() ?: 8081
+    val port = System.getenv("COLLECTOR_PORT")?.toInt() ?: 8886
     embeddedServer(factory = Netty, port = port, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
