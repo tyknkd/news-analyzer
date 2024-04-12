@@ -1,0 +1,9 @@
+services:
+  spark:
+    build:
+      context: .
+      args:
+        SPARK_VERSION: ${SPARK_VERSION}
+        HADOOP_MAJOR_VERSION: ${HADOOP_MAJOR_VERSION}
+        SCALA_VERSION: ${SCALA_VERSION}
+    image: tyknkd/spark:${SPARK_VERSION}-scala${SCALA_VERSION}-java17-jammy
