@@ -79,41 +79,43 @@ echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```
 
 ### A. Fully Containerized Setup
-1. Build and start the Docker containers. (This will take several minutes the first time.)
+1. Perform preliminary environment setup above.
+2. Build and start the Docker containers. (This will take several minutes the first time.)
 ```shell
 docker compose up
 ```
-2. In a web browser, open [http://localhost:8083](http://localhost:8080)
-3. To stop the app, press `CTRL+C` in the bash shell from which it was started.
+3. In a web browser, open [http://localhost:8888](http://localhost:8080)
+4. To stop the app, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Local App Servers Setup
-1. Install [Java 17](https://openjdk.org/)
-2. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
-3. Start only the database and message queue containers.
+1. Perform preliminary environment setup above.
+2. Install [Java 17](https://openjdk.org/)
+3. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
+4. Start only the database and message queue containers.
 ```shell
 docker compose up db mq
 ```
-4. In a separate bash shell, load the environment variables.
+5. In a separate bash shell, load the environment variables.
 ```shell
 source .env && source sensitive.env
 ```
-5. Build and test the project.
+6. Build and test the project.
 ```shell
 ./gradlew build
 ```
-6. In a separate terminal, start the web server first.
+7. In a separate terminal, start the web server first.
 ```shell
 ./gradlew applications:web-server:run
 ```
-7. In a separate bash shell, start the data analyzer server second.
+8. In a separate bash shell, start the data analyzer server second.
 ```shell
 ./gradlew applications:data-analyzer:run
 ```
-8. Start the data collector server last.
+9. Start the data collector server last.
 ```shell
 ./gradlew applications:data-collector:run
 ```
-9. In a web browser, open [http://localhost:8083](http://localhost:8080)
-10. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
+10. In a web browser, open [http://localhost:8888](http://localhost:8080)
+11. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
 
 _&copy;2024 Tyler Kinkade, All Rights Reserved_
