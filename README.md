@@ -59,7 +59,7 @@ discovery of the endpoints within the API.
 
 ## Local Setup
 To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
-(web, data collector, data analyzer) from separate terminals with only the database, analytics, and message queue in Docker containers.
+(web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
 Either way, you must perform the preliminary environment setup first.
 
 ### Preliminary Environment Setup
@@ -86,23 +86,20 @@ docker compose up
 2. In a web browser, open [http://localhost:8083](http://localhost:8080)
 3. To stop the app, press `CTRL+C` in the bash shell from which it was started.
 
-### B. Separate Servers Setup
-1. Install [Java 17](https://openjdk.org/).
-2. Start only the database, analytics, and message queue containers.
+### B. Local App Servers Setup
+1. Install [Java 17](https://openjdk.org/)
+2. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
+3. Start only the database and message queue containers.
 ```shell
-docker compose up db spark mq
+docker compose up db mq
 ```
-3. In a separate bash shell, load the environment variables.
+4. In a separate bash shell, load the environment variables.
 ```shell
 source .env && source sensitive.env
 ```
-4. Build and test the project.
+5. Build and test the project.
 ```shell
 ./gradlew build
-```
-5. Optional: Check test code coverage.
-```shell
-./gradlew koverHtmlReport
 ```
 6. In a separate terminal, start the web server first.
 ```shell
