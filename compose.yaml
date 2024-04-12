@@ -27,9 +27,6 @@ services:
       target: spark-app
       args:
         APP: data-analyzer
-        SPARK_VERSION: ${SPARK_VERSION}
-        HADOOP_MAJOR_VERSION: ${HADOOP_MAJOR_VERSION}
-        SCALA_VERSION: ${SCALA_VERSION}
     container_name: data-analyzer
     environment:
       PORT: ${ANALYZER_PORT}
