@@ -80,12 +80,16 @@ echo yournewsapikeygoeshere > secrets/news_api_key.txt
 
 ### A. Fully Containerized Setup
 1. Perform preliminary environment setup above.
-2. Build and start the Docker containers. (This will take several minutes the first time.)
+2. Optional: Run all tests in containers
+```shell
+docker compose up test
+```
+3. Build and start the Docker containers. (This will take several minutes the first time.)
 ```shell
 docker compose up
 ```
-3. In a web browser, open [http://localhost:8888](http://localhost:8080)
-4. To stop the app, press `CTRL+C` in the bash shell from which it was started.
+4. In a web browser, open [http://localhost:8888](http://localhost:8080)
+5. To stop the app, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Local App Servers Setup
 1. Perform preliminary environment setup above.
