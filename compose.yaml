@@ -90,6 +90,15 @@ services:
       timeout: 5s
       retries: 5
 
+  mq:
+    image: rabbitmq:3.13-management
+    container_name: mq
+    ports:
+      - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+    volumes:
+      - ./.docker-data/.rabbit-data/.rabbit-lib:/var/lib/rabbitmq
+      - ./.docker-data/.rabbit-data/.rabbit-log:/var/log/rabbitmq
+
   test:
     build:
       context: .
