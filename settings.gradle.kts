@@ -4,4 +4,5 @@ include("applications:web-server",
     "applications:data-analyzer",
     "components:data-support",
     "components:http-support",
-    "components:test-support")
+    "components:test-support",
+    "components:mq-support")
