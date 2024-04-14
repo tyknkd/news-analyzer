@@ -22,3 +22,10 @@ RUN mkdir -p /app
 COPY --from=gradle-build /home/gradle/src/applications/${APP}/build/libs/*-all.jar /app/${APP}.jar
 ADD --chmod=775 ./app-entrypoint.sh /
 ENTRYPOINT ["/app-entrypoint.sh"]
+
+FROM tyknkd/spark:3.3.2-scala2.13-jdk17-gradle8.7-jammy AS gradle-test
+COPY --chown=gradle:gradle . /home/gradle/src
+ENV OS_ENV="container"
+ADD --chmod=775 ./test-entrypoint.sh /
+WORKDIR /home/gradle/src
+ENTRYPOINT ["/test-entrypoint.sh"]
