@@ -29,7 +29,7 @@ object DataCollector {
                                fromInstant: Instant? = null,
                                client: HttpClient = HttpClientTemplate().httpClient): List<RemoteArticle>? {
         val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
-        if ((newsApiKey == null) or (newsApiKey == "yournewsapikeygoeshere")) {
+        if (newsApiKey == null) {
             throw RuntimeException(apiKeyErrorMessage)
         }
         // Example API request:
