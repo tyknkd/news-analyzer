@@ -2,8 +2,18 @@ services:
   spark:
     build:
       context: .
+      target: spark-jammy
       args:
         SPARK_VERSION: ${SPARK_VERSION}
         HADOOP_MAJOR_VERSION: ${HADOOP_MAJOR_VERSION}
         SCALA_VERSION: ${SCALA_VERSION}
     image: tyknkd/spark:${SPARK_VERSION}-scala${SCALA_VERSION}-java17-jammy
+  spark-gradle:
+    build:
+      context: .
+      target: spark-gradle
+      args:
+        SPARK_VERSION: ${SPARK_VERSION}
+        HADOOP_MAJOR_VERSION: ${HADOOP_MAJOR_VERSION}
+        SCALA_VERSION: ${SCALA_VERSION}
+    image: tyknkd/spark:${SPARK_VERSION}-scala${SCALA_VERSION}-jdk17-gradle8.7-jammy
