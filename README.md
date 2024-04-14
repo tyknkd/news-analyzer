@@ -73,7 +73,7 @@ cd news-analyzer
 ```shell
 mkdir secrets && echo yourpasswordgoeshere > secrets/postgres_password.txt
 ```
-4. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key.
+4. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally.)
 ```shell
 echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```
