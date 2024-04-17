@@ -29,9 +29,13 @@ fun Application.configureRouting() {
             call.respond(status = HttpStatusCode.OK, articles)
         }
         post("/articles") {
-            val articles = call.receive<List<Article>>()
-            if(RawDataGateway.addArticles(articles)) {
-                call.respondText("Updated", status = HttpStatusCode.OK)
+            if (!(System.getenv("MQ_ENABLED").toBoolean())) {
+                val articles = call.receive<List<Article>>()
+                if(RawDataGateway.addArticles(articles)) {
+                    call.respondText("Updated", status = HttpStatusCode.OK)
+                } else {
+                    call.respondText("Not updated", status = HttpStatusCode.OK)
+                }
             } else {
                 call.respondText("Not updated", status = HttpStatusCode.OK)
             }

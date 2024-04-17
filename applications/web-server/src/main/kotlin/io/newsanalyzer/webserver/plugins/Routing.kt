@@ -58,9 +58,13 @@ fun Application.configureRouting() {
             call.respond(status = HttpStatusCode.OK, articlesOnTopic)
         }
         post("/api/update") {
-            val (articles, topics) = call.receive<AnalyzedData>()
-            if(WebDataGateway.updateAll(articles, topics)) {
-                call.respondText("Updated", status = HttpStatusCode.OK)
+            if (!(System.getenv("MQ_ENABLED").toBoolean())) {
+                val (articles, topics) = call.receive<AnalyzedData>()
+                if(WebDataGateway.updateAll(articles, topics)) {
+                    call.respondText("Updated", status = HttpStatusCode.OK)
+                } else {
+                    call.respondText("Not updated", status = HttpStatusCode.OK)
+                }
             } else {
                 call.respondText("Not updated", status = HttpStatusCode.OK)
             }

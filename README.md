@@ -48,7 +48,7 @@ interest to the reader.
       - `/health` endpoint
       - `/metrics` endpoint
 - A-level
-  - Event collaboration messaging
+  - [x] Event collaboration messaging
   - Continuous delivery
 
 ## Live Production Deployment
