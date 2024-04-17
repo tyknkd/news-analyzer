@@ -29,7 +29,7 @@ object Messaging {
     private val analyzerExchange = Exchange(analyzerExchangeName, analyzerQueueName, analyzerRoutingKey)
     private val analyzerPublisher = Publisher(analyzerExchange)
 
-    fun publishMessage(message: String) {
-        analyzerPublisher.publish(message)
+    fun publishMessage(message: String): Boolean {
+        return analyzerPublisher.publish(message)
     }
 }
