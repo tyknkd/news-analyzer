@@ -54,13 +54,13 @@ interest to the reader.
 ## Live Production Deployment
 
 ## API
-The REST API entry point is `\api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
+The REST API entry point is `/api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
 discovery of the endpoints within the API.
 
 ## Local Setup
 To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
 (web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
-Either way, you must perform the preliminary environment setup first.
+Either way, you must perform the preliminary environment setup first. (The following commands are for a Linux/Unix environment.)
 
 ### Preliminary Environment Setup
 1. Install [Docker Engine](https://www.docker.com/).
@@ -73,14 +73,14 @@ cd news-analyzer
 ```shell
 mkdir secrets && echo yourpasswordgoeshere > secrets/postgres_password.txt
 ```
-4. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally.)
+4. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally without a valid key.)
 ```shell
 echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```
 
 ### A. Fully Containerized Setup
 1. Perform preliminary environment setup above.
-2. Optional: Run all tests in containers
+2. Optional: Run all tests in containers. (This will take several minutes.)
 ```shell
 docker compose up test
 ```

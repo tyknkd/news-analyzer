@@ -5,6 +5,7 @@ plugins {
 val prometheus_version: String by project
 
 dependencies {
+    implementation(project(":components:mq-support"))
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-resources")

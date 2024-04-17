@@ -8,6 +8,8 @@ import kotlin.time.Duration.Companion.minutes
 import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datasupport.RawArticlesGatewayTemplate
 import io.newsanalyzer.httpsupport.HttpClientTemplate
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object CollectorDataGateway: RawArticlesGatewayTemplate {
     private var httpClient: HttpClient = HttpClientTemplate().httpClient
@@ -23,7 +25,12 @@ object CollectorDataGateway: RawArticlesGatewayTemplate {
             if (remoteArticles.isNullOrEmpty()) { return false
             } else {
                 if (addRemoteArticles(remoteArticles)) {
-                    return AnalyzerDataClient.postArticles(articlesAfter(latestDateTime), client)
+                    val newArticles = articlesAfter(latestDateTime)
+                    return if (System.getenv("MQ_ENABLED").toBoolean()) {
+                        Messaging.publishMessage(Json.encodeToString(newArticles))
+                    } else {
+                        AnalyzerDataClient.postArticles(newArticles, client)
+                    }
                 }
             }
         }
