@@ -9,7 +9,6 @@ object Messaging {
     private val collectorExchange = Exchange(exchangeName, queueName, routingKey)
     private val collectorPublisher = Publisher(collectorExchange)
     fun publishMessage(message: String): Boolean {
-        collectorPublisher.publish(message)
-        return true
+        return collectorPublisher.publish(message)
     }
 }
