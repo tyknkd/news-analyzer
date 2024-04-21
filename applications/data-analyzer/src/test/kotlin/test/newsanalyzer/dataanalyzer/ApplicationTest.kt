@@ -71,7 +71,7 @@ class ApplicationTest {
 //    }
     companion object {
         private val tables: List<Table> = listOf(RawArticles, AnalyzedArticles, Topics)
-        private val database: Database = DatabaseTemplate("ANALYZER_TEST_DB", emptyList()).database
+        private val database: Database = DatabaseTemplate(System.getenv("ANALYZER_TEST_DB"), emptyList()).database
         private val testApp = TestApplication {
             application {
                 configureSerialization()

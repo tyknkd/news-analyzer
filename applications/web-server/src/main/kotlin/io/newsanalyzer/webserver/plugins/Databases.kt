@@ -7,7 +7,7 @@ import io.newsanalyzer.datasupport.models.*
 import org.jetbrains.exposed.sql.Database
 
 fun Application.configureDatabases(
-    envDbName: String = "WEBSERVER_DB",
+    dbName: String = System.getenv("WEBSERVER_DB"),
     tables: List<Table> = listOf(AnalyzedArticles, Topics)): Database {
-    return DatabaseTemplate(envDbName, tables).database
+    return DatabaseTemplate(dbName, tables).database
 }

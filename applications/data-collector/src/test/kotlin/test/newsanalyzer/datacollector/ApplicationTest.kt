@@ -40,7 +40,7 @@ class ApplicationTest {
     }
     companion object {
         private val tables: List<Table> = listOf(RawArticles)
-        private val database: Database = DatabaseTemplate("COLLECTOR_TEST_DB", emptyList()).database
+        private val database: Database = DatabaseTemplate(System.getenv("COLLECTOR_TEST_DB"), emptyList()).database
         private val testApp = TestApplication {
             externalServices {
                 hosts("https://newsapi.org") {

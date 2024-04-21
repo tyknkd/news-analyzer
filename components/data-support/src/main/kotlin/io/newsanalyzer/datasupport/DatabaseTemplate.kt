@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import com.zaxxer.hikari.*
 
-open class DatabaseTemplate(envDbName: String, tables: List<Table>) {
+open class DatabaseTemplate(dbName: String, tables: List<Table>) {
     var database: Database
     init {
         val driverClassName = "org.postgresql.Driver"
@@ -21,7 +21,6 @@ open class DatabaseTemplate(envDbName: String, tables: List<Table>) {
         if (password == null || password == "") {
             throw RuntimeException("Database password file (secrets/postgres_password.txt) is empty or missing")
         }
-        val dbName = System.getenv(envDbName)
         val user = System.getenv("POSTGRES_USER")
         val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName?reWriteBatchedInserts=true"
         database = Database.connect(

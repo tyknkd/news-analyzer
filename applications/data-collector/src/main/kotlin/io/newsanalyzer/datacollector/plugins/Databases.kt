@@ -8,9 +8,9 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 
 fun Application.configureDatabases(
-    envDbName: String = "COLLECTOR_DB",
+    dbName: String = System.getenv("COLLECTOR_DB"),
     tables: List<Table> = listOf(RawArticles)): Database {
-    val database = DatabaseTemplate(envDbName, tables).database
+    val database = DatabaseTemplate(dbName, tables).database
     runBlocking { CollectorDataGateway.updateArticles() }
     return database
 }

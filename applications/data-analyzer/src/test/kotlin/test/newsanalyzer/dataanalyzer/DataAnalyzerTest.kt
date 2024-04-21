@@ -11,7 +11,7 @@ import kotlin.test.*
 
 class DataAnalyzerTest {
     private val tables: List<Table> = listOf(RawArticles)
-    private val database: Database = DatabaseTemplate("ANALYZER_TEST_DB", emptyList()).database
+    private val database: Database = DatabaseTemplate(System.getenv("ANALYZER_TEST_DB"), emptyList()).database
     @BeforeTest
     fun setup() {
         transaction(database) {
