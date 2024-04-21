@@ -5,11 +5,7 @@ import com.rabbitmq.client.DeliverCallback
 import com.rabbitmq.client.Delivery
 
 class Consumer(private val exchange: Exchange) {
-    private fun defaultMessageHandler(message: String): Boolean {
-        println(message)
-        return true
-    }
-    fun consume(messageHandler: (message: String) -> Boolean = ::defaultMessageHandler) {
+    fun consume(messageHandler: (message: String) -> Boolean = { _ -> true }) {
         val autoAcknowledge = false
         val deliverCallback = DeliverCallback { _: String?, delivery: Delivery ->
             val message = delivery.body.decodeToString()
