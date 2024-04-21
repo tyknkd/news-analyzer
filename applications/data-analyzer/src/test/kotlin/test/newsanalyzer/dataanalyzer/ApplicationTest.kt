@@ -90,20 +90,22 @@ class ApplicationTest {
                 }
             }
             Messaging.updateCollectorMessenger(
-                exchangeName = System.getenv("COLLECTOR_TEST_EXCHANGE"),
-                queueName = System.getenv("COLLECTOR_QUEUE"),
-                routingKey = System.getenv("COLLECTOR_ROUTING_KEY")
+                exchangeName = "analyzer_app_test_collector_exchange",
+                queueName = "analyzer_app_test_collector_queue",
+                routingKey = "analyzer_app_test_collector_key"
             )
             Messaging.updateAnalyzerMessenger(
-                exchangeName = System.getenv("ANALYZER_TEST_EXCHANGE"),
-                queueName = System.getenv("ANALYZER_QUEUE"),
-                routingKey = System.getenv("ANALYZER_ROUTING_KEY")
+                exchangeName = "analyzer_app_test_analyzer_exchange",
+                queueName = "analyzer_app_test_analyzer_queue",
+                routingKey = "analyzer_app_test_analyzer_key"
             )
             testSuspend { RawDataGateway.addArticles(TestDoubles.rawArticles) }
         }
         @AfterClass
         @JvmStatic
         fun teardown() {
+            Messaging.collectorMessenger.delete()
+            Messaging.analyzerMessenger.delete()
             transaction(database) {
                 for (table in tables) {
                     SchemaUtils.drop(table)

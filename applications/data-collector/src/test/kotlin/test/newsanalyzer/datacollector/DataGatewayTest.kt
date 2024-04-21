@@ -75,9 +75,9 @@ class DataGatewayTest {
         }
         CollectorDataGateway.updateClient(testClient)
         Messaging.updateMessenger(
-            exchangeName = System.getenv("COLLECTOR_TEST_EXCHANGE"),
-            queueName = System.getenv("COLLECTOR_QUEUE"),
-            routingKey = System.getenv("COLLECTOR_ROUTING_KEY")
+            exchangeName = "gateway_test_collector_exchange",
+            queueName = "gateway_test_collector_queue",
+            routingKey = "gateway_test_collector_key"
         )
         val firstResult = CollectorDataGateway.addRemoteArticles(TestDoubles.filteredSortedRemoteArticles)
         assertTrue(firstResult,"Data was not added to database")
@@ -85,5 +85,6 @@ class DataGatewayTest {
         assertTrue(secondResult,"Data was not added to database")
         val articles: List<Article> = CollectorDataGateway.allArticles()
         assertEquals(TestDoubles.updatedRawArticles, articles)
+        Messaging.collectorMessenger.delete()
     }
 }

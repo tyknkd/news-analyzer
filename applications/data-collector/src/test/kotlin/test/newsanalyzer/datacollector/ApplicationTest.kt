@@ -17,53 +17,12 @@ import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import kotlin.test.*
+import org.junit.AfterClass
+import org.junit.BeforeClass
+import org.junit.Test
+import kotlin.test.assertEquals
 
 class ApplicationTest {
-    private val tables: List<Table> = listOf(RawArticles)
-    private val database: Database = DatabaseTemplate("COLLECTOR_TEST_DB", emptyList()).database
-    private val testApp = TestApplication {
-        externalServices {
-            hosts("https://newsapi.org") {
-                install(ContentNegotiation) { json() }
-                routing {
-                    get("v2/everything{params}") {
-                        call.respond(status = HttpStatusCode.OK, TestDoubles.remoteData)
-                    }
-                }
-            }
-        }
-        application {
-            configureSerialization()
-            configureRouting()
-        }
-    }
-    private val testClient = testApp.createClient {
-        install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
-    }
-    @BeforeTest
-    fun setup() {
-        transaction(database) {
-            for (table in tables) {
-                SchemaUtils.create(table)
-            }
-        }
-        CollectorDataGateway.updateClient(testClient)
-        Messaging.updateMessenger(
-            exchangeName = System.getenv("COLLECTOR_TEST_EXCHANGE"),
-            queueName = System.getenv("COLLECTOR_QUEUE"),
-            routingKey = System.getenv("COLLECTOR_ROUTING_KEY")
-        )
-        testSuspend { CollectorDataGateway.updateArticles() }
-    }
-    @AfterTest
-    fun teardown() {
-        transaction(database) {
-            for (table in tables) {
-                SchemaUtils.drop(table)
-            }
-        }
-    }
     @Test
     fun testArticles() = testSuspend {
         testClient.get("/").apply {
@@ -77,6 +36,58 @@ class ApplicationTest {
         testClient.get("/health").apply {
             assertEquals(HttpStatusCode.OK, status)
             assertEquals("OK", bodyAsText())
+        }
+    }
+    companion object {
+        private val tables: List<Table> = listOf(RawArticles)
+        private val database: Database = DatabaseTemplate("COLLECTOR_TEST_DB", emptyList()).database
+        private val testApp = TestApplication {
+            externalServices {
+                hosts("https://newsapi.org") {
+                    install(ContentNegotiation) { json() }
+                    routing {
+                        get("v2/everything{params}") {
+                            call.respond(status = HttpStatusCode.OK, TestDoubles.remoteData)
+                        }
+                    }
+                }
+            }
+            application {
+                configureSerialization()
+                configureRouting()
+            }
+        }
+        private val testClient = testApp.createClient {
+            install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
+        }
+
+        @BeforeClass
+        @JvmStatic
+        fun setup(): Unit {
+            transaction(database) {
+                for (table in tables) {
+                    SchemaUtils.create(table)
+                }
+            }
+            CollectorDataGateway.updateClient(testClient)
+            Messaging.updateMessenger(
+                exchangeName = "collector_app_test_exchange",
+                queueName = "collector_app_test_queue",
+                routingKey = "collector_app_test_key"
+            )
+            testSuspend { CollectorDataGateway.updateArticles() }
+        }
+
+        @AfterClass
+        @JvmStatic
+        fun teardown() {
+            Messaging.collectorMessenger.delete()
+            transaction(database) {
+                for (table in tables) {
+                    SchemaUtils.drop(table)
+                }
+            }
+            testApp.stop()
         }
     }
 }
