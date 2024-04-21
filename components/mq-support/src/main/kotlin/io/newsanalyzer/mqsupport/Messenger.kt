@@ -11,4 +11,8 @@ class Messenger(
     private val consumer = Consumer(exchange)
     fun publishMessage(message: String): Boolean { return publisher.publish(message) }
     fun listen() { return consumer.consume(messageHandler)}
+    fun delete() {
+        exchange.channel.queueDelete(queueName)
+        exchange.channel.exchangeDelete(exchangeName)
+    }
 }
