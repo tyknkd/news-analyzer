@@ -27,7 +27,7 @@ object CollectorDataGateway: RawArticlesGatewayTemplate {
                 if (addRemoteArticles(remoteArticles)) {
                     val newArticles = articlesAfter(latestDateTime)
                     return if (System.getenv("MQ_ENABLED").toBoolean()) {
-                        Messaging.publishMessage(Json.encodeToString(newArticles))
+                        Messaging.messenger.publishMessage(Json.encodeToString(newArticles))
                     } else {
                         AnalyzerDataClient.postArticles(newArticles, client)
                     }

@@ -18,7 +18,7 @@ object AnalyzedDataGateway:
         return if (upsertArticles(articles) && upsertTopics(topics)) {
             val analyzedData = AnalyzedData(articles, topics)
             if (System.getenv("MQ_ENABLED").toBoolean()) {
-                Messaging.publishMessage(Json.encodeToString(analyzedData))
+                Messaging.analyzerMessenger.publishMessage(Json.encodeToString(analyzedData))
             } else {
                 WebServerDataClient.postAnalyzedData(analyzedData, client)
             }
