@@ -26,7 +26,7 @@ object CollectorDataGateway: RawArticlesGatewayTemplate {
             } else {
                 if (addRemoteArticles(remoteArticles)) {
                     val newArticles = articlesAfter(latestDateTime)
-                    return Messaging.messenger.publishMessage(Json.encodeToString(newArticles))
+                    return Messaging.collectorMessenger.publishMessage(Json.encodeToString(newArticles))
                 }
             }
         }
