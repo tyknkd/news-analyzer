@@ -19,8 +19,13 @@ object Messaging {
         val articles: List<Article> = Json.decodeFromString(message)
         return runBlocking { RawDataGateway.addArticles(articles) }
     }
-    fun updateCollectorMessenger(newMessenger: Messenger) {
-        collectorMessenger = newMessenger
+    fun updateCollectorMessenger(
+        exchangeName: String,
+        queueName: String,
+        routingKey: String,
+        messageHandler: (message: String) -> Boolean = ::messageHandler
+    ) {
+        collectorMessenger = Messenger(exchangeName, queueName, routingKey, messageHandler)
     }
 
     var analyzerMessenger = Messenger(
@@ -29,7 +34,11 @@ object Messaging {
         routingKey = System.getenv("ANALYZER_ROUTING_KEY")
     )
 
-    fun updateAnalyzerMessenger(newMessenger: Messenger) {
-        analyzerMessenger = newMessenger
+    fun updateAnalyzerMessenger(
+        exchangeName: String,
+        queueName: String,
+        routingKey: String
+    ) {
+        analyzerMessenger = Messenger(exchangeName, queueName, routingKey)
     }
 }

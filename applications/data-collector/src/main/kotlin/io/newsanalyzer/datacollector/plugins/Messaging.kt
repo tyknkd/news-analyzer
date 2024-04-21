@@ -9,7 +9,11 @@ object Messaging {
         routingKey = System.getenv("COLLECTOR_ROUTING_KEY")
     )
 
-    fun updateMessenger(newMessenger: Messenger) {
-        messenger = newMessenger
+    fun updateMessenger(
+        exchangeName: String,
+        queueName: String,
+        routingKey: String
+    ) {
+        messenger = Messenger(exchangeName, queueName, routingKey)
     }
 }

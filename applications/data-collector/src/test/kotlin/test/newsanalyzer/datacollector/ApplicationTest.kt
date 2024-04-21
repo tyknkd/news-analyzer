@@ -4,7 +4,6 @@ import io.newsanalyzer.datacollector.plugins.*
 import io.newsanalyzer.testsupport.TestDoubles
 import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datasupport.DatabaseTemplate
-import io.newsanalyzer.httpsupport.HostPaths
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -33,15 +32,6 @@ class ApplicationTest {
                     }
                 }
             }
-            val apiHost = HostPaths().getAnalyzerPath()
-            hosts("http://${apiHost}") {
-                install(ContentNegotiation) { json() }
-                routing {
-                    post("articles") {
-                        call.respondText("Updated", status = HttpStatusCode.OK)
-                    }
-                }
-            }
         }
         application {
             configureSerialization()
@@ -59,6 +49,11 @@ class ApplicationTest {
             }
         }
         CollectorDataGateway.updateClient(testClient)
+        Messaging.updateMessenger(
+            exchangeName = System.getenv("COLLECTOR_TEST_EXCHANGE"),
+            queueName = System.getenv("COLLECTOR_QUEUE"),
+            routingKey = System.getenv("COLLECTOR_ROUTING_KEY")
+        )
         testSuspend { CollectorDataGateway.updateArticles() }
     }
     @AfterTest

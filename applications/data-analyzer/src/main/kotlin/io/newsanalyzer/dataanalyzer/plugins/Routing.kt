@@ -3,11 +3,9 @@ package io.newsanalyzer.dataanalyzer.plugins
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.newsanalyzer.datasupport.models.Article
 
 fun Application.configureRouting() {
     install(Resources)
@@ -27,18 +25,6 @@ fun Application.configureRouting() {
         get("/articles") {
             val articles = AnalyzedDataGateway.allArticles()
             call.respond(status = HttpStatusCode.OK, articles)
-        }
-        post("/articles") {
-            if (!(System.getenv("MQ_ENABLED").toBoolean())) {
-                val articles = call.receive<List<Article>>()
-                if(RawDataGateway.addArticles(articles)) {
-                    call.respondText("Updated", status = HttpStatusCode.OK)
-                } else {
-                    call.respondText("Not updated", status = HttpStatusCode.OK)
-                }
-            } else {
-                call.respondText("Not updated", status = HttpStatusCode.OK)
-            }
         }
         get("/reanalyze") {
             if(AnalyzedDataGateway.updateAll()) {

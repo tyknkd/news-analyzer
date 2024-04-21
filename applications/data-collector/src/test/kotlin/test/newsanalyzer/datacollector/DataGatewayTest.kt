@@ -3,7 +3,6 @@ package test.newsanalyzer.datacollector
 import io.newsanalyzer.datacollector.plugins.*
 import io.newsanalyzer.testsupport.TestDoubles
 import io.newsanalyzer.datasupport.models.*
-import io.newsanalyzer.httpsupport.HostPaths
 import io.newsanalyzer.datasupport.DatabaseTemplate
 import io.ktor.http.*
 import io.ktor.test.dispatcher.*
@@ -70,20 +69,16 @@ class DataGatewayTest {
                     }
                 }
             }
-            val apiHost = HostPaths().getAnalyzerPath()
-            hosts("http://${apiHost}") {
-                install(ContentNegotiation) { json() }
-                routing {
-                    post("articles") {
-                        call.respondText("Updated", status = HttpStatusCode.OK)
-                    }
-                }
-            }
         }
         val testClient = createClient {
             install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) { json() }
         }
         CollectorDataGateway.updateClient(testClient)
+        Messaging.updateMessenger(
+            exchangeName = System.getenv("COLLECTOR_TEST_EXCHANGE"),
+            queueName = System.getenv("COLLECTOR_QUEUE"),
+            routingKey = System.getenv("COLLECTOR_ROUTING_KEY")
+        )
         val firstResult = CollectorDataGateway.addRemoteArticles(TestDoubles.filteredSortedRemoteArticles)
         assertTrue(firstResult,"Data was not added to database")
         val secondResult = CollectorDataGateway.addRemoteArticles(TestDoubles.remoteArticlesUpdate)

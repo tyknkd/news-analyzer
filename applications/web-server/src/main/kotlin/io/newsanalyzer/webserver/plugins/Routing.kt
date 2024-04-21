@@ -5,12 +5,10 @@ import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.webserver.models.entrypoint
 
 fun Application.configureRouting() {
@@ -56,18 +54,6 @@ fun Application.configureRouting() {
             val topicId = call.parameters.getOrFail<Int>("topicId").toInt()
             val articlesOnTopic = WebDataGateway.articlesOnTopic(topicId)
             call.respond(status = HttpStatusCode.OK, articlesOnTopic)
-        }
-        post("/api/update") {
-            if (!(System.getenv("MQ_ENABLED").toBoolean())) {
-                val (articles, topics) = call.receive<AnalyzedData>()
-                if(WebDataGateway.updateAll(articles, topics)) {
-                    call.respondText("Updated", status = HttpStatusCode.OK)
-                } else {
-                    call.respondText("Not updated", status = HttpStatusCode.OK)
-                }
-            } else {
-                call.respondText("Not updated", status = HttpStatusCode.OK)
-            }
         }
         get("/health") {
             call.respondText(text = "OK", status = HttpStatusCode.OK)
