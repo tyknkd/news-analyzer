@@ -41,6 +41,11 @@ class ApplicationTest {
     companion object {
         private val tables: List<Table> = listOf(RawArticles)
         private val database: Database = DatabaseTemplate(System.getenv("COLLECTOR_TEST_DB"), emptyList()).database
+        private var receivedMessage = "wrong message"
+        private fun messageHandler(message: String): Boolean {
+            receivedMessage = message
+            return true
+        }
         private val testApp = TestApplication {
             externalServices {
                 hosts("https://newsapi.org") {
@@ -73,7 +78,8 @@ class ApplicationTest {
             Messaging.updateMessenger(
                 exchangeName = "collector_app_test_exchange",
                 queueName = "collector_app_test_queue",
-                routingKey = "collector_app_test_key"
+                routingKey = "collector_app_test_key",
+                messageHandler = ::messageHandler
             )
             testSuspend { CollectorDataGateway.updateArticles() }
         }

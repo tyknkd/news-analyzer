@@ -37,8 +37,9 @@ object Messaging {
     fun updateAnalyzerMessenger(
         exchangeName: String,
         queueName: String,
-        routingKey: String
+        routingKey: String,
+        messageHandler: (message: String) -> Boolean = { _ -> true }
     ) {
-        analyzerMessenger = Messenger(exchangeName, queueName, routingKey)
+        analyzerMessenger = Messenger(exchangeName, queueName, routingKey, messageHandler)
     }
 }

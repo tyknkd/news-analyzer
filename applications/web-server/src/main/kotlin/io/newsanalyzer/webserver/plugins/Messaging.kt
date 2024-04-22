@@ -19,7 +19,12 @@ object Messaging {
         return runBlocking { WebDataGateway.updateAll(articles, topics) }
     }
 
-    fun updateAnalyzerMessenger(newMessenger: Messenger) {
-        analyzerMessenger = newMessenger
+    fun updateAnalyzerMessenger(
+        exchangeName: String,
+        queueName: String,
+        routingKey: String,
+        messageHandler: (message: String) -> Boolean = ::messageHandler
+    ) {
+        analyzerMessenger = Messenger(exchangeName, queueName, routingKey, messageHandler)
     }
 }
