@@ -12,8 +12,9 @@ object Messaging {
     fun updateMessenger(
         exchangeName: String,
         queueName: String,
-        routingKey: String
+        routingKey: String,
+        messageHandler: (message: String) -> Boolean = { _ -> true }
     ) {
-        collectorMessenger = Messenger(exchangeName, queueName, routingKey)
+        collectorMessenger = Messenger(exchangeName, queueName, routingKey, messageHandler)
     }
 }
