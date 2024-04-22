@@ -50,7 +50,7 @@ object DataCollector {
                 parameters.append("sources", sources)
                 parameters.append("sortBy", sortBy)
                 if (fromInstant != null) { parameters.append("from", fromInstant.toString()) }
-                if (newsApiKey != null) { parameters.append("apiKey", newsApiKey) }
+                parameters.append("apiKey", newsApiKey)
             }
         }
 
