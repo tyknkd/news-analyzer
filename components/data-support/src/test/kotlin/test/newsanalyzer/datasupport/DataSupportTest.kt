@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.*
 
-class AnalyzedDataGatewayTest {
+class DataSupportTest {
     private val tables: List<Table> = listOf(Topics)
     private val database: Database = DatabaseTemplate(System.getenv("ANALYZER_TEST_DB"), emptyList()).database
     private val topic = Topic(
