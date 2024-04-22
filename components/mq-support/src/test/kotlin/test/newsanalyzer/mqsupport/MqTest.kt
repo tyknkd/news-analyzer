@@ -27,7 +27,7 @@ class MqTest {
         messenger.delete()
     }
     @Test
-    fun testMessaging() = runTest {
+    fun testMessageQueue() = runTest {
         val testMessage = "correct message"
         launch {
             messenger.publishMessage(testMessage)
