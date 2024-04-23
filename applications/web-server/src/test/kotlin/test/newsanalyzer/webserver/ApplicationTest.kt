@@ -74,21 +74,6 @@ class ApplicationTest {
             assertEquals(TestDoubles.topics, topics)
         }
     }
-//    @Test
-//    fun testApiUpdate() = testSuspend {
-//        testClient.post("/api/update") {
-//            contentType(ContentType.Application.Json)
-//            setBody(TestDoubles.updatedAnalyzedData)
-//        }.apply {
-//            assertEquals(HttpStatusCode.OK, status)
-//            assertEquals("Updated", bodyAsText())
-//        }
-//        testClient.get("/api/topics/articles").apply {
-//            assertEquals(HttpStatusCode.OK, status)
-//            val articlesByTopic: List<ArticlesByTopic> = body()
-//            assertEquals(TestDoubles.updatedArticlesByTopic, articlesByTopic)
-//        }
-//    }
     @Test
     fun testArticlesOnTopic() = testSuspend {
         testClient.get("/topics/1/articles").apply {
@@ -118,7 +103,6 @@ class ApplicationTest {
             assertContains(bodyAsText,"\"/topics/1/articles\"")
         }
     }
-
     @Test
     fun testTopics() = testSuspend {
         testClient.get("/topics").apply {
