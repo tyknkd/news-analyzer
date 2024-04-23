@@ -9,6 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import org.jetbrains.exposed.sql.*
@@ -33,7 +34,6 @@ class ApplicationTest {
                 assertTrue(article.topicId >= 0)
             }
         }
-
     }
     @Test
     fun testHealth() = testSuspend {
@@ -43,6 +43,15 @@ class ApplicationTest {
         }
     }
     @Test
+    fun testMqPublished() = testSuspend {
+        val articles: List<Article> = mqPublished.articles
+        assertEquals(TestDoubles.rawArticles.size, articles.size)
+        for (article in articles) {
+            assertTrue(article.topicId >= 0)
+        }
+        assertTrue(mqPublished.topics.size >= 2)
+    }
+    @Test
     fun testTopics() = testSuspend {
         testClient.get("topics").apply {
             assertEquals(HttpStatusCode.OK, status)
@@ -50,28 +59,14 @@ class ApplicationTest {
             assertTrue(topics.size >= 2)
         }
     }
-//    @Test
-//    fun testUpdate() = testSuspend {
-//        testClient.post("articles") {
-//            contentType(ContentType.Application.Json)
-//            setBody(TestDoubles.updatedRawArticles)
-//        }.apply {
-//            assertEquals(HttpStatusCode.OK, status)
-//            assertEquals("Updated", bodyAsText())
-//        }
-//
-//        testClient.get("articles").apply {
-//            assertEquals(HttpStatusCode.OK, status)
-//            val articles: List<Article> = body()
-//            assertEquals(TestDoubles.updatedRawArticles.size, articles.size)
-//            for (article in articles) {
-//                assertTrue(article.topicId >= 0)
-//            }
-//        }
-//    }
     companion object {
         private val tables: List<Table> = listOf(RawArticles, AnalyzedArticles, Topics)
         private val database: Database = DatabaseTemplate(System.getenv("ANALYZER_TEST_DB"), emptyList()).database
+        private lateinit var mqPublished: AnalyzedData
+        private fun messageHandler(message: String): Boolean {
+            mqPublished = Json.decodeFromString(message)
+            return true
+        }
         private val testApp = TestApplication {
             application {
                 configureSerialization()
@@ -83,7 +78,7 @@ class ApplicationTest {
         }
         @BeforeClass
         @JvmStatic
-        fun setup(): Unit {
+        fun setup() {
             transaction(database) {
                 for (table in tables) {
                     SchemaUtils.create(table)
@@ -97,8 +92,11 @@ class ApplicationTest {
             Messaging.updateAnalyzerMessenger(
                 exchangeName = "analyzer_app_test_analyzer_exchange",
                 queueName = "analyzer_app_test_analyzer_queue",
-                routingKey = "analyzer_app_test_analyzer_key"
+                routingKey = "analyzer_app_test_analyzer_key",
+                messageHandler = ::messageHandler
             )
+            Messaging.collectorMessenger.listen()
+            Messaging.analyzerMessenger.listen()
             testSuspend { RawDataGateway.addArticles(TestDoubles.rawArticles) }
         }
         @AfterClass
