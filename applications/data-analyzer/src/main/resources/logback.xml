@@ -5,9 +5,15 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>./logs/dataAnalyzer.log</file>
-        <append>true</append>
+    <property name="LOG_DIR" value="./logs" />
+    <property name="LOG_NAME" value="dataAnalyzer" />
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${LOG_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${LOG_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
         <encoder>
             <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
@@ -25,4 +31,6 @@
     <logger name="com.zaxxer.hikari" level="INFO"/>
     <logger name="org.apache" level="WARN"/>
     <logger name="org.sparkproject" level="WARN"/>
+    <logger name="com.rabbitmq" level="INFO"/>
+    <logger name="io.newsanalyzer.mqsupport" level="INFO" />
 </configuration>
