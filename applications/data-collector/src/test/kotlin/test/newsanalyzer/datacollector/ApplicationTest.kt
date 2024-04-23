@@ -15,6 +15,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.AfterClass
@@ -38,12 +39,16 @@ class ApplicationTest {
             assertEquals("OK", bodyAsText())
         }
     }
+    @Test
+    fun testMessageQueuePublishing() = testSuspend {
+        assertEquals(TestDoubles.rawArticles, mqPublished)
+    }
     companion object {
         private val tables: List<Table> = listOf(RawArticles)
         private val database: Database = DatabaseTemplate(System.getenv("COLLECTOR_TEST_DB"), emptyList()).database
-        private var receivedMessage = "wrong message"
+        private lateinit var mqPublished: List<Article>
         private fun messageHandler(message: String): Boolean {
-            receivedMessage = message
+            mqPublished = Json.decodeFromString(message)
             return true
         }
         private val testApp = TestApplication {
@@ -81,6 +86,7 @@ class ApplicationTest {
                 routingKey = "collector_app_test_key",
                 messageHandler = ::messageHandler
             )
+            Messaging.collectorMessenger.listen()
             testSuspend { CollectorDataGateway.updateArticles() }
         }
 
