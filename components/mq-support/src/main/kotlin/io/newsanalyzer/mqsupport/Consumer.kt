@@ -9,13 +9,13 @@ class Consumer(private val exchange: Exchange) {
         val autoAcknowledge = false
         val deliverCallback = DeliverCallback { _: String?, delivery: Delivery ->
             val message = delivery.body.decodeToString()
-            println(" [x] Received on '${delivery.envelope.exchange}' with '${delivery.envelope.routingKey}' key: '$message'")
+            mqLogger.debug(" Received on '${delivery.envelope.exchange}' with '${delivery.envelope.routingKey}' key: '$message'")
             if (messageHandler(message)) {
                 exchange.channel.basicAck(delivery.envelope.deliveryTag, false)
             }
         }
         val cancelCallback = CancelCallback { _: String? ->
-            println(" Received cancel call")
+            mqLogger.warn(" Received cancel call")
         }
         exchange.channel.basicConsume(exchange.queue, autoAcknowledge, deliverCallback, cancelCallback)
     }
