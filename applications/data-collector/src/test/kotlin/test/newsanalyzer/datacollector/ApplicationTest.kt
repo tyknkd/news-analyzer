@@ -73,7 +73,7 @@ class ApplicationTest {
 
         @BeforeClass
         @JvmStatic
-        fun setup(): Unit {
+        fun setup() {
             transaction(database) {
                 for (table in tables) {
                     SchemaUtils.create(table)
