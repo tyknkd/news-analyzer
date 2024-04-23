@@ -40,7 +40,7 @@ class ApplicationTest {
         }
     }
     @Test
-    fun testMessageQueuePublishing() = testSuspend {
+    fun testMqPublished() = testSuspend {
         assertEquals(TestDoubles.rawArticles, mqPublished)
     }
     companion object {
