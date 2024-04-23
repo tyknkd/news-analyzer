@@ -14,13 +14,13 @@ class Publisher(private val exchange: Exchange) {
                 message.toByteArray()
             )
             exchange.channel.waitForConfirmsOrDie(5_000)
-            mqLogger.debug(" Sent on '${exchange.queue}' with '${exchange.routingKey}' key: '$message'")
+            logger.debug(" Sent on '${exchange.queue}' with '${exchange.routingKey}' key: '$message'")
             return true
         } catch (exception: TimeoutException) {
-            mqLogger.warn(" Caught exception: $exception. Message not published.")
+            logger.warn(" Caught exception: $exception. Message not published.")
             return false
         } catch (exception: IOException) {
-            mqLogger.warn(" Caught exception: $exception. Message not published.")
+            logger.warn(" Caught exception: $exception. Message not published.")
             return false
         }
     }
