@@ -3,8 +3,12 @@ plugins {
     id("news-analyzer.kotlin-database-conventions")
 }
 
+val kotlinx_dataframe_version: String by project
+val quartz_version: String by project
+
 dependencies {
     implementation(project(":components:data-support"))
     implementation(project(":components:test-support"))
-    implementation("org.jetbrains.kotlinx:dataframe:0.13.0")
+    implementation("org.jetbrains.kotlinx:dataframe:$kotlinx_dataframe_version")
+    implementation("org.quartz-scheduler:quartz:$quartz_version")
 }

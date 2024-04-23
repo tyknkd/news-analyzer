@@ -2,13 +2,16 @@ plugins {
     id("news-analyzer.kotlin-dataserver-conventions")
 }
 
+val kotlinx_spark_version: String by project
+val scala_version: String by project
 val spark_version: String by project
+val log4j_version: String by project
 
 dependencies {
-    implementation("org.jetbrains.kotlinx.spark:kotlin-spark-api_3.3.2_2.13:1.2.4")
-    implementation("org.apache.logging.log4j:log4j-core:2.21.1")
-    implementation("org.apache.spark:spark-sql_2.13:$spark_version")
-    implementation("org.apache.spark:spark-mllib_2.13:$spark_version")
+    implementation("org.jetbrains.kotlinx.spark:kotlin-spark-api_${spark_version}_$scala_version:$kotlinx_spark_version")
+    implementation("org.apache.logging.log4j:log4j-core:$log4j_version")
+    implementation("org.apache.spark:spark-sql_$scala_version:$spark_version")
+    implementation("org.apache.spark:spark-mllib_$scala_version:$spark_version")
 }
 
 val sparkJava17CompatibilityJvmArgs = listOf(
