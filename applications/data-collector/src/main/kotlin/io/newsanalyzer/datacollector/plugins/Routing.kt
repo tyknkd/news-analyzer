@@ -29,12 +29,5 @@ fun Application.configureRouting() {
                 call.respond(status = HttpStatusCode.OK, articles)
             }
         }
-        get("/update") {
-            if (CollectorDataGateway.updateArticles()) {
-                call.respondText(text = "Updated", status = HttpStatusCode.OK)
-            } else {
-                call.respondText(text = "No update", status = HttpStatusCode.OK)
-            }
-        }
     }
 }
