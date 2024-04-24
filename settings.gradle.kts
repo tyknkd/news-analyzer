@@ -6,6 +6,5 @@ include(
     "components:data-support",
     "components:http-support",
     "components:test-support",
-    "components:mq-support",
-    "components:scheduler"
+    "components:mq-support"
 )
