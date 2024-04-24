@@ -26,7 +26,6 @@ interest to the reader.
 - [Apache Spark](https://spark.apache.org/) v.3.3.2: Data analytics
 - [Kotlin for Apache Spark](https://github.com/Kotlin/kotlin-spark-api) v.1.2.4: Kotlin-Spark compatibility API
 - [RabbitMQ](https://www.rabbitmq.com) v.5.21.0: Messaging broker
-- [Quartz](https://www.quartz-scheduler.org/) v.2.5.0: Job scheduler
 - [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
 - [Gradle](https://gradle.org/) v.8.7: Build tool
 - [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
