@@ -2,7 +2,7 @@ plugins {
     id("news-analyzer.kotlin-common-conventions")
 }
 
-val prometheus_version: String by project
+val micrometer_prometheus_version: String by project
 
 dependencies {
     implementation(project(":components:mq-support"))
@@ -14,6 +14,6 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm")
-    implementation("io.micrometer:micrometer-registry-prometheus:$prometheus_version")
+    implementation("io.micrometer:micrometer-registry-prometheus:$micrometer_prometheus_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
 }
