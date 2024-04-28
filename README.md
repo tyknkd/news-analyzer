@@ -12,24 +12,25 @@ help readers quickly identify current trends in media reporting on the tech indu
 interest to the reader.
 
 ## Tech Stack
+- [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
 - [Kotlin](https://kotlinlang.org/) v.1.9.22: Programming language
+- [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
+- [Gradle](https://gradle.org/) v.8.7: Build tool
 - [Ktor](https://ktor.io/) v.2.3.8: Kotlin application framework
 - [Netty](https://netty.io/) v.4.1.106: Web server
 - [Apache Freemarker](https://freemarker.apache.org/) v.2.3.32: Dynamic webpage templating
 - [PostgreSQL](https://www.postgresql.org/) v.16.2: Relational database
 - [Exposed](https://github.com/JetBrains/Exposed) v.0.48.0: Object relational mapping framework
 - [HikariCP](https://github.com/brettwooldridge/HikariCP) v.5.1.0: Database connection pooling
-- [Junit](https://junit.org/junit5/) v.4.13.2: Testing
-- [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
-- [Prometheus](https://prometheus.io/) v.1.6.3: Performance metrics and monitoring
-- [Docker Engine](https://www.docker.com/) v.25.0.3: Containerization
 - [Apache Spark](https://spark.apache.org/) v.3.3.2: Data analytics
 - [Kotlin for Apache Spark](https://github.com/Kotlin/kotlin-spark-api) v.1.2.4: Kotlin-Spark compatibility API
 - [RabbitMQ](https://www.rabbitmq.com) v.5.21.0: Messaging broker
-- [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
-- [Gradle](https://gradle.org/) v.8.7: Build tool
-- [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
-
+- [Junit](https://junit.org/junit5/) v.4.13.2: Testing
+- [Kover](https://kotlin.github.io/kotlinx-kover/gradle-plugin/) v.0.7.5: Test code coverage measurement
+- [Micrometer](https://micrometer.io/) v.1.6.8: Application metrics interface
+- [Prometheus](https://prometheus.io/) v.2.51.2: Performance metrics and monitoring storage
+- [Grafana](https://grafana.com/) v.10.4.2: Performance metrics visualization
+- [Docker Engine](https://www.docker.com/) v.25.0.3: Containerization
 
 ## Final Project Rubric
 (Click links to see relevant code)
