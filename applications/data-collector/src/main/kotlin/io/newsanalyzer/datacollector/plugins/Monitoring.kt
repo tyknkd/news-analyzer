@@ -1,4 +1,4 @@
-package io.newsanalyzer.webserver.plugins
+package io.newsanalyzer.datacollector.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.metrics.micrometer.*
