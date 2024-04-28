@@ -75,7 +75,11 @@ cd news-analyzer
 ```shell
 mkdir secrets && echo yourpasswordgoeshere > secrets/postgres_password.txt
 ```
-4. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally without a valid key.)
+4. Create a secrets file for the Grafana admin password (changing the `yourpasswordgoeshere` string as desired).
+```shell
+mkdir secrets && echo yourpasswordgoeshere > secrets/grafana_password.txt
+```
+5. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally without a valid key.)
 ```shell
 echo yournewsapikeygoeshere > secrets/news_api_key.txt
 ```
@@ -91,13 +95,14 @@ docker compose up test
 docker compose up
 ```
 4. In a web browser, open [http://localhost:8888](http://localhost:8080)
-5. To stop the app, press `CTRL+C` in the bash shell from which it was started.
+5. Optional: View Grafana monitoring visualization at [http://localhost:3000](http://localhost:3000)
+6. To stop all containers, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Local App Servers Setup
 1. Perform preliminary environment setup above.
 2. Install [Java 17](https://openjdk.org/)
 3. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
-4. Start only the database and message queue containers.
+4. Start only the database and message queue containers. (If desired, append `prometheus` and `grafana` to the command.)
 ```shell
 docker compose up db mq
 ```
