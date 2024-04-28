@@ -109,7 +109,9 @@ services:
     container_name: mq
     ports:
       - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+      - ${RABBITMQ_METRICS_PORT}:${RABBITMQ_METRICS_PORT}
     volumes:
+      - ./rabbitmq-plugins:/etc/rabbitmq/enabled_plugins
       - ./.docker-data/.rabbit-data/.rabbit-lib:/var/lib/rabbitmq
       - ./.docker-data/.rabbit-data/.rabbit-log:/var/log/rabbitmq
     healthcheck:

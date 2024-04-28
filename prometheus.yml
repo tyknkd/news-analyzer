@@ -7,3 +7,18 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets: ['web-server:8888']
+  - job_name: 'data-analyzer'
+    metrics_path: /metrics
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ 'data-analyzer:8887' ]
+  - job_name: 'data-collector'
+    metrics_path: /metrics
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ 'data-collector:8886' ]
+  - job_name: 'rabbitmq'
+    metrics_path: /metrics
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ 'mq:15692' ]
