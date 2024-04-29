@@ -46,9 +46,7 @@ interest to the reader.
   - [x] Integration tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/)
   - [x] Test doubles: [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support)
   - Continuous integration
-  - Production monitoring
-      - `/health` endpoint
-      - `/metrics` endpoint
+  - [x] Production monitoring: [monitoring](https://github.com/tyknkd/news-analyzer/tree/main/monitoring)
 - A-level
   - [x] Event collaboration messaging
   - Continuous delivery
