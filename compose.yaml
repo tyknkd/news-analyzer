@@ -146,7 +146,7 @@ services:
     ports:
       - ${GRAFANA_PORT}:${GRAFANA_PORT}
     volumes:
-      - ./monitoring/dashboard.json:/var/lib/grafana/dashboards/
+      - ./monitoring/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
       - ./monitoring/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - ./monitoring/providers.yaml:/etc/grafana/provisioning/dashboards/providers.yaml
       - ./.docker-data/.grafana-data:/var/lib/grafana
