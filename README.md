@@ -95,7 +95,7 @@ docker compose up test
 docker compose up
 ```
 4. In a web browser, open [http://localhost:8888](http://localhost:8080)
-5. Optional: View Grafana monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as in environment setup above.)
+5. Optional: View Grafana monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
 6. To stop all containers, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Local App Servers Setup
@@ -127,7 +127,7 @@ source .env && source sensitive.env
 ./gradlew applications:data-collector:run
 ```
 10. In a web browser, open [http://localhost:8888](http://localhost:8080)
-11. Optional: If the Prometheus and Grafana containers are running (see above), view the monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as in environment setup above.)
+11. Optional: If the Prometheus and Grafana containers are running (see above), view the monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
 12. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
 
 _&copy;2024 Tyler Kinkade, All Rights Reserved_
