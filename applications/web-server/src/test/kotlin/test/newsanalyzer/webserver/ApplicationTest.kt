@@ -91,7 +91,15 @@ class ApplicationTest {
             assertEquals("OK", bodyAsText())
         }
     }
-
+    @Test
+    fun testMetrics() = testSuspend {
+        testClient.get("/metrics").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val bodyAsText = bodyAsText()
+            assertContains(bodyAsText, "jvm_memory_used_bytes")
+            assertContains(bodyAsText,"ktor_http_server_requests_seconds")
+        }
+    }
     @Test
     fun testRoot() = testSuspend {
         testClient.get("/").apply {
@@ -119,6 +127,7 @@ class ApplicationTest {
         private val database: Database = DatabaseTemplate(System.getenv("WEBSERVER_TEST_DB"), emptyList()).database
         private val testApp = TestApplication {
             application {
+                configureMonitoring()
                 configureSerialization()
                 configureTemplating()
                 configureRouting()

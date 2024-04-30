@@ -19,6 +19,7 @@ import org.junit.BeforeClass
 import org.junit.AfterClass
 import org.junit.FixMethodOrder
 import org.junit.runners.MethodSorters
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -40,6 +41,15 @@ class ApplicationTest {
         testClient.get("health").apply {
             assertEquals(HttpStatusCode.OK, status)
             assertEquals("OK", bodyAsText())
+        }
+    }
+    @Test
+    fun testMetrics() = testSuspend {
+        testClient.get("/metrics").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val bodyAsText = bodyAsText()
+            assertContains(bodyAsText, "jvm_memory_used_bytes")
+            assertContains(bodyAsText,"ktor_http_server_requests_seconds")
         }
     }
     @Test
@@ -69,6 +79,7 @@ class ApplicationTest {
         }
         private val testApp = TestApplication {
             application {
+                configureMonitoring()
                 configureSerialization()
                 configureRouting()
             }

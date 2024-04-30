@@ -21,6 +21,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ApplicationTest {
@@ -37,6 +38,15 @@ class ApplicationTest {
         testClient.get("/health").apply {
             assertEquals(HttpStatusCode.OK, status)
             assertEquals("OK", bodyAsText())
+        }
+    }
+    @Test
+    fun testMetrics() = testSuspend {
+        testClient.get("/metrics").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val bodyAsText = bodyAsText()
+            assertContains(bodyAsText, "jvm_memory_used_bytes")
+            assertContains(bodyAsText,"ktor_http_server_requests_seconds")
         }
     }
     @Test
@@ -63,6 +73,7 @@ class ApplicationTest {
                 }
             }
             application {
+                configureMonitoring()
                 configureSerialization()
                 configureRouting()
             }
