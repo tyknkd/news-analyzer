@@ -41,7 +41,13 @@ jobs:
 
       - name: Run tests
         shell: bash
-        run: |
-          source .env
-          ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
-          gradle test
+        run: source .env
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
+      - name: Initialize databases
+        run: ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
+
+      - name: Run tests
+        run: gradle test
