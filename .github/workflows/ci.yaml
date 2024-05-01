@@ -36,18 +36,22 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - name: Install PostgreSQL client
+        run: |
+          apt update
+          apt install -y postgresql-client
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run tests
-        shell: bash
-        run: source .env
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Initialize databases
-        run: ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
+        shell: bash
+        run: |
+          source .env
+          chmod +x ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
+          ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
 
       - name: Run tests
-        run: gradle test
+        run: |
+          source .env
+          gradle test
