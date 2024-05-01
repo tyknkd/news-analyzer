@@ -39,11 +39,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Load environment variables
-        run: source .env
-
-      - name: Create additional databases
-        run: ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
-
-      - name: Run unit and integration tests
-        run: gradle test
+      - name: Run tests
+        run: |
+          . .env
+          ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
+          gradle test
