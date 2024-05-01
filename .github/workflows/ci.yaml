@@ -39,11 +39,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Run tests
+        shell: bash
         run: |
-          . .env
+          source .env
           ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
           gradle test
