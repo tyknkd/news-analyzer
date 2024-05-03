@@ -7,7 +7,9 @@
 set -e  # Exit script immediately if command exits with non-zero status
 IFS=',' # Internal field separator
 
+export PGPASSWORD="$POSTGRES_PASSWORD"
+
 for database in $ADDITIONAL_POSTGRES_DB; do
   echo "Creating database: '$database'"
-  psql -v ON_ERROR_STOP=1 --host "$POSTGRES_HOST" --username "$POSTGRES_USER" --password "$POSTGRES_PASSWORD" --dbname "$POSTGRES_DB" -c "create database $database"
+  psql -v ON_ERROR_STOP=1 --host "$POSTGRES_HOST" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "create database $database"
 done
