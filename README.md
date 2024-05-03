@@ -38,17 +38,17 @@ interest to the reader.
   - [x] Web application: [applications/web-server](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server)
   - [x] Data collection: [applications/data-collector](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector)
   - [x] Data analyzer: [applications/data-analyzer](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer)
-  - [x] Unit tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/) 
+  - [x] Unit tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/), [data-support/src/test](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support/src/test/), etc.
   - [x] Data persistence: [components/data-support](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support)
   - [x] REST API endpoint: [web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt)
   - Production environment
 - B-level
   - [x] Integration tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/)
   - [x] Test doubles: [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support)
-  - Continuous integration
+  - [x] Continuous integration [.github/workflows](https://github.com/tyknkd/news-analyzer/tree/main/.github/workflows)
   - [x] Production monitoring: [monitoring](https://github.com/tyknkd/news-analyzer/tree/main/monitoring)
 - A-level
-  - [x] Event collaboration messaging
+  - [x] Event collaboration messaging [components/mq-support](https://github.com/tyknkd/news-analyzer/tree/main/components/mq-support)
   - Continuous delivery
 
 ## Live Production Deployment
