@@ -1,7 +1,7 @@
 package test.newsanalyzer.datacollector
 
 import io.newsanalyzer.datacollector.plugins.*
-import io.newsanalyzer.testsupport.TestDoubles
+import io.newsanalyzer.testsupport.*
 import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datasupport.DatabaseTemplate
 import io.ktor.client.call.*
@@ -15,6 +15,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -51,6 +52,7 @@ class ApplicationTest {
     }
     @Test
     fun testMqPublished() = testSuspend {
+        delay(TestSettings.mqMinLatency)
         assertEquals(TestDoubles.rawArticles, mqPublished)
     }
     companion object {

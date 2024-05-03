@@ -1,7 +1,7 @@
 package test.newsanalyzer.dataanalyzer
 
 import io.newsanalyzer.dataanalyzer.plugins.*
-import io.newsanalyzer.testsupport.TestDoubles
+import io.newsanalyzer.testsupport.*
 import io.newsanalyzer.datasupport.models.*
 import io.newsanalyzer.datasupport.DatabaseTemplate
 import io.ktor.client.call.*
@@ -12,6 +12,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
+import kotlinx.coroutines.delay
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
@@ -108,7 +109,10 @@ class ApplicationTest {
             )
             Messaging.collectorMessenger.listen()
             Messaging.analyzerMessenger.listen()
-            testSuspend { RawDataGateway.addArticles(TestDoubles.rawArticles) }
+            testSuspend {
+                RawDataGateway.addArticles(TestDoubles.rawArticles)
+                delay(TestSettings.mqMinLatency)
+            }
         }
         @AfterClass
         @JvmStatic

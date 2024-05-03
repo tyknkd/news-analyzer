@@ -1,7 +1,8 @@
 package test.newsanalyzer.datacollector
 
 import io.newsanalyzer.datacollector.plugins.Messaging
-import kotlinx.coroutines.launch
+import io.newsanalyzer.testsupport.TestSettings
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.*
 
@@ -28,11 +29,8 @@ class MessagingTest {
     @Test
     fun testPublishMessage() = runTest {
         val testMessage = "correct message"
-        launch {
-            Messaging.collectorMessenger.publishMessage(testMessage)
-        }
-        launch {
-            assertEquals(testMessage, mqPublished)
-        }
+        Messaging.collectorMessenger.publishMessage(testMessage)
+        delay(TestSettings.mqMinLatency)
+        assertEquals(testMessage, mqPublished)
     }
 }
