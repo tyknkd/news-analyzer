@@ -15,9 +15,9 @@ class MessagingTest {
     @BeforeTest
     fun setup() {
         Messaging.updateAnalyzerMessenger(
-            exchangeName = "webserver_app_test_analyzer_exchange",
-            queueName = "webserver_app_test_analyzer_queue",
-            routingKey = "webserver_app_test_analyzer_key",
+            exchangeName = "webserver_app_mq_test_analyzer_exchange",
+            queueName = "webserver_app_mq_test_analyzer_queue",
+            routingKey = "webserver_app_mq_test_analyzer_key",
             messageHandler = ::messageHandler
         )
         Messaging.analyzerMessenger.listen()

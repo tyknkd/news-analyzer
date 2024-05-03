@@ -15,9 +15,9 @@ class MessagingTest {
     @BeforeTest
     fun setup() {
         Messaging.updateMessenger(
-            exchangeName = "collector_app_test_exchange",
-            queueName = "collector_app_test_queue",
-            routingKey = "collector_app_test_key",
+            exchangeName = "collector_app_mq_test_exchange",
+            queueName = "collector_app_mq_test_queue",
+            routingKey = "collector_app_mq_test_key",
             messageHandler = ::messageHandler
         )
         Messaging.collectorMessenger.listen()

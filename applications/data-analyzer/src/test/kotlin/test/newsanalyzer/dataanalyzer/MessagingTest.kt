@@ -39,16 +39,16 @@ class MessagingTest {
         @JvmStatic
         fun setup() {
             Messaging.updateCollectorMessenger(
-                exchangeName = "analyzer_app_test_collector_exchange",
-                queueName = "analyzer_app_test_collector_queue",
-                routingKey = "analyzer_app_test_collector_key",
+                exchangeName = "analyzer_app_mq_test_collector_exchange",
+                queueName = "analyzer_app_mq_test_collector_queue",
+                routingKey = "analyzer_app_mq_test_collector_key",
                 messageHandler = ::collectorMessageHandler
             )
             Messaging.collectorMessenger.listen()
             Messaging.updateAnalyzerMessenger(
-                exchangeName = "analyzer_app_test_analyzer_exchange",
-                queueName = "analyzer_app_test_analyzer_queue",
-                routingKey = "analyzer_app_test_analyzer_key",
+                exchangeName = "analyzer_app_mq_test_analyzer_exchange",
+                queueName = "analyzer_app_mq_test_analyzer_queue",
+                routingKey = "analyzer_app_mq_test_analyzer_key",
                 messageHandler = ::analyzerMessageHandler
             )
             Messaging.analyzerMessenger.listen()
