@@ -53,6 +53,7 @@ jobs:
           ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
 
       - name: Run tests
+        shell: bash
         run: |
           source .env
           gradle test
