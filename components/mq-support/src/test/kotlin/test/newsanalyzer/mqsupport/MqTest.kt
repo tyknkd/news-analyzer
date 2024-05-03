@@ -1,7 +1,8 @@
 package test.newsanalyzer.mqsupport
 
 import io.newsanalyzer.mqsupport.Messenger
-import kotlinx.coroutines.launch
+import io.newsanalyzer.testsupport.TestSettings
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.*
 
@@ -29,11 +30,8 @@ class MqTest {
     @Test
     fun testMessageQueue() = runTest {
         val testMessage = "correct message"
-        launch {
-            messenger.publishMessage(testMessage)
-        }
-        launch {
-            assertEquals(testMessage, response)
-        }
+        messenger.publishMessage(testMessage)
+        delay(TestSettings.mqMinLatency)
+        assertEquals(testMessage, response)
     }
 }

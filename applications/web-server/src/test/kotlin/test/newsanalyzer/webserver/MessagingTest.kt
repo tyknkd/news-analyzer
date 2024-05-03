@@ -1,7 +1,8 @@
 package test.newsanalyzer.webserver
 
+import io.newsanalyzer.testsupport.TestSettings
 import io.newsanalyzer.webserver.plugins.Messaging
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.*
 
@@ -28,11 +29,8 @@ class MessagingTest {
     @Test
     fun testPublishMessage() = runTest {
         val testMessage = "correct message"
-        launch {
-            Messaging.analyzerMessenger.publishMessage(testMessage)
-        }
-        launch {
-            assertEquals(testMessage, mqPublished)
-        }
+        Messaging.analyzerMessenger.publishMessage(testMessage)
+        delay(TestSettings.mqMinLatency)
+        assertEquals(testMessage, mqPublished)
     }
 }
