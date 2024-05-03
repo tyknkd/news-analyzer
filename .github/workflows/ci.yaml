@@ -10,6 +10,7 @@ jobs:
       NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
       POSTGRES_USER: newsanalyzer
       POSTGRES_DB: collector_db
+      POSTGRES_HOST: db
       OS_ENV: container
     services:
       db:
