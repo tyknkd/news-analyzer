@@ -33,5 +33,9 @@ class MqTest {
         messenger.publishMessage(testMessage)
         delay(TestSettings.mqMinLatency)
         assertEquals(testMessage, response)
+        val secondMessage = "second message"
+        messenger.publishMessage(secondMessage)
+        delay(TestSettings.mqMinLatency)
+        assertEquals(secondMessage, response)
     }
 }
