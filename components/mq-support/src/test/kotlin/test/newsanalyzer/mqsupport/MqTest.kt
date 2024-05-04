@@ -2,9 +2,9 @@ package test.newsanalyzer.mqsupport
 
 import io.newsanalyzer.mqsupport.Messenger
 import io.newsanalyzer.testsupport.TestSettings
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.*
+import org.awaitility.kotlin.await
 
 class MqTest {
     private var response = "wrong message"
@@ -31,11 +31,13 @@ class MqTest {
     fun testMessageQueue() = runTest {
         val testMessage = "correct message"
         messenger.publishMessage(testMessage)
-        delay(TestSettings.mqMinLatency)
-        assertEquals(testMessage, response)
+        await.atMost(TestSettings.mqTimeout).untilAsserted {
+            assertEquals(testMessage, response)
+        }
         val secondMessage = "second message"
         messenger.publishMessage(secondMessage)
-        delay(TestSettings.mqMinLatency)
-        assertEquals(secondMessage, response)
+        await.atMost(TestSettings.mqTimeout).untilAsserted {
+            assertEquals(secondMessage, response)
+        }
     }
 }

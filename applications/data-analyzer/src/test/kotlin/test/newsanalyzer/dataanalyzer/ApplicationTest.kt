@@ -12,19 +12,17 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
-import kotlinx.coroutines.delay
+import org.awaitility.kotlin.await
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 import org.junit.BeforeClass
 import org.junit.AfterClass
-import org.junit.FixMethodOrder
-import org.junit.runners.MethodSorters
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ApplicationTest {
     @Test
     fun testArticles() = testSuspend {
@@ -111,7 +109,9 @@ class ApplicationTest {
             Messaging.analyzerMessenger.listen()
             testSuspend {
                 RawDataGateway.addArticles(TestDoubles.rawArticles)
-                delay(TestSettings.mqMinLatency)
+                await.atMost(TestSettings.mqTimeout).untilAsserted {
+                    assertNotNull(mqPublished)
+                }
             }
         }
         @AfterClass

@@ -2,8 +2,8 @@ package test.newsanalyzer.dataanalyzer
 
 import io.newsanalyzer.dataanalyzer.plugins.Messaging
 import io.newsanalyzer.testsupport.TestSettings
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
+import org.awaitility.kotlin.await
 import org.junit.Test
 import org.junit.BeforeClass
 import org.junit.AfterClass
@@ -14,15 +14,17 @@ class MessagingTest {
     fun testCollectorMq() = runTest {
         val testMessage = "correct collector message"
         Messaging.collectorMessenger.publishMessage(testMessage)
-        delay(TestSettings.mqMinLatency)
-        assertEquals(testMessage, collectorMqPublished)
+        await.atMost(TestSettings.mqTimeout).untilAsserted {
+            assertEquals(testMessage, collectorMqPublished)
+        }
     }
     @Test
     fun testAnalyzerMq() = runTest {
         val testMessage = "correct analyzer message"
         Messaging.analyzerMessenger.publishMessage(testMessage)
-        delay(TestSettings.mqMinLatency)
-        assertEquals(testMessage, analyzerMqPublished)
+        await.atMost(TestSettings.mqTimeout).untilAsserted {
+            assertEquals(testMessage, analyzerMqPublished)
+        }
     }
     companion object {
         private var collectorMqPublished = "wrong collector message"

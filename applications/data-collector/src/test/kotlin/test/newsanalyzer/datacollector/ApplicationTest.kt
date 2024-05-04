@@ -15,8 +15,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
-import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
+import org.awaitility.kotlin.await
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.AfterClass
@@ -52,8 +52,9 @@ class ApplicationTest {
     }
     @Test
     fun testMqPublished() = testSuspend {
-        delay(TestSettings.mqMinLatency)
-        assertEquals(TestDoubles.rawArticles, mqPublished)
+        await.atMost(TestSettings.mqTimeout).untilAsserted {
+            assertEquals(TestDoubles.rawArticles, mqPublished)
+        }
     }
     companion object {
         private val tables: List<Table> = listOf(RawArticles)
