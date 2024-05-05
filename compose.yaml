@@ -5,6 +5,7 @@ services:
       target: app
       args:
         APP: web-server
+    image: tyknkd/newsanalyzer-webserver
     container_name: web-server
     environment:
       PORT: ${WEBSERVER_PORT}
@@ -32,6 +33,7 @@ services:
       target: spark-app
       args:
         APP: data-analyzer
+    image: tyknkd/newsanalyzer-dataanalyzer
     container_name: data-analyzer
     environment:
       PORT: ${ANALYZER_PORT}
@@ -61,6 +63,7 @@ services:
       target: app
       args:
         APP: data-collector
+    image: tyknkd/newsanalyzer-datacollector
     container_name: data-collector
     environment:
       PORT: ${COLLECTOR_PORT}
