@@ -5,8 +5,10 @@ plugins {
     id("org.jetbrains.kotlinx.kover")
 }
 
+val project_version: String by project
+
 group = "io.newsanalyzer"
-version = "0.0.1"
+version = project_version
 
 val jvm_version: String by project
 
