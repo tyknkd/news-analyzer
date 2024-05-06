@@ -192,8 +192,8 @@ services:
 
 secrets:
   postgres_password:
-    file: ./secrets/postgres_password.txt
+    environment: ${POSTGRES_PASSWORD}
   news_api_key:
-    file: ./secrets/news_api_key.txt
+    environment: ${NEWS_API_KEY}
   grafana_password:
     file: ./secrets/grafana_password.txt
