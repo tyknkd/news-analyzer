@@ -1,4 +1,4 @@
-name: ci
+name: ci-cd
 on: push
 jobs:
   test:
@@ -42,7 +42,7 @@ jobs:
           apt update
           apt install -y postgresql-client
 
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Initialize databases
@@ -57,3 +57,36 @@ jobs:
         run: |
           source .env
           gradle test
+
+  publish:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build and push Docker images
+        shell: bash
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+        run: |
+          source .env
+          docker compose build --push data-collector data-analyzer web-server
+
+  deploy:
+    needs: publish
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy
+        run: exit 0
