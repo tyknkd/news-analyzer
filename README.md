@@ -84,17 +84,21 @@ echo yournewsapikeygoeshere > secrets/news_api_key.txt
 
 ### A. Fully Containerized Setup
 1. Perform preliminary environment setup above.
-2. Optional: Run all tests in containers. (This will take several minutes.)
+2. Set the sensitive environment variables
+```shell
+source sensitive.env
+```
+3. Optional: Run all tests in containers. (This will take several minutes.)
 ```shell
 docker compose up test
 ```
-3. Build and start the Docker containers. (This will take several minutes the first time.)
+4. Build and start the Docker containers. (This will take several minutes the first time.)
 ```shell
 docker compose up
 ```
-4. In a web browser, open [http://localhost:8888](http://localhost:8080)
-5. Optional: View Grafana monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
-6. To stop all containers, press `CTRL+C` in the bash shell from which it was started.
+5. In a web browser, open [http://localhost:8888](http://localhost:8080)
+6. Optional: View Grafana monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
+7. To stop all containers, press `CTRL+C` in the bash shell from which it was started.
 
 ### B. Local App Servers Setup
 1. Perform preliminary environment setup above.
@@ -104,7 +108,7 @@ docker compose up
 ```shell
 docker compose up db mq
 ```
-5. In a separate bash shell, load the environment variables.
+5. In a separate bash shell, set the environment variables.
 ```shell
 source .env && source sensitive.env
 ```
