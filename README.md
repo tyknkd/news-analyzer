@@ -84,7 +84,7 @@ echo yournewsapikeygoeshere > secrets/news_api_key.txt
 
 ### A. Fully Containerized Setup
 1. Perform preliminary environment setup above.
-2. Set the sensitive environment variables
+2. Load the sensitive environment variables
 ```shell
 source sensitive.env
 ```
@@ -104,28 +104,32 @@ docker compose up
 1. Perform preliminary environment setup above.
 2. Install [Java 17](https://openjdk.org/)
 3. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
-4. Start only the database and message queue containers. (If monitoring is desired, append `prometheus` and `grafana` to the command.)
+4. Load the sensitive environment variables.
+```shell
+source sensitive.env
+```
+5. Start only the database and message queue containers. (If monitoring is desired, append `prometheus` and `grafana` to the command.)
 ```shell
 docker compose up db mq
 ```
-5. In a separate bash shell, set the environment variables.
+6. In a separate bash shell, load the environment variables, and build and test the project
 ```shell
 source .env && source sensitive.env
-```
-6. Build and test the project.
-```shell
 ./gradlew build
 ```
-7. In a separate terminal, start the web server first.
+7. In a separate terminal, load the environment variables and start the web server first.
 ```shell
+source .env && source sensitive.env
 ./gradlew applications:web-server:run
 ```
-8. In a separate bash shell, start the data analyzer server second.
+8. In a separate bash shell, load the environment variables and start the data analyzer server second.
 ```shell
+source .env && source sensitive.env
 ./gradlew applications:data-analyzer:run
 ```
-9. Start the data collector server last.
+9. In a separate shell, load the environment variables and start the data collector server last.
 ```shell
+source .env && source sensitive.env
 ./gradlew applications:data-collector:run
 ```
 10. In a web browser, open [http://localhost:8888](http://localhost:8080)
