@@ -196,4 +196,4 @@ secrets:
   news_api_key:
     environment: "NEWS_API_KEY"
   grafana_password:
-    file: ./secrets/grafana_password.txt
+    environment: "GRAFANA_PASSWORD"
