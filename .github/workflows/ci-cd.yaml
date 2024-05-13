@@ -47,6 +47,8 @@ jobs:
 
       - name: Initialize databases
         shell: bash
+        env:
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
           source .env
           chmod +x ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
