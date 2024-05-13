@@ -1,12 +1,14 @@
 #!/bin/sh
 
-# Extract Docker secret file to app environment
-export POSTGRES_PASSWORD=${POSTGRES_PASSWORD:=$(cat "${POSTGRES_PASSWORD_FILE}")}
+if [ "${POSTGRES_PASSWORD}" = "" ]; then
+  # Extract Docker secret file to app environment
+  export POSTGRES_PASSWORD=${POSTGRES_PASSWORD:=$(cat "${POSTGRES_PASSWORD_FILE}")}
+fi
 
-if [ "${APP}" = "data-collector" ]; then
+if [ "${APP}" = "${COLLECTOR_HOST}" ]; then
   export NEWS_API_KEY=${NEWS_API_KEY:=$(cat "${NEWS_API_KEY_FILE}")}
   java -jar /app/"${APP}".jar
-elif [ "${APP}" = "data-analyzer" ]; then
+elif [ "${APP}" = "${ANALYZER_HOST}" ]; then
   # Java options for Spark-Java17 compatibility
   # https://github.com/apache/spark/blob/v3.3.0/launcher/src/main/java/org/apache/spark/launcher/JavaModuleOptions.java
   java \

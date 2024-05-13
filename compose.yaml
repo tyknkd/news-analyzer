@@ -4,16 +4,20 @@ services:
       context: .
       target: app
       args:
-        APP: web-server
+        APP: ${WEBSERVER_HOST}
     image: tyknkd/newsanalyzer-webserver:${PROJECT_VERSION}
-    container_name: web-server
+    container_name: ${WEBSERVER_HOST}
     environment:
       PORT: ${WEBSERVER_PORT}
+      COLLECTOR_HOST: ${COLLECTOR_HOST}
+      ANALYZER_HOST: ${ANALYZER_HOST}
+      WEBSERVER_HOST: ${WEBSERVER_HOST}
       WEBSERVER_DB: ${WEBSERVER_DB}
-      POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
-      POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
       ANALYZER_EXCHANGE: ${ANALYZER_EXCHANGE}
       ANALYZER_QUEUE: ${ANALYZER_QUEUE}
       ANALYZER_ROUTING_KEY: ${ANALYZER_ROUTING_KEY}
@@ -32,17 +36,21 @@ services:
       context: .
       target: spark-app
       args:
-        APP: data-analyzer
+        APP: ${ANALYZER_HOST}
     image: tyknkd/newsanalyzer-dataanalyzer:${PROJECT_VERSION}
-    container_name: data-analyzer
+    container_name: ${ANALYZER_HOST}
     environment:
       PORT: ${ANALYZER_PORT}
+      COLLECTOR_HOST: ${COLLECTOR_HOST}
+      ANALYZER_HOST: ${ANALYZER_HOST}
+      WEBSERVER_HOST: ${WEBSERVER_HOST}
       WEBSERVER_PORT: ${WEBSERVER_PORT}
       ANALYZER_DB: ${ANALYZER_DB}
-      POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
-      POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
       ANALYZER_EXCHANGE: ${ANALYZER_EXCHANGE}
       ANALYZER_QUEUE: ${ANALYZER_QUEUE}
       ANALYZER_ROUTING_KEY: ${ANALYZER_ROUTING_KEY}
@@ -62,17 +70,21 @@ services:
       context: .
       target: app
       args:
-        APP: data-collector
+        APP: ${COLLECTOR_HOST}
     image: tyknkd/newsanalyzer-datacollector:${PROJECT_VERSION}
-    container_name: data-collector
+    container_name: ${COLLECTOR_HOST}
     environment:
       PORT: ${COLLECTOR_PORT}
+      COLLECTOR_HOST: ${COLLECTOR_HOST}
+      ANALYZER_HOST: ${ANALYZER_HOST}
+      WEBSERVER_HOST: ${WEBSERVER_HOST}
       ANALYZER_PORT: ${ANALYZER_PORT}
       COLLECTOR_DB: ${COLLECTOR_DB}
-      POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
-      POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
       NEWS_API_KEY_FILE: /run/secrets/news_api_key
       COLLECTOR_EXCHANGE: ${COLLECTOR_EXCHANGE}
       COLLECTOR_QUEUE: ${COLLECTOR_QUEUE}
@@ -88,7 +100,7 @@ services:
 
   db:
     image: postgres:16.2-alpine
-    container_name: db
+    container_name: ${POSTGRES_HOST}
     environment:
       POSTGRES_HOST: ""
       POSTGRES_DB: ${POSTGRES_DB}
@@ -98,7 +110,7 @@ services:
     secrets:
       - postgres_password
     ports:
-      - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - ./docker-databases/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./.docker-data/.pg-data:/var/lib/postgresql/data
@@ -110,7 +122,7 @@ services:
 
   mq:
     image: rabbitmq:3.13-management
-    container_name: mq
+    container_name: ${RABBITMQ_HOST}
     ports:
       - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
       - ${RABBITMQ_METRICS_PORT}:${RABBITMQ_METRICS_PORT}
@@ -162,17 +174,21 @@ services:
       context: .
       target: gradle-test
     environment:
+      COLLECTOR_HOST: ${COLLECTOR_HOST}
+      ANALYZER_HOST: ${ANALYZER_HOST}
+      WEBSERVER_HOST: ${WEBSERVER_HOST}
       COLLECTOR_TEST_DB: ${COLLECTOR_TEST_DB}
       ANALYZER_TEST_DB: ${ANALYZER_TEST_DB}
       WEBSERVER_TEST_DB: ${WEBSERVER_TEST_DB}
       COLLECTOR_PORT: ${COLLECTOR_PORT}
       ANALYZER_PORT: ${ANALYZER_PORT}
       WEBSERVER_PORT: ${WEBSERVER_PORT}
-      POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
-      POSTGRES_CONTAINER_PORT: ${POSTGRES_CONTAINER_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       NEWS_API_KEY_FILE: /run/secrets/news_api_key
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
       ANALYZER_EXCHANGE: ${ANALYZER_EXCHANGE}
       ANALYZER_QUEUE: ${ANALYZER_QUEUE}
       ANALYZER_ROUTING_KEY: ${ANALYZER_ROUTING_KEY}

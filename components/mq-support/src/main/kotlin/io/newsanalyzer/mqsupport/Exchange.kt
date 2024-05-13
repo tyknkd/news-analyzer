@@ -22,10 +22,11 @@ class Exchange(val name: String, val queue: String, val routingKey: String) {
 
     private fun getRabbitMqUri(): String {
         val port = System.getenv("RABBITMQ_PORT")?:5672
-        return if (System.getenv("OS_ENV") == "container") {
-            "amqp://mq:$port"
+        val host = if (System.getenv("OS_ENV") == "container") {
+            System.getenv("RABBITMQ_HOST")
         } else {
-            "amqp://localhost:$port"
+            "localhost"
         }
+        return "amqp://$host:$port"
     }
 }

@@ -8,18 +8,15 @@ open class DatabaseTemplate(dbName: String, tables: List<Table>) {
     var database: Database
     init {
         val driverClassName = "org.postgresql.Driver"
-        lateinit var host: String
-        lateinit var port: String
-        if (System.getenv("OS_ENV") == "container") {
-            host = "db"
-            port = System.getenv("POSTGRES_CONTAINER_PORT")
+        val port = System.getenv("POSTGRES_PORT")
+        val host = if (System.getenv("OS_ENV") == "container") {
+            System.getenv("POSTGRES_HOST")
         } else {
-            host = "localhost"
-            port = System.getenv("POSTGRES_HOST_PORT")
+            "localhost"
         }
         val password = System.getenv("POSTGRES_PASSWORD")
         if (password == null || password == "") {
-            throw RuntimeException("Database password file (secrets/postgres_password.txt) is empty or missing")
+            throw RuntimeException("Database password environment variable 'POSTGRES_PASSWORD' is empty or missing")
         }
         val user = System.getenv("POSTGRES_USER")
         val jdbcUrl = "jdbc:postgresql://$host:$port/$dbName?reWriteBatchedInserts=true"
