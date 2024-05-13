@@ -17,6 +17,7 @@ jobs:
         image: postgres:16.2
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
         options: >-
@@ -47,8 +48,6 @@ jobs:
 
       - name: Initialize databases
         shell: bash
-        env:
-          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
           source .env
           chmod +x ./docker-databases/docker-entrypoint-initdb.d/init-additional-db.sh
