@@ -76,12 +76,7 @@ jobs:
 
       - name: Build and push Docker images
         shell: bash
-        env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
-        run: |
-          source .env
-          docker compose build --push data-collector data-analyzer web-server
+        run: docker compose build --push data-collector data-analyzer web-server
 
   deploy:
     needs: publish
