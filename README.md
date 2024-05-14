@@ -31,6 +31,7 @@ interest to the reader.
 - [Prometheus](https://prometheus.io/) v.2.51.2: Performance metrics and monitoring storage
 - [Grafana](https://grafana.com/) v.10.4.2: Performance metrics visualization
 - [Docker Engine](https://www.docker.com/) v.25.0.3: Containerization
+- [Kubernetes](https://kubernetes.io/) v.1.30.0: Deployment
 
 ## Final Project Rubric
 (Click links to see relevant code)
