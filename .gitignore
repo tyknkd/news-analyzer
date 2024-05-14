@@ -1,3 +1,4 @@
+*secret*
 .docker-data/**
 **/secrets/**
 .gradle
