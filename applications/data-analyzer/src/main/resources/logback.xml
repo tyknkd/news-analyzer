@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <property name="LOG_DIR" value="./logs" />
+    <property name="LOG_DIR" value="./var/log" />
     <property name="LOG_NAME" value="dataAnalyzer" />
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/${LOG_NAME}.log</file>
@@ -21,7 +21,7 @@
 
     <root level="trace">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE" />
+        <!--<appender-ref ref="FILE" />-->
     </root>
 
     <logger name="org.eclipse.jetty" level="INFO"/>
