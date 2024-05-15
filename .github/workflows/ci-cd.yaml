@@ -79,7 +79,7 @@ jobs:
         run: docker compose build --push data-collector data-analyzer web-server
 
   deploy:
-    needs: publish
+    needs: build
     if: github.ref == 'refs/heads/main'
     environment: production
     runs-on: ubuntu-22.04
