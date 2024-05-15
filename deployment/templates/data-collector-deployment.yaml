@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-collector-deployment
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: data-collector
+  template:
+    metadata:
+      labels:
+        app: data-collector
+    spec:
+      containers:
+        - name: data-collector
+          image: tyknkd/newsanalyzer-datacollector
+          env:
+            - name: ANALYZER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_HOST
+                  name: env
+            - name: COLLECTOR_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_DB
+                  name: env
+            - name: COLLECTOR_EXCHANGE
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_EXCHANGE
+                  name: env
+            - name: COLLECTOR_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_HOST
+                  name: env
+            - name: COLLECTOR_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_PORT
+                  name: env
+            - name: COLLECTOR_QUEUE
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_QUEUE
+                  name: env
+            - name: COLLECTOR_ROUTING_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_ROUTING_KEY
+                  name: env
+            - name: NEWS_API_KEY_FILE
+              value: /run/secrets/news-api-key
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: env
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/postgres-password
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: env
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: env
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: RABBITMQ_HOST
+                  name: env
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: RABBITMQ_PORT
+                  name: env
+            - name: WEBSERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBSERVER_HOST
+                  name: env
+          ports:
+            - containerPort: 8886
+              hostPort: 8886
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /run/secrets/postgres-password
+              name: postgres-password
+              subPath: postgres-password
+            - mountPath: /run/secrets/news-api-key
+              name: news-api-key
+              subPath: news-api-key
+      restartPolicy: Always
+      volumes:
+        - name: postgres-password
+          secret:
+            items:
+              - key: postgres-password
+                path: postgres-password
+            secretName: postgres-password-secret
+        - name: news-api-key
+          secret:
+            items:
+              - key: news-api-key
+                path: news-api-key
+            secretName: news-api-key-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-collector-service
+spec:
+  ports:
+    - name: collector-port
+      port: 8886
+      targetPort: 8886
+  selector:
+    app: data-collector

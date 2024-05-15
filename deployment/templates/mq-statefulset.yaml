@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mq-service
+spec:
+  clusterIP: None
+  ports:
+    - name: mq-port
+      port: 5672
+      targetPort: 5672
+    - name: mq-metrics-port
+      port: 15692
+      targetPort: 15692
+  selector:
+    app: mq
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mq-sts
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: mq
+  serviceName: mq-service
+  template:
+    metadata:
+      labels:
+        app: mq
+    spec:
+      containers:
+        - name: mq
+          image: rabbitmq:3.13-management
+          env:
+            - name: RABBITMQ_LOGS
+              value: "-"
+          ports:
+            - containerPort: 5672
+              hostPort: 5672
+              protocol: TCP
+            - containerPort: 15692
+              hostPort: 15692
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/rabbitmq/enabled_plugins
+              name: mq-plugins
+            - mountPath: /var/lib/rabbitmq
+              name: mq-claim
+      restartPolicy: Always
+      volumes:
+        - name: mq-plugins
+          configMap:
+            name: mq-plugins-configmap
+  volumeClaimTemplates:
+    - metadata:
+        name: mq-claim
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 500Mi

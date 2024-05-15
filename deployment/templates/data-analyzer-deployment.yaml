@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-analyzer-deployment
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: data-analyzer
+  template:
+    metadata:
+      labels:
+        app: data-analyzer
+    spec:
+      containers:
+        - name: data-analyzer
+          image: tyknkd/newsanalyzer-dataanalyzer
+          env:
+            - name: ANALYZER_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_DB
+                  name: env
+            - name: ANALYZER_EXCHANGE
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_EXCHANGE
+                  name: env
+            - name: ANALYZER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_HOST
+                  name: env
+            - name: ANALYZER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_PORT
+                  name: env
+            - name: ANALYZER_QUEUE
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_QUEUE
+                  name: env
+            - name: ANALYZER_ROUTING_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: ANALYZER_ROUTING_KEY
+                  name: env
+            - name: COLLECTOR_EXCHANGE
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_EXCHANGE
+                  name: env
+            - name: COLLECTOR_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_HOST
+                  name: env
+            - name: COLLECTOR_QUEUE
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_QUEUE
+                  name: env
+            - name: COLLECTOR_ROUTING_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: COLLECTOR_ROUTING_KEY
+                  name: env
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: env
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/postgres-password
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: env
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: env
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: RABBITMQ_HOST
+                  name: env
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: RABBITMQ_PORT
+                  name: env
+            - name: WEBSERVER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBSERVER_HOST
+                  name: env
+          ports:
+            - containerPort: 8887
+              hostPort: 8887
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /run/secrets/postgres-password
+              name: postgres-password
+              subPath: postgres-password
+      restartPolicy: Always
+      volumes:
+        - name: postgres-password
+          secret:
+            items:
+              - key: postgres-password
+                path: postgres-password
+            secretName: postgres-password-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-analyzer-service
+spec:
+  ports:
+    - name: analyzer-port
+      port: 8887
+      targetPort: 8887
+  selector:
+    app: data-analyzer
