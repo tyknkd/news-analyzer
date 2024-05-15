@@ -88,20 +88,22 @@ class ApplicationTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            transaction(database) {
-                for (table in tables) {
-                    SchemaUtils.create(table)
+            testSuspend {
+                transaction(database) {
+                    for (table in tables) {
+                        SchemaUtils.create(table)
+                    }
                 }
+                CollectorDataGateway.updateClient(testClient)
+                Messaging.updateMessenger(
+                    exchangeName = "collector_app_test_exchange",
+                    queueName = "collector_app_test_queue",
+                    routingKey = "collector_app_test_key",
+                    messageHandler = ::messageHandler
+                )
+                Messaging.collectorMessenger.listen()
+                CollectorDataGateway.updateArticles()
             }
-            CollectorDataGateway.updateClient(testClient)
-            Messaging.updateMessenger(
-                exchangeName = "collector_app_test_exchange",
-                queueName = "collector_app_test_queue",
-                routingKey = "collector_app_test_key",
-                messageHandler = ::messageHandler
-            )
-            Messaging.collectorMessenger.listen()
-            testSuspend { CollectorDataGateway.updateArticles() }
         }
 
         @AfterClass

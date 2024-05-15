@@ -139,12 +139,12 @@ class ApplicationTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            transaction(database) {
-                for (table in tables) {
-                    SchemaUtils.create(table)
-                }
-            }
             testSuspend {
+                transaction(database) {
+                    for (table in tables) {
+                        SchemaUtils.create(table)
+                    }
+                }
                 WebDataGateway.updateAll(TestDoubles.analyzedArticles,TestDoubles.topics)
             }
         }
