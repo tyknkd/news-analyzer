@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: data-collector
-          image: tyknkd/newsanalyzer-datacollector
+          image: tyknkd/newsanalyzer-datacollector:0.1.0
           env:
             - name: ANALYZER_HOST
               valueFrom:

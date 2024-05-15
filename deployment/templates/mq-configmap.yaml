@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: mq-plugins-configmap
 data:
-  rabbitmq-plugins: "[rabbitmq_prometheus]."
+  enabled_plugins: |
+    [rabbitmq_prometheus].

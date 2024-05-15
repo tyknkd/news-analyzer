@@ -46,7 +46,7 @@ spec:
               hostPort: 15692
               protocol: TCP
           volumeMounts:
-            - mountPath: /etc/rabbitmq/enabled_plugins
+            - mountPath: /etc/rabbitmq
               name: mq-plugins
             - mountPath: /var/lib/rabbitmq
               name: mq-claim

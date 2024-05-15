@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: data-analyzer
-          image: tyknkd/newsanalyzer-dataanalyzer
+          image: tyknkd/newsanalyzer-dataanalyzer:0.1.0
           env:
             - name: ANALYZER_DB
               valueFrom:

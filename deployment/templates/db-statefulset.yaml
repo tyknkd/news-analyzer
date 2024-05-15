@@ -62,7 +62,7 @@ spec:
             - mountPath: /docker-entrypoint-initdb.d
               name: db-init-script
             - mountPath: /var/lib/postgresql/data
-              name: db-data-claim
+              name: db-claim
       restartPolicy: Always
       volumes:
         - name: postgres-password
@@ -76,7 +76,7 @@ spec:
             name: db-init-configmap
   volumeClaimTemplates:
     - metadata:
-        name: db-data-claim
+        name: db-claim
       spec:
         accessModes:
           - ReadWriteOnce

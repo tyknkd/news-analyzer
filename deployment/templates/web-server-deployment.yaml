@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: web-server
-          image: tyknkd/newsanalyzer-webserver
+          image: tyknkd/newsanalyzer-webserver:0.1.0
           env:
             - name: ANALYZER_EXCHANGE
               valueFrom:

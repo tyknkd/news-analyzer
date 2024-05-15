@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: grafana
+  name: grafana-sts
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -58,12 +58,12 @@ spec:
               name: grafana-claim
       restartPolicy: Always
       volumes:
-        - name: postgres-password
+        - name: grafana-password
           secret:
             items:
-              - key: postgres-password
-                path: postgres-password
-            secretName: postgres-password-secret
+              - key: grafana-password
+                path: grafana-password
+            secretName: grafana-password-secret
         - name: grafana-datasources
           configMap:
             name: grafana-datasources-configmap
