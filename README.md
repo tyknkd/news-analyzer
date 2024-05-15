@@ -32,7 +32,8 @@ interest to the reader.
 - [Grafana](https://grafana.com/) v.10.4.2: Performance metrics visualization
 - [Docker Engine](https://www.docker.com/) v.25.0.3: Containerization
 - [Kubernetes](https://kubernetes.io/) v.1.30.0: Deployment container orchestrator
-- [Kompose](https://kompose.io/) v.1.33.0: Docker-Compose-to-Kubernetes conversion tool
+- [Kompose](https://kompose.io/) v.1.33.0: Docker Compose to Kubernetes conversion tool
+- [Helm](https://helm.sh/) v.3.14.4: Kubernetes package manager
 
 ## Final Project Rubric
 (Click links to see relevant code)
