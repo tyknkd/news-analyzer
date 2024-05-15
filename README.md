@@ -6,12 +6,27 @@
 _CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
 
 ## Overview
-This project applies big data software architecture principles and machine learning techniques to analyze recent tech 
-industry news articles, automatically extract common themes, and sort them into groups by topic. The primary aim is to 
-help readers quickly identify current trends in media reporting on the tech industry and focus on the topics of most 
-interest to the reader.
+This independent project applies big data software architecture principles and machine learning techniques to analyze 
+recent tech industry news articles, automatically extract common themes, and sort them into groups by topic. The primary 
+aim is to help readers quickly identify current trends in media reporting on the tech industry and focus on the topics of 
+most interest to the reader.
+
+The software primarily consists of three microservices which interact via message queues. First, a data collector 
+microservice collects news article data daily from an external internet source ([newsapi.org](https://newsapi.org)), 
+stores the data in a database, and publishes it to a message queue. Next, upon receiving the data from the message queue, 
+a data analyzer microservice stores it in a database, applies [Latent Dirichlet Allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation)
+to discover common topics, and publishes the results to another message queue. Finally, a web microservice receives the
+data, stores it in a database, and presents the articles sorted by topic to the end user via web pages and a REST API service.
+
+The project was guided by current best practices in software development and big data architecture. Through the use of 
+replicated containerized pods with delivery-confirmed message queues and data persistence, service interruptions to the
+end user are minimized and the system remains robust to temporary partitions between the services. In addition, test doubles 
+and mock external services were used to implement efficient unit and integration tests in an automated continuous integration
+and continuous deployment workflow. Furthermore, online metrics and visualizations permit real-time monitoring of system 
+performance.
 
 ## Tech Stack
+The following technology tools were used to implement the project.
 - [Ubuntu](https://ubuntu.com/) v.22.4.4: Operating system
 - [Kotlin](https://kotlinlang.org/) v.1.9.22: Programming language
 - [Java Virtual Machine](https://openjdk.org/) v.17.0.10: Compilation and libraries
@@ -34,9 +49,11 @@ interest to the reader.
 - [Kubernetes](https://kubernetes.io/) v.1.30.0: Deployment container orchestrator
 - [Kompose](https://kompose.io/) v.1.33.0: Docker Compose to Kubernetes conversion tool
 - [Helm](https://helm.sh/) v.3.14.4: Kubernetes package manager
+- [GitHub](https://github.com/): Version control, continuous integration and deployment
 
 ## Final Project Rubric
-(Click links to see relevant code)
+This rubric lists the software development features and practices implemented in the project. Please click the links to 
+see the relevant code for each criterion.
 - C-level
   - [x] Web application: [applications/web-server](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server)
   - [x] Data collection: [applications/data-collector](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector)
@@ -61,7 +78,7 @@ The REST API entry point is `/api`. [HATEOAS](https://en.wikipedia.org/wiki/HATE
 discovery of the endpoints within the API.
 
 ## Local Setup
-To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each server 
+To run the app locally, you can either (A) run the app fully containerized on a local machine or (B) run each service 
 (web, data collector, data analyzer) from separate terminals with only the database and message queue in Docker containers.
 Either way, you must perform the preliminary environment setup first. (The following commands are for a Linux/Unix environment.)
 
@@ -72,17 +89,18 @@ Either way, you must perform the preliminary environment setup first. (The follo
 git clone https://github.com/tyknkd/news-analyzer.git
 cd news-analyzer
 ```
-3. Run the following bash commands to create a secrets file for the PostgreSQL database password (changing the `yourpasswordgoeshere` string as desired).
+3. Run the following bash commands to create a secrets file for the PostgreSQL database password (changing the `yourPasswordGoesHere` string as desired).
 ```shell
-mkdir secrets && echo yourpasswordgoeshere > secrets/postgres_password.txt
+mkdir secrets
+echo yourPasswordGoesHere > secrets/postgres_password.txt
 ```
-4. Create a secrets file for the Grafana admin password (changing the `yourpasswordgoeshere` string as desired).
+4. Create a secrets file for the Grafana admin password (changing the `yourPasswordGoesHere` string as desired).
 ```shell
-mkdir secrets && echo yourpasswordgoeshere > secrets/grafana_password.txt
+echo yourPasswordGoesHere > secrets/grafana_password.txt
 ```
-5. Obtain an API key from [https://newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yournewsapikeygoeshere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally without a valid key.)
+5. Obtain an API key from [newsapi.org](https://newsapi.org) and save it to a separate secrets file with the following bash command, replacing the `yourNewsApiKeyGoesHere` string with your newly obtained key. (NB: You can run the tests with a fake key, but an exception will be thrown if you attempt to run the app locally without a valid key because the real news data cannot be collected without it.)
 ```shell
-echo yournewsapikeygoeshere > secrets/news_api_key.txt
+echo yourNewsApiKeyGoesHere > secrets/news_api_key.txt
 ```
 
 ### A. Fully Containerized Setup
@@ -103,7 +121,7 @@ docker compose up
 6. Optional: View Grafana monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
 7. To stop all containers, press `CTRL+C` in the bash shell from which it was started.
 
-### B. Local App Servers Setup
+### B. Separate Microservices Setup
 1. Perform preliminary environment setup above.
 2. Install [Java 17](https://openjdk.org/)
 3. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
