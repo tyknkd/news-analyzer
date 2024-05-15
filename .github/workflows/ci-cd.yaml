@@ -59,7 +59,7 @@ jobs:
           source .env
           gradle test
 
-  publish:
+  build:
     needs: test
     if: github.ref == 'refs/heads/main'
     environment: production
