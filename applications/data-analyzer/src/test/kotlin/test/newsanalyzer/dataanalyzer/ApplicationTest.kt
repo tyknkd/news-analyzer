@@ -89,31 +89,31 @@ class ApplicationTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            transaction(database) {
-                for (table in tables) {
-                    SchemaUtils.create(table)
-                }
-            }
-            Messaging.updateCollectorMessenger(
-                exchangeName = "analyzer_app_test_collector_exchange",
-                queueName = "analyzer_app_test_collector_queue",
-                routingKey = "analyzer_app_test_collector_key"
-            )
-            Messaging.updateAnalyzerMessenger(
-                exchangeName = "analyzer_app_test_analyzer_exchange",
-                queueName = "analyzer_app_test_analyzer_queue",
-                routingKey = "analyzer_app_test_analyzer_key",
-                messageHandler = ::messageHandler
-            )
-            Messaging.collectorMessenger.listen()
-            Messaging.analyzerMessenger.listen()
             testSuspend {
+                transaction(database) {
+                    for (table in tables) {
+                        SchemaUtils.create(table)
+                    }
+                }
+                Messaging.updateCollectorMessenger(
+                    exchangeName = "analyzer_app_test_collector_exchange",
+                    queueName = "analyzer_app_test_collector_queue",
+                    routingKey = "analyzer_app_test_collector_key"
+                )
+                Messaging.updateAnalyzerMessenger(
+                    exchangeName = "analyzer_app_test_analyzer_exchange",
+                    queueName = "analyzer_app_test_analyzer_queue",
+                    routingKey = "analyzer_app_test_analyzer_key",
+                    messageHandler = ::messageHandler
+                )
+                Messaging.collectorMessenger.listen()
+                Messaging.analyzerMessenger.listen()
                 RawDataGateway.addArticles(TestDoubles.rawArticles)
                 await.atMost(TestSettings.mqTimeout).untilAsserted {
                     assertNotNull(mqPublished)
                 }
             }
-        }
+       }
         @AfterClass
         @JvmStatic
         fun teardown() {
