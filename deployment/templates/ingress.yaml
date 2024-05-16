@@ -4,7 +4,7 @@ metadata:
   name: newsanalyzer-ingress
 spec:
   rules:
-    - host: newsanalyzer.io
+    - host: app.newsanalyzer.io
       http:
         paths:
           - path: /
@@ -14,7 +14,10 @@ spec:
                 name: web-server
                 port:
                   number: 8888
-          - path: /monitoring
+    - host: monitoring.newsanalyzer.io
+      http:
+        paths:
+          - path: /
             pathType: Prefix
             backend:
               service:
