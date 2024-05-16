@@ -5,6 +5,7 @@
         </encoder>
     </appender>
 
+    <!--
     <property name="LOG_DIR" value="./var/log" />
     <property name="LOG_NAME" value="dataAnalyzer" />
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -18,6 +19,7 @@
             <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    -->
 
     <root level="trace">
         <appender-ref ref="STDOUT"/>
