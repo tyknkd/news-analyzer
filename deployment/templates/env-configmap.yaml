@@ -22,7 +22,7 @@ data:
   COLLECTOR_TEST_EXCHANGE: "collector_test_exchange"
   GRAFANA_PORT: "3000"
   POSTGRES_DB: "collector_db"
-  POSTGRES_HOST: "db-service-service"
+  POSTGRES_HOST: "db-service"
   POSTGRES_PORT: "5432"
   POSTGRES_USER: "newsanalyzer"
   PROJECT_VERSION: "0.0.1"
