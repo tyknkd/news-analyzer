@@ -12,7 +12,9 @@ jobs:
       POSTGRES_DB: collector_db
       POSTGRES_HOST: db
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_USER: newsanalyzer
+      POSTGRES_USER: postgresuser
+      RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
+      RABBITMQ_DEFAULT_USER: rabbituser
     services:
       db:
         image: postgres:16.2
@@ -29,6 +31,9 @@ jobs:
           - 5432:5432
       mq:
         image: rabbitmq:3.13-management
+        env:
+          RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
+          RABBITMQ_DEFAULT_USER: ${{ env.RABBITMQ_DEFAULT_USER }}
         ports:
           - 5672:5672
           - 15692:15692
