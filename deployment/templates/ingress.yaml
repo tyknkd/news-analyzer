@@ -11,13 +11,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: web-server-service
+                name: web-server
                 port:
                   number: 8888
           - path: /monitoring
             pathType: Prefix
             backend:
               service:
-                name: grafana-service
+                name: grafana
                 port:
                   number: 3000

@@ -17,7 +17,7 @@ spec:
       initContainers:
         - name: await-data-analyzer
           image: busybox
-          command: [ "sh", "-c", "until nc -z data-analyzer-service:8887; do echo 'waiting for data-analyzer'; sleep 5; done;" ]
+          command: [ "sh", "-c", "until nc -z data-analyzer:8887; do echo 'waiting for data-analyzer'; sleep 5; done;" ]
       containers:
         - name: data-collector
           image: tyknkd/newsanalyzer-datacollector:0.1.0
@@ -136,7 +136,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: data-collector-service
+  name: data-collector
 spec:
   ports:
     - name: collector-port

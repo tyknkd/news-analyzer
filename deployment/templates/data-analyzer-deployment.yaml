@@ -17,7 +17,7 @@ spec:
       initContainers:
         - name: await-web-server
           image: busybox
-          command: [ "sh", "-c", "until nc -z web-server-service:8888; do echo 'waiting for webserver'; sleep 5; done;" ]
+          command: [ "sh", "-c", "until nc -z web-server:8888; do echo 'waiting for webserver'; sleep 5; done;" ]
       containers:
         - name: data-analyzer
           image: tyknkd/newsanalyzer-dataanalyzer:0.1.0
@@ -140,7 +140,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: data-analyzer-service
+  name: data-analyzer
 spec:
   ports:
     - name: analyzer-port

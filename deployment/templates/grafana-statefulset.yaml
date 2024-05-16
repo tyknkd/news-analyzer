@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana-service
+  name: grafana
 spec:
   clusterIP: None
   ports:
@@ -23,7 +23,7 @@ spec:
   selector:
     matchLabels:
       app: grafana
-  serviceName: grafana-service
+  serviceName: grafana
   template:
     metadata:
       labels:
@@ -32,7 +32,7 @@ spec:
       initContainers:
         - name: await-prometheus
           image: busybox
-          command: [ "sh", "-c", "until nc -z prometheus-service:9090; do echo 'waiting for prometheus'; sleep 5; done;" ]
+          command: [ "sh", "-c", "until nc -z prometheus:9090; do echo 'waiting for prometheus'; sleep 5; done;" ]
       containers:
         - name: grafana
           image: grafana/grafana-oss:10.4.2
