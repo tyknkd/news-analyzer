@@ -14,6 +14,13 @@ spec:
       labels:
         app: web-server
     spec:
+      initContainers:
+        - name: await-db
+          image: busybox
+          command: [ "sh", "-c", "until nc -z db-service:5432; do echo 'waiting for db'; sleep 5; done;" ]
+        - name: await-mq
+          image: busybox
+          command: [ "sh", "-c", "until nc -z mq-service:5672; do echo 'waiting for mq'; sleep 5; done;" ]
       containers:
         - name: web-server
           image: tyknkd/newsanalyzer-webserver:0.1.0

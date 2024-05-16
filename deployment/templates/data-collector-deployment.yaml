@@ -14,6 +14,10 @@ spec:
       labels:
         app: data-collector
     spec:
+      initContainers:
+        - name: await-data-analyzer
+          image: busybox
+          command: [ "sh", "-c", "until nc -z data-analyzer-service:8887; do echo 'waiting for data-analyzer'; sleep 5; done;" ]
       containers:
         - name: data-collector
           image: tyknkd/newsanalyzer-datacollector:0.1.0
