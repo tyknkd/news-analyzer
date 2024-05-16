@@ -5,8 +5,19 @@ import com.rabbitmq.client.BuiltinExchangeType
 import com.rabbitmq.client.Channel
 
 class Exchange(val name: String, val queue: String, val routingKey: String) {
+    private val user = System.getenv("RABBITMQ_DEFAULT_USER")
+    private val pass = System.getenv("RABBITMQ_DEFAULT_PASS")
+    private val mqport = System.getenv("RABBITMQ_PORT")?.toInt()?:5672
+    private val mqhost = if (System.getenv("OS_ENV") == "container") {
+        System.getenv("RABBITMQ_HOST")
+    } else {
+        "localhost"
+    }
     private val factory = ConnectionFactory().apply {
-        setUri(getRabbitMqUri())
+        username = user
+        password = pass
+        port = mqport
+        host = mqhost
     }
     private val connection = factory.newConnection()
     private val durable = true
@@ -18,15 +29,5 @@ class Exchange(val name: String, val queue: String, val routingKey: String) {
         queueDeclare(queue, durable, exclusive, autoDelete, arguments)
         queueBind(queue, name, routingKey)
         confirmSelect()
-    }
-
-    private fun getRabbitMqUri(): String {
-        val port = System.getenv("RABBITMQ_PORT")?:5672
-        val host = if (System.getenv("OS_ENV") == "container") {
-            System.getenv("RABBITMQ_HOST")
-        } else {
-            "localhost"
-        }
-        return "amqp://$host:$port"
     }
 }
