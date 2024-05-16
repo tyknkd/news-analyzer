@@ -89,6 +89,13 @@ spec:
                 configMapKeyRef:
                   key: POSTGRES_USER
                   name: env
+            - name: RABBITMQ_DEFAULT_PASS
+              value: /run/secrets/mq-password
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: RABBITMQ_DEFAULT_USER
+                  name: env
             - name: RABBITMQ_HOST
               valueFrom:
                 configMapKeyRef:
@@ -109,11 +116,20 @@ spec:
               hostPort: 8887
               protocol: TCP
           volumeMounts:
+            - mountPath: /run/secrets/mq-password
+              name: mq-password
+              subPath: mq-password
             - mountPath: /run/secrets/postgres-password
               name: postgres-password
               subPath: postgres-password
       restartPolicy: Always
       volumes:
+        - name: mq-password
+          secret:
+            items:
+              - key: mq-password
+                path: mq-password
+            secretName: mq-password-secret
         - name: postgres-password
           secret:
             items:

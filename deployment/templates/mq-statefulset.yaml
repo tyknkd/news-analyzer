@@ -36,6 +36,13 @@ spec:
         - name: mq
           image: rabbitmq:3.13-management
           env:
+            - name: RABBITMQ_DEFAULT_PASS
+              value: /run/secrets/mq-password
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: RABBITMQ_DEFAULT_USER
+                  name: env
             - name: RABBITMQ_LOGS
               value: "-"
           ports:
@@ -46,12 +53,21 @@ spec:
               hostPort: 15692
               protocol: TCP
           volumeMounts:
+            - mountPath: /run/secrets/mq-password
+              name: mq-password
+              subPath: mq-password
             - mountPath: /etc/rabbitmq
               name: mq-plugins
             - mountPath: /var/lib/rabbitmq
               name: mq-claim
       restartPolicy: Always
       volumes:
+        - name: mq-password
+          secret:
+            items:
+              - key: mq-password
+                path: mq-password
+            secretName: mq-password-secret
         - name: mq-plugins
           configMap:
             name: mq-plugins-configmap
