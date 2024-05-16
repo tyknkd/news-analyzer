@@ -28,9 +28,8 @@ object DataCollector {
                                newsApiKey: String?,
                                fromInstant: Instant? = null,
                                client: HttpClient = HttpClientTemplate().httpClient): List<RemoteArticle>? {
-        val apiKeyErrorMessage = "NEWS_API_KEY environment variable is invalid or not set. Check your key, or obtain a free key from https://newsapi.org"
         if (newsApiKey == null) {
-            throw RuntimeException(apiKeyErrorMessage)
+            throw RuntimeException("NEWS_API_KEY environment variable is not set. Check your key, or obtain a free key from https://newsapi.org")
         }
         // Example API request:
         // GET https://newsapi.org/v2/everything?q=%22tech%20industry%22&sources=ars-technica%2Cassociated-press&sortBy=publishedAt&apiKey=NEWS_API_KEY
@@ -55,13 +54,13 @@ object DataCollector {
         }
 
         if(response.status != HttpStatusCode.OK){
-            throw RuntimeException(apiKeyErrorMessage)
+            throw RuntimeException("NEWS_API_KEY environment variable is invalid. Check your key, or obtain a free key from https://newsapi.org")
         }
         val remoteData: RemoteData = response.body()
         return if (remoteData.totalResults > 0) { cleanData(remoteData) } else { null }
     }
 
-    suspend fun cleanData(remoteData: RemoteData): List<RemoteArticle> {
+    fun cleanData(remoteData: RemoteData): List<RemoteArticle> {
         val articlesDf = remoteData.articles.reversed().toDataFrame()
         val filteredArticlesDf = articlesDf.drop { it["title"] == "[Removed]" || it["title"] == "" }
         return filteredArticlesDf.toList()
