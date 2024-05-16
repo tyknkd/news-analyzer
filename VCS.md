@@ -8,6 +8,7 @@ Based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 
 and [Angular Convention](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
 - build: changes build system
 - ci: changes continuous integration
+- cd: changes continuous deployment
 - docs: changes documentation
 - feat: adds a new feature
 - fix: fixes a bug
