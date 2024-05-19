@@ -143,7 +143,7 @@ jobs:
         env:
           DEPLOYMENT_NAME: news-analyzer
         run: |
-          helm upgrade $DEPLOYMENT_NAME gke-deployment/ \
+          helm upgrade $DEPLOYMENT_NAME deployment/ \
             --install \
             --wait
           kubectl rollout status deployment/$DEPLOYMENT_NAME
