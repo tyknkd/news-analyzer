@@ -105,15 +105,14 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
         with:
-#          service_account_key: ${{ secrets.GKE_SA_KEY }}
           project_id: ${{ secrets.GKE_PROJECT_ID }}
           install_components: kubectl, gke-gcloud-auth-plugin
 
-#      - name: Set up GKE credentials
-#        uses: google-github-actions/get-gke-credentials@v2
-#        with:
-#          cluster_name: ${{ env.GKE_CLUSTER }}
-#          location: ${{ env.GKE_ZONE }}
+      - name: Configure GKE cluster authentication
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
 #          credentials: ${{ secrets.GKE_SA_KEY }}
 
       - name: Update Kubernetes secrets
