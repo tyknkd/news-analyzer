@@ -109,12 +109,12 @@ jobs:
           project_id: ${{ secrets.GKE_PROJECT_ID }}
           install_components: kubectl, gke-gcloud-auth-plugin
 
-      - name: Set up GKE credentials
-        uses: google-github-actions/get-gke-credentials@v0
-        with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-          credentials: ${{ secrets.GKE_SA_KEY }}
+#      - name: Set up GKE credentials
+#        uses: google-github-actions/get-gke-credentials@v2
+#        with:
+#          cluster_name: ${{ env.GKE_CLUSTER }}
+#          location: ${{ env.GKE_ZONE }}
+#          credentials: ${{ secrets.GKE_SA_KEY }}
 
       - name: Update Kubernetes secrets
         run: |
