@@ -105,7 +105,7 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
         with:
-          service_account_key: ${{ secrets.GKE_SA_KEY }}
+#          service_account_key: ${{ secrets.GKE_SA_KEY }}
           project_id: ${{ secrets.GKE_PROJECT_ID }}
           install_components: kubectl, gke-gcloud-auth-plugin
 
@@ -122,25 +122,25 @@ jobs:
             --from-literal=postgres-password=${{ secrets.POSTGRES_PASSWORD }} \
             --save-config \
             --dry-run=client \
-            -o yaml | kubectl apply -f
+            -o yaml | kubectl apply -f -
 
           kubectl create secret generic mq-password-secret \
             --from-literal=mq-password=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
             --save-config \
             --dry-run=client \
-            -o yaml | kubectl apply -f
+            -o yaml | kubectl apply -f -
 
           kubectl create secret generic grafana-password-secret \
             --from-literal=grafana-password=${{ secrets.GRAFANA_PASSWORD }} \
             --save-config \
             --dry-run=client \
-            -o yaml | kubectl apply -f
+            -o yaml | kubectl apply -f -
 
           kubectl create secret generic news-api-key-secret \
             --from-literal=news-api-key=${{ secrets.NEWS_API_KEY }} \
             --save-config \
             --dry-run=client \
-            -o yaml | kubectl apply -f
+            -o yaml | kubectl apply -f -
 
       - name: Install Helm
         run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
