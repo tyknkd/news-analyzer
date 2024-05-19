@@ -41,10 +41,6 @@ spec:
               value: publicDashboards
             - name: GF_SECURITY_ADMIN_PASSWORD__FILE
               value: /run/secrets/grafana-password
-          ports:
-            - containerPort: 3000
-              hostPort: 3000
-              protocol: TCP
           volumeMounts:
             - mountPath: /run/secrets/grafana-password
               name: grafana-password

@@ -51,10 +51,6 @@ spec:
                 configMapKeyRef:
                   key: POSTGRES_USER
                   name: env
-          ports:
-            - containerPort: 5432
-              hostPort: 5432
-              protocol: TCP
           volumeMounts:
             - mountPath: /run/secrets/postgres-password
               name: postgres-password
