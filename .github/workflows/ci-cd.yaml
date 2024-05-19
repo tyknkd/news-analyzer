@@ -88,10 +88,6 @@ jobs:
 #    if: github.ref == 'refs/heads/main'
     environment: production
     runs-on: ubuntu-22.04
-    env:
-      GKE_CLUSTER: news-analyzer-cluster
-      GKE_ZONE: us-west4-c
-      DEPLOYMENT_NAME: news-analyzer
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -100,7 +96,8 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GKE_SA_KEY }}
+          project_id: ${{ secrets.GKE_PROJECT_ID }}
+          workload_identity_provider: projects/784362733291/locations/global/workloadIdentityPools/github/providers/news-analyzer
 
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
@@ -111,9 +108,8 @@ jobs:
       - name: Configure GKE cluster authentication
         uses: google-github-actions/get-gke-credentials@v2
         with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-#          credentials: ${{ secrets.GKE_SA_KEY }}
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ secrets.GKE_ZONE }}
 
       - name: Update Kubernetes secrets
         run: |
@@ -145,9 +141,11 @@ jobs:
         run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
       - name: Deploy to GKE
+        env:
+          DEPLOYMENT_NAME: news-analyzer
         run: |
           helm upgrade $DEPLOYMENT_NAME deployment/ \
-            --install
+            --install \
             --wait
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
