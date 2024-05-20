@@ -34,8 +34,6 @@ spec:
           image: prom/prometheus:v2.51.2
           ports:
             - containerPort: 9090
-              hostPort: 9090
-              protocol: TCP
           volumeMounts:
             - mountPath: /etc/prometheus/prometheus.yml
               name: prometheus-config

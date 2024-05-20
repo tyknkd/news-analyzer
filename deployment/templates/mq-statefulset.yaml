@@ -47,11 +47,7 @@ spec:
               value: "-"
           ports:
             - containerPort: 5672
-              hostPort: 5672
-              protocol: TCP
             - containerPort: 15692
-              hostPort: 15692
-              protocol: TCP
           volumeMounts:
             - mountPath: /run/secrets/mq-password
               name: mq-password
