@@ -111,6 +111,10 @@ spec:
                 configMapKeyRef:
                   key: WEBSERVER_HOST
                   name: env
+          ports:
+            - containerPort: 8887
+              hostPort: 8887
+              protocol: TCP
           volumeMounts:
             - mountPath: /run/secrets/mq-password
               name: mq-password
