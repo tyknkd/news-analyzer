@@ -38,6 +38,8 @@ spec:
                 configMapKeyRef:
                   key: ADDITIONAL_POSTGRES_DB
                   name: env
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
@@ -53,8 +55,6 @@ spec:
                   name: env
           ports:
             - containerPort: 5432
-              hostPort: 5432
-              protocol: TCP
           volumeMounts:
             - mountPath: /run/secrets/postgres-password
               name: postgres-password
@@ -62,6 +62,7 @@ spec:
             - mountPath: /docker-entrypoint-initdb.d
               name: db-init-script
             - mountPath: /var/lib/postgresql/data
+              subPath: pgdata
               name: db-claim
       restartPolicy: Always
       volumes:
