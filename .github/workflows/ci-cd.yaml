@@ -108,7 +108,7 @@ jobs:
         uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: ${{ secrets.GKE_CLUSTER }}
-          location: ${{ secrets.GKE_ZONE }}
+          location: ${{ secrets.GKE_REGION }}
 
       - name: Update Kubernetes secrets
         run: |
