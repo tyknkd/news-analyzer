@@ -124,11 +124,11 @@ jobs:
             --dry-run=client \
             -o yaml | kubectl apply -f -
 
-          kubectl create secret generic grafana-password-secret \
-            --from-literal=grafana-password=${{ secrets.GRAFANA_PASSWORD }} \
-            --save-config \
-            --dry-run=client \
-            -o yaml | kubectl apply -f -
+#          kubectl create secret generic grafana-password-secret \
+#            --from-literal=grafana-password=${{ secrets.GRAFANA_PASSWORD }} \
+#            --save-config \
+#            --dry-run=client \
+#            -o yaml | kubectl apply -f -
 
           kubectl create secret generic news-api-key-secret \
             --from-literal=news-api-key=${{ secrets.NEWS_API_KEY }} \
