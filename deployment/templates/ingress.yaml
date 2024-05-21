@@ -5,14 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: newsanalyzer-ip
 spec:
-  rules:
-    - host: app.newsanalyzer.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: web-server
-                port:
-                  number: 8888
+  defaultBackend:
+    service:
+      name: web-server
+      port:
+        number: 8888
