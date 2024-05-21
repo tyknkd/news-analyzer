@@ -11,7 +11,7 @@ recent tech industry news articles, automatically extract common themes, and sor
 aim is to help readers quickly identify current trends in media reporting on the tech industry and focus on the topics of 
 most interest to the reader.
 
-The software primarily consists of three microservices which interact via message queues. First, a data collector 
+The software consists of three microservices which interact via a message queue broker. First, a data collector 
 microservice collects news article data daily from an external internet source ([newsapi.org](https://newsapi.org)), 
 stores the data in a database, and publishes it to a message queue. Next, upon receiving the data from the message queue, 
 a data analyzer microservice stores it in a database, applies [Latent Dirichlet Allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation)
@@ -54,26 +54,26 @@ The following technology tools were used to implement the project.
 ## Final Project Rubric
 This rubric lists the software development features and practices implemented in the project. Please click the links to 
 see the relevant code for each criterion.
-- C-level
-  - [x] Web application: [applications/web-server](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server)
-  - [x] Data collection: [applications/data-collector](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector)
-  - [x] Data analyzer: [applications/data-analyzer](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer)
-  - [x] Unit tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/), [data-support/src/test](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support/src/test/), etc.
-  - [x] Data persistence: [components/data-support](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support)
-  - [x] REST API endpoint: [web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt)
-  - Production environment
-- B-level
-  - [x] Integration tests: [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/)
-  - [x] Test doubles: [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support)
-  - [x] Continuous integration [.github/workflows](https://github.com/tyknkd/news-analyzer/tree/main/.github/workflows)
-  - [x] Production monitoring: [monitoring](https://github.com/tyknkd/news-analyzer/tree/main/monitoring)
-- A-level
-  - [x] Event collaboration messaging [components/mq-support](https://github.com/tyknkd/news-analyzer/tree/main/components/mq-support)
-  - Continuous delivery
+
+| Level | Criterion      | Code |
+|-------|----------------|------|
+| C     | Web application | [applications/web-server](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server) |
+| C     | Data collection | [applications/data-collector](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector) |
+| C     | Data analyzer | [applications/data-analyzer](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer) |
+| C     | Unit tests | [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/), [data-support/src/test](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support/src/test/), etc. |
+| C     | Data persistence | [components/data-support](https://github.com/tyknkd/news-analyzer/tree/main/components/data-support) |
+| C     | REST API endpoint | [web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/main/kotlin/io/newsanalyzer/webserver/plugins/Routing.kt) |
+| C     | Production environment | |
+| B     | Integration tests | [web-server/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/web-server/src/test/), [data-collector/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-collector/src/test/), [data-analyzer/src/test](https://github.com/tyknkd/news-analyzer/tree/main/applications/data-analyzer/src/test/) |
+| B     | Test doubles | [components/test-support](https://github.com/tyknkd/news-analyzer/tree/main/components/test-support) |
+| B     | Continuous integration | [.github/workflows](https://github.com/tyknkd/news-analyzer/tree/main/.github/workflows) |
+| B     | Production monitoring | [monitoring](https://github.com/tyknkd/news-analyzer/tree/main/monitoring) |
+| A     | Event collaboration messaging | [components/mq-support](https://github.com/tyknkd/news-analyzer/tree/main/components/mq-support) |
+| A     | Continuous delivery | | 
 
 ## Live Production Deployment
 
-## API
+## REST API
 The REST API entry point is `/api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
 discovery of the endpoints within the API.
 
@@ -118,10 +118,10 @@ docker compose up test
 docker compose up
 ```
 5. In a web browser, open [http://localhost:8888](http://localhost:8080)
-6. Optional: View Grafana monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
+6. Optional: View Grafana monitoring dashboard at [localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
 7. To stop all containers, press `CTRL+C` in the bash shell from which it was started.
 
-### B. Separate Microservices Setup
+### B. Run Microservices from Separate Terminals Setup
 1. Perform preliminary environment setup above.
 2. Install [Java 17](https://openjdk.org/)
 3. Install [Spark 3.3.2 (Scala 2.13 version)](https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3-scala2.13.tgz)
@@ -154,7 +154,7 @@ source .env && source sensitive.env
 ./gradlew applications:data-collector:run
 ```
 10. In a web browser, open [http://localhost:8888](http://localhost:8080)
-11. Optional: If the Prometheus and Grafana containers are running (see above), view the monitoring dashboard at [http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
+11. Optional: If the Prometheus and Grafana containers are running (see Step 5), view the monitoring dashboard at [localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
 12. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
 
 _&copy;2024 Tyler Kinkade, All Rights Reserved_
