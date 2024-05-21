@@ -1,7 +1,7 @@
 # Tech Industry News Analyzer App
 **Tyler Kinkade**
 
-[https://github.com/tyknkd/news-analyzer](https://github.com/tyknkd/news-analyzer)
+[https://github.com/tyknkd/news-analyzer](https://github.com/tyknkd/news-analyzer) ![Tests](https://github.com/tyknkd/news-analyzer/actions/workflows/ci-cd.yaml/badge.svg)
 
 _CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
 
