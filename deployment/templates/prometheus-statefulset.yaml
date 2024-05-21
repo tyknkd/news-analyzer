@@ -33,7 +33,7 @@ spec:
         - name: prometheus
           image: prom/prometheus:v2.51.2
           args:
-            - "--storage.tsdb.path='/prometheus/data/'"
+            - "--storage.tsdb.path=/data"
             - "--storage.tsdb.retention.time=30d"
             - "--config.file=/etc/prometheus/prometheus.yml"
           ports:
