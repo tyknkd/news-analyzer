@@ -32,6 +32,10 @@ spec:
       containers:
         - name: prometheus
           image: prom/prometheus:v2.51.2
+          args:
+            - "--storage.tsdb.path='/prometheus/data/'"
+            - "--storage.tsdb.retention.time=30d"
+            - "--config.file=/etc/prometheus/prometheus.yml"
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -39,6 +43,7 @@ spec:
               name: prometheus-config
               subPath: prometheus.yml
             - mountPath: /prometheus
+              subPath: data
               name: prometheus-claim
       restartPolicy: Always
       volumes:
