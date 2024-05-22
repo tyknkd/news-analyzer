@@ -1,10 +1,10 @@
 # Tech Industry News Analyzer App ![workflow status](https://github.com/tyknkd/news-analyzer/actions/workflows/ci-cd.yaml/badge.svg)
 **Tyler Kinkade**
 
+_CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
+
 - [www.jeitikei.online](https://www.jeitikei.online/) (app)
 - [github.com/tyknkd/news-analyzer](https://github.com/tyknkd/news-analyzer) (repository)
-
-_CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
 
 ## Overview
 This independent project applies big data software architecture principles and machine learning techniques to analyze 
@@ -18,7 +18,7 @@ most interest to the reader.
 The software architecture consists of three microservices which interact via a message queue broker, as illustrated in the above 
 diagram. First, (starting on the left side of the diagram) a data collector microservice collects news article data daily from an 
 external internet source ([newsapi.org](https://newsapi.org)), stores the data in a database, and publishes it to a message queue. Next, 
-upon receiving the data from the message queue, a data analyzer microservice stores it in a database, applies [Latent Dirichlet Allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation)
+upon receiving the data from the message queue, a data analyzer microservice stores it in a database, applies [Latent Dirichlet Allocation](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation) (LDA)
 to discover common topics, and publishes the results to another message queue. Finally, a web microservice receives the
 data, stores it in a database, and presents the articles sorted by topic to the end user via web pages and a REST API service.
 
@@ -28,7 +28,7 @@ containerized pods with delivery-confirmed message queues and data persistence, 
 end user are minimized and the system remains robust to temporary partitions between the services. Because the collected data is 
 well-structured, relational databases are used to efficiently store, process, and retrieve the data. In addition, 
 test doubles and mock external services were used to implement efficient unit and integration tests in an automated continuous integration
-and continuous deployment workflow. Furthermore, online metrics and visualizations permit real-time monitoring of system 
+and deployment workflow. Furthermore, online metrics and visualizations permit real-time monitoring of system 
 performance. 
 
 ## Tech Stack
@@ -59,7 +59,7 @@ The following technology tools were used to implement the project.
 - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine): v.1.28.8: Cloud computing service
 
 ## Requirements
-This table lists the required software development features and practices implemented in the project and corresponding code.
+This table summarizes the required software features and practices implemented in the project and the corresponding code.
 
 | Feature                                                                                                                                                                                                      | Code   |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -90,8 +90,11 @@ discovery of the endpoints within the API.
 Gradle is used to implement unit and integration tests, and these tests are incorporated into the continuous integration/continuous
 deployment workflow. Using test doubles and mock external services, the unit tests check each element of the system (e.g., database 
 operations, message queue, data processing, etc.), and the integration tests check that these elements function together at the app
-level as expected. That is, that data can be reliably collected, stored, transferred to the data analyzer, stored, processed, passed to
-the web server, stored, and displayed to the end user.
+level as expected: that the data can be (1) reliably collected, (2) stored in the collector database, (3) transferred to the data analyzer,
+(4) processed with unsupervised machine learning (LDA), (5) stored in the analyzer database, (6) passed to
+the web server, (7) stored in the web-server database, and (8) displayed to the end user in reverse chronological order and by topic group.
+(NB: It is worth noting that because unsupervised machine learning is being applied, the article topics are only identified by 
+common keywords.)
 
 ## Monitoring
 Production monitoring is accomplished by scraping metrics with [Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) 
