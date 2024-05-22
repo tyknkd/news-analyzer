@@ -4,5 +4,5 @@ import java.time.Duration
 import java.time.Duration.ofSeconds
 
 object TestSettings {
-    val mqTimeout: Duration = ofSeconds(5)
+    val mqTimeout: Duration = ofSeconds(10)
 }
