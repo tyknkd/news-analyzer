@@ -86,6 +86,13 @@ The REST API entry point is [www.jeitikei.online/api](https://www.jeitikei.onlin
 discovery of the endpoints within the API.
 ![homepage](https://github.com/tyknkd/news-analyzer/blob/main/images/screenshot_api_hateoas.png)
 
+## Testing
+Gradle is used to implement unit and integration tests, and these tests are incorporated into the continuous integration/continuous
+deployment workflow. Using test doubles and mock external services, the unit tests check each element of the system (e.g., database 
+operations, message queue, data processing, etc.), and the integration tests check that these elements function together at the app
+level as expected. That is, that data can be reliably collected, stored, transferred to the data analyzer, stored, processed, passed to
+the web server, stored, and displayed to the end user.
+
 ## Monitoring
 Production monitoring is accomplished by scraping metrics with [Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) 
 and visualizing with [Google Cloud Monitoring](https://cloud.google.com/monitoring).  
