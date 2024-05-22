@@ -77,6 +77,16 @@ This table summarizes the required software features and practices implemented i
 | Event collaboration messaging                                                                                                                                                                                | [components/mq-support](https://github.com/tyknkd/news-analyzer/tree/main/components/mq-support)                                                                                                                                                                                                                                                                                                                                                     |
 | [Continuous delivery](https://github.com/tyknkd/news-analyzer/actions)                                                                                                                                       | [github/workflows](https://github.com/tyknkd/news-analyzer/tree/main/.github/workflows)                                                                                                                                                                                                                                                                                                                                                              | 
 
+## Testing
+Gradle is used to implement unit and integration tests, and these tests are incorporated into the continuous integration/continuous
+deployment workflow. Using test doubles and mock external services, the unit tests check each element of the system (e.g., database
+operations, message queue, data processing, etc.), and the integration tests check that these elements function together at the app
+level as expected: that the data can be reliably (1) collected, (2) stored in the collector database, (3) transferred to the data analyzer,
+(4) processed with unsupervised machine learning (LDA), (5) stored in the analyzer database, (6) passed to
+the web server, (7) stored in the web-server database, and (8) displayed to the end user in reverse chronological order grouped by topic.
+(It is worth noting that because unsupervised machine learning is being applied to unlabeled data in this project, the article topics 
+can only be identified by common keywords.)
+
 ## Live Production Environment
 The project is deployed on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) and can be accessed at [www.jeitikei.online](https://www.jeitikei.online/)
 ![homepage](https://github.com/tyknkd/news-analyzer/blob/main/images/screenshot_home_page.png)
@@ -85,16 +95,6 @@ The project is deployed on [Google Kubernetes Engine](https://cloud.google.com/k
 The REST API entry point is [www.jeitikei.online/api](https://www.jeitikei.online/api/). [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
 discovery of the endpoints within the API.
 ![homepage](https://github.com/tyknkd/news-analyzer/blob/main/images/screenshot_api_hateoas.png)
-
-## Testing
-Gradle is used to implement unit and integration tests, and these tests are incorporated into the continuous integration/continuous
-deployment workflow. Using test doubles and mock external services, the unit tests check each element of the system (e.g., database 
-operations, message queue, data processing, etc.), and the integration tests check that these elements function together at the app
-level as expected: that the data can be (1) reliably collected, (2) stored in the collector database, (3) transferred to the data analyzer,
-(4) processed with unsupervised machine learning (LDA), (5) stored in the analyzer database, (6) passed to
-the web server, (7) stored in the web-server database, and (8) displayed to the end user in reverse chronological order and by topic group.
-(NB: It is worth noting that because unsupervised machine learning is being applied, the article topics are only identified by 
-common keywords.)
 
 ## Monitoring
 Production monitoring is accomplished by scraping metrics with [Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) 
