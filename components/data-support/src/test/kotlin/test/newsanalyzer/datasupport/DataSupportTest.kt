@@ -9,7 +9,7 @@ import kotlin.test.*
 
 class DataSupportTest {
     private val tables: List<Table> = listOf(Topics)
-    private val database: Database = DatabaseTemplate(System.getenv("ANALYZER_TEST_DB"), emptyList()).database
+    private val database: Database = DatabaseTemplate(System.getenv("DATA_SUPPORT_TEST_DB"), emptyList()).database
     private val topic = Topic(
         topicId = 0,
         terms = "[article, description, title, content, second, interesting, grabbing, begins, organization, catchy]"
