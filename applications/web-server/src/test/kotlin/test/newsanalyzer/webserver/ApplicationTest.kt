@@ -30,7 +30,7 @@ class ApplicationTest {
             assertEquals(HttpStatusCode.OK, status)
             val bodyAsText = bodyAsText()
             assertContains(bodyAsText,"Tech Industry News Analyzer")
-            assertContains(bodyAsText,"articles")
+            assertContains(bodyAsText,"tech industry news articles")
             assertContains(bodyAsText,"href=\"/\"")
         }
     }
@@ -107,8 +107,13 @@ class ApplicationTest {
             val bodyAsText = bodyAsText()
             assertContains(bodyAsText,"Tech Industry News Analyzer")
             assertContains(bodyAsText,"Topic Group 0")
-            assertContains(bodyAsText,"More on this topic")
-            assertContains(bodyAsText,"\"/topics/1/articles\"")
+            assertContains(bodyAsText,"Topic Group 1")
+            assertContains(bodyAsText,"href=\"/topics/1/articles\"")
+            for (article in TestDoubles.analyzedArticles) {
+                assertContains(bodyAsText,article.title)
+                assertContains(bodyAsText,article.url)
+            }
+            assertContains(bodyAsText,"href=\"${TestDoubles.analyzedArticles[0].url}\"")
         }
     }
     @Test
@@ -118,8 +123,20 @@ class ApplicationTest {
             val bodyAsText = bodyAsText()
             assertContains(bodyAsText,"Tech Industry News Analyzer")
             assertContains(bodyAsText,"Topic Group 0")
+            assertContains(bodyAsText,"Topic Group 1")
             assertContains(bodyAsText,"href=\"/\"")
-            assertContains(bodyAsText,"\"/topics/1/articles\"")
+            assertContains(bodyAsText,"href=\"/topics/1/articles\"")
+        }
+    }
+    @Test
+    fun testTopic0Articles() = testSuspend {
+        testClient.get("/topics/0/articles").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val bodyAsText = bodyAsText()
+            assertContains(bodyAsText,"Tech Industry News Analyzer")
+            assertContains(bodyAsText,"Topic Group 0")
+            assertContains(bodyAsText,"href=\"/\"")
+            assertContains(bodyAsText,"href=\"https://www.example.com/")
         }
     }
     companion object {
