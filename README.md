@@ -70,8 +70,8 @@ The following technology tools were used to implement the project.
 - [GitHub](https://github.com/): Version control, continuous integration and deployment
 - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine): v.1.28.8: Cloud computing service
 
-## Software Features
-This table summarizes the required software features and practices implemented in the project and the corresponding code.
+## Technical Features
+This table summarizes the required technical features and practices implemented in the project and the corresponding code.
 
 | Feature | Code   |
 |---------|--------|
