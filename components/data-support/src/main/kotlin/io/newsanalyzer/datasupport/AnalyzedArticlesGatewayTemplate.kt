@@ -41,6 +41,6 @@ interface AnalyzedArticlesGatewayTemplate: DataGatewayTemplate {
     }
 
     suspend fun allArticles(): List<Article> = dbQuery {
-        AnalyzedArticles.selectAll().map { row -> row.toArticle() }
+        AnalyzedArticles.selectAll().map { row -> row.toArticle() }.sortedBy { article -> article.id }
     }
 }
