@@ -24,6 +24,6 @@ interface TopicsGatewayTemplate: DataGatewayTemplate {
     }
 
     suspend fun allTopics(): List<Topic> = dbQuery {
-        Topics.selectAll().map { row -> row.toTopic() }
+        Topics.selectAll().map { row -> row.toTopic() }.sortedBy { topic -> topic.topicId }
     }
 }
