@@ -23,7 +23,7 @@ spec:
           command: [ "sh", "-c", "until nc -z mq:5672; do echo 'waiting for mq'; sleep 5; done;" ]
       containers:
         - name: web-server
-          image: tyknkd/newsanalyzer-webserver:0.1.1
+          image: "tyknkd/newsanalyzer-webserver:{{ .Chart.AppVersion }}"
           env:
             - name: ANALYZER_EXCHANGE
               valueFrom:

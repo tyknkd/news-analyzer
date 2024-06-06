@@ -20,7 +20,7 @@ spec:
           command: [ "sh", "-c", "until nc -z web-server:8888; do echo 'waiting for webserver'; sleep 5; done;" ]
       containers:
         - name: data-analyzer
-          image: tyknkd/newsanalyzer-dataanalyzer:0.1.1
+          image: "tyknkd/newsanalyzer-dataanalyzer:{{ .Chart.AppVersion }}"
           env:
             - name: ANALYZER_DB
               valueFrom:

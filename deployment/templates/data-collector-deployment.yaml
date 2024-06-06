@@ -20,7 +20,7 @@ spec:
           command: [ "sh", "-c", "until nc -z data-analyzer:8887; do echo 'waiting for data-analyzer'; sleep 5; done;" ]
       containers:
         - name: data-collector
-          image: tyknkd/newsanalyzer-datacollector:0.1.1
+          image: "tyknkd/newsanalyzer-datacollector:{{ .Chart.AppVersion }}"
           env:
             - name: ANALYZER_HOST
               valueFrom:
