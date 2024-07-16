@@ -1,19 +1,13 @@
 # Tech Industry News Analyzer App ![workflow status](https://github.com/tyknkd/news-analyzer/actions/workflows/ci-cd.yaml/badge.svg)
-**Tyler Kinkade**
-
-_CSCA 5028: Applications of Software Architecture for Big Data, University of Colorado Boulder_
-
-- [www.jeitikei.online](https://www.jeitikei.online/) (app)
-- [github.com/tyknkd/news-analyzer](https://github.com/tyknkd/news-analyzer) (repository)
 
 ## Overview
-This independent project applies big data software architecture principles and machine learning techniques to analyze 
+This independent project applied big data software architecture principles and machine learning techniques to analyze 
 recent tech industry news articles, automatically extract common themes, and sort them into groups by topic. The primary 
-aim is to help readers quickly identify current trends in media reporting on the tech industry and focus on the topics of 
+aim was to help readers quickly identify current trends in media reporting on the tech industry and focus on the topics of 
 most interest to the reader.
 
 ## System Requirements
-The following are the requirements for the project. Links to the corresponding code used to test the requirements is given in parentheses.
+The following were the requirements for the project. Links to the corresponding code used to test the requirements are given in parentheses.
 1. Users can view a web page displaying titles of articles grouped by topic ([integration test](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/test/kotlin/test/newsanalyzer/webserver/ApplicationTest.kt))
 2. Users can click a link to navigate to the full article on the publisher website ([integration test](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/test/kotlin/test/newsanalyzer/webserver/ApplicationTest.kt))
 3. Users can click a link to view all article titles assigned to a topic ([integration test](https://github.com/tyknkd/news-analyzer/blob/main/applications/web-server/src/test/kotlin/test/newsanalyzer/webserver/ApplicationTest.kt))
@@ -99,17 +93,17 @@ the web server, (7) stored in the web-server database, and (8) displayed to the 
 (It is worth noting that because unsupervised machine learning is being applied to unlabeled data in this project, the article topics 
 can only be identified by common keywords.)
 
-## Live Production Environment
-The project is deployed on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) and can be accessed at [www.jeitikei.online](https://www.jeitikei.online/)
+## Production Environment
+The project was deployed on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) using Helm.
 ![homepage](https://github.com/tyknkd/news-analyzer/blob/main/images/screenshot_home_page.png)
 
 ## REST API
-The REST API entry point is [www.jeitikei.online/api](https://www.jeitikei.online/api/). [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
+The REST API entry point is `./api`. [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principles are applied in order to facilitate hypermedia-driven 
 discovery of the endpoints within the API.
 ![homepage](https://github.com/tyknkd/news-analyzer/blob/main/images/screenshot_api_hateoas.png)
 
 ## Monitoring
-Production monitoring is accomplished by scraping metrics with [Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) 
+Production monitoring was accomplished by scraping metrics with [Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) 
 and visualizing with [Google Cloud Monitoring](https://cloud.google.com/monitoring).  
 ![monitoring screenshot](https://github.com/tyknkd/news-analyzer/blob/main/images/monitoring_workloads.png)
 
@@ -195,5 +189,3 @@ source .env && source sensitive.env
 10. In a web browser, open [http://localhost:8888](http://localhost:8080)
 11. Optional: If the Prometheus and Grafana containers are running (see Step 5), view the monitoring dashboard at [localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1](http://localhost:3000/d/cdk5654bbrvnkf/news-analyzer-dashboard?orgId=1) (Note: The Grafana username is `admin` and the password is as set in the environment setup above.)
 12. To stop the servers and Docker containers, press `CTRL+C` in the bash shells from which they were started.
-
-_&copy;2024 Tyler Kinkade, All Rights Reserved_
